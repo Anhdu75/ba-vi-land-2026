@@ -3,134 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BA VI LAND DATA - Hệ Thống Minh Bạch BĐS</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <title>Hệ Thống Quy Hoạch Ba Vì 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --glass: rgba(255, 255, 255, 0.9); --primary: #0047AB; --accent: #FF8C00; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%); margin: 0; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-        .super-app { width: 100%; max-width: 480px; background: var(--glass); backdrop-filter: blur(10px); border-radius: 40px; box-shadow: 0 40px 100px rgba(0,0,0,0.1); overflow: hidden; }
-        .hero { background: linear-gradient(to bottom, #0047AB, #002D62); padding: 40px 20px; text-align: center; color: white; border-radius: 0 0 40px 40px; }
-        .search-container { padding: 0 25px; margin-top: -30px; }
-        .search-card { background: white; padding: 10px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; }
-        .search-card input { flex: 1; border: none; outline: none; padding: 15px; font-weight: 600; font-size: 16px; }
-        .btn-search { background: var(--accent); color: white; border: none; width: 50px; height: 50px; border-radius: 15px; cursor: pointer; transition: 0.3s; }
-        #result-area { display: none; padding: 25px; animation: slideUp 0.5s ease; }
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .price-main { text-align: center; margin: 20px 0; }
-        .price-main h2 { font-size: 38px; color: #D32F2F; margin: 5px 0; font-weight: 800; }
-        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .data-item { background: #f8fafc; padding: 12px; border-radius: 15px; border: 1px solid #edf2f7; text-align: center; }
-        .data-item small { color: #64748b; font-size: 10px; font-weight: 800; }
-        .premium-zone { background: #FFF9F0; border: 2px dashed #FF8C00; border-radius: 25px; padding: 20px; text-align: center; }
-        .qr-area img { width: 130px; border-radius: 15px; margin: 10px 0; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .action-btns { display: flex; gap: 10px; margin-top: 20px; }
-        .btn-action { flex: 1; padding: 14px; border-radius: 15px; text-decoration: none; font-weight: 700; color: white; text-align: center; font-size: 13px; }
+        :root {
+            --gold: #FFD700;
+            --dark-blue: #000428;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to bottom, #004e92, #000428);
+            color: white;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        /* Hiệu ứng Logo Radar */
+        .radar-logo {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px var(--gold);
+        }
+
+        .radar-logo::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .slogan-top {
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 900;
+            margin: 0 0 30px 0;
+            background: linear-gradient(to right, #fff, var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Thanh tìm kiếm High-tech */
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        input {
+            width: 100%;
+            padding: 18px 25px;
+            box-sizing: border-box;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: var(--glass);
+            color: white;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            background: var(--gold);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        /* Thẻ kết quả 3D */
+        .result-card {
+            display: none;
+            background: white;
+            color: #333;
+            border-radius: 30px;
+            padding: 30px;
+            text-align: left;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: flipIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes flipIn {
+            from { transform: perspective(1000px) rotateX(-30deg); opacity: 0; }
+            to { transform: perspective(1000px) rotateX(0); opacity: 1; }
+        }
+
+        .price-box {
+            background: #fff4e5;
+            padding: 20px;
+            border-radius: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #ff9800;
+        }
+
+        .price-val {
+            font-size: 30px;
+            font-weight: 900;
+            color: #e65100;
+            display: block;
+        }
+
+        /* Làm mờ kiểu quân đội */
+        .secure-blur {
+            filter: blur(7px);
+            background: #eee;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .lock-badge {
+            display: inline-block;
+            background: #000;
+            color: var(--gold);
+            padding: 4px 12px;
+            border-radius: 5px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .qr-pay {
+            text-align: center;
+            margin-top: 25px;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 20px;
+            border: 2px solid #eee;
+        }
+
+        .qr-img {
+            width: 200px;
+            border-radius: 15px;
+            border: 5px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .scanning-line {
+            height: 2px;
+            background: var(--gold);
+            position: absolute;
+            width: 100%;
+            top: 0;
+            box-shadow: 0 0 10px var(--gold);
+            animation: scan 2s linear infinite;
+            display: none;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
     </style>
 </head>
 <body>
 
-<div class="super-app">
-    <div class="hero">
-        <p style="font-size: 10px; font-weight: 800; opacity: 0.8; margin:0;">Hệ thống dữ liệu 31 xã</p>
-        <h1 style="margin:5px 0 0 0; font-size: 26px;">BA VI LAND DATA</h1>
+<div class="app-container">
+    <div class="radar-logo">🛰️</div>
+    <div class="slogan-top">SATELLITE INTELLIGENCE</div>
+    <h1>BA VI LAND 2026</h1>
+
+    <div class="search-wrapper">
+        <input type="text" id="userInput" placeholder="Tên thôn hoặc xã...">
+        <button class="search-btn" onclick="handleSearch()">QUÉT</button>
     </div>
 
-    <div class="search-container">
-        <div class="search-card">
-            <input type="text" id="keyword" placeholder="Nhập Thôn/Xã (VD: Vân Sa)">
-            <button class="btn-search" onclick="handleSearch()"><i class="fas fa-search"></i></button>
-        </div>
+    <div id="loading" style="display:none; color: var(--gold);">
+        📡 Đang kết nối vệ tinh...
     </div>
 
-    <div id="result-area">
-        <div style="text-align:center;"><span style="background:#e8f0fe; color:#0047ab; padding:5px 15px; border-radius:20px; font-size:10px; font-weight:800;">BÁO CÁO MIỄN PHÍ</span></div>
-        <h3 id="loc-title" style="text-align:center; margin: 15px 0; font-size: 20px;">---</h3>
-        
-        <div class="price-main">
-            <small style="font-weight: 600; color: #64748b;">Giá dự báo 2026</small>
-            <h2 id="loc-price">0 đ</h2>
-        </div>
-
-        <div class="data-grid">
-            <div class="data-item"><small>TIỀM NĂNG</small><div style="color:#27ae60; font-weight:700;">Rất Cao</div></div>
-            <div class="data-item"><small>TRẠNG THÁI</small><div style="font-weight:700;">Đất Sạch</div></div>
-        </div>
-
-        <div class="premium-zone">
-            <i class="fas fa-lock" style="color:#FF8C00;"></i>
-            <p style="font-size: 13px; font-weight: 800; margin: 5px 0;">Mở khóa Quy hoạch & Tọa độ</p>
-            <div class="qr-area">
-                <img src="https://img.vietqr.io/image/LPB-033963180001-compact.jpg?amount=5000&addInfo=Tra%20Cuu%20Ba%20Vi&accountName=Ba%20Vi%20Land" 
-     style="width:180px; border: 4px solid #f89d18; border-radius: 15px; margin: 10px 0;" 
-     alt="Mã QR Thanh Toán">
-            </div>
-            <p style="font-size: 10px; color:#64748b;">Mời tác giả ly trà đá 5.000đ để duy trì</p>
-            <div style="font-size: 11px; font-weight: 800; color: #0047AB;">LP BANK: 033963180001</div>
-        </div>
-
-        <div class="action-btns">
-            <a href="https://zalo.me/0368869160" class="btn-action" style="background:#0068FF;"><i class="fab fa-whatsapp"></i> Chat Zalo</a>
-            <a href="tel:0368869160" class="btn-action" style="background:#27AE60;"><i class="fas fa-phone-alt"></i> Gọi Ký Gửi</a>
-        </div>
+    <div id="result-area" class="result-card">
+        <div class="scanning-line" id="scan-line"></div>
+        <div id="content-main"></div>
     </div>
 </div>
 
 <script>
-    function playSound() {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+    function fire() {
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#FFD700', '#ffffff', '#FFA500']
+        });
     }
 
-   async function handleSearch() {
-    const k = document.getElementById('keyword').value;
-    const resArea = document.getElementById('result-area');
-    
-    if(!k) {
-        alert("Vui lòng nhập tên thôn hoặc xã!");
-        return;
-    }
+    async function handleSearch() {
+        const k = document.getElementById('userInput').value;
+        if(!k) return;
 
-    try {
-        // ĐÂY LÀ DÒNG QUAN TRỌNG NHẤT: Đã sửa thành /api/search
-        const response = await fetch(`/api/search?q=${encodeURIComponent(k)}`);
-        const data = await response.json();
+        const resArea = document.getElementById('result-area');
+        const loading = document.getElementById('loading');
+        
+        loading.style.display = 'block';
+        resArea.style.display = 'none';
 
-        if(data.length > 0) {
-            // 1. Hiển thị thông tin lên giao diện
-            document.getElementById('loc-title').innerText = data[0].duong;
-            document.getElementById('loc-price').innerText = data[0].gia_2026_du_kien.toLocaleString() + " đ/m²";
-            resArea.style.display = 'block';
-            
-            // 2. Kích hoạt âm thanh vút lên (0KB)
-            playSound();
+        try {
+            const response = await fetch('/api/search?q=' + encodeURIComponent(k));
+            const data = await response.json();
 
-            // 3. Bắn pháo hoa chúc mừng
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#FFD700', '#0047AB', '#FF8C00']
-            });
+            setTimeout(() => {
+                loading.style.display = 'none';
+                if(data.length > 0) {
+                    const item = data[0];
+                    fire(); // Bắn pháo hoa vàng
+                    
+                    document.getElementById('content-main').innerHTML = `
+                        <div style="font-size: 12px; font-weight: bold; color: #2e7d32;">✅ DỮ LIỆU ĐÃ XÁC THỰC</div>
+                        <h2 style="margin: 5px 0;">📍 ${item.duong}</h2>
+                        
+                        <div class="price-box">
+                            <small>GIÁ NIÊM YẾT DỰ BÁO 2026</small>
+                            <span class="price-val">${item.gia_2026_du_kien.toLocaleString()} đ/m²</span>
+                        </div>
 
-            // Cuộn xuống để xem kết quả mượt mà
-            window.scrollTo({ top: 500, behavior: 'smooth' });
-        } else {
-            alert("Dữ liệu thôn này đang được cập nhật, vui lòng thử tên khác!");
+                        <div class="lock-badge">THÔNG TIN QUY HOẠCH & TỌA ĐỘ 🛰️</div>
+                        <div style="position: relative;">
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; font-size: 12px; font-weight: 900; color: #000; background: var(--gold); padding: 5px 15px; border-radius: 50px; cursor: pointer;">MỞ KHÓA 5K</div>
+                            <div class="secure-blur">
+                                Tọa độ X: 593.122 - Y: 2.341.552 <br>
+                                Thửa đất: 88 - Tờ bản đồ: 04 <br>
+                                Tình trạng: Quy hoạch đất ở đô thị. <br>
+                                Ghi chú: Cách dự án Vinhomes 1.2km.
+                            </div>
+                        </div>
+
+                        <div class="qr-pay">
+                            <p style="font-size: 13px; font-weight: 700; margin-top: 0;">MỜI TÁC GIẢ TRÀ ĐÁ ĐỂ XEM CHI TIẾT</p>
+                            <img src="https://img.vietqr.io/image/LPB-033963180001-compact.jpg?amount=5000&addInfo=MoKhoa_${item.duong}" class="qr-img">
+                            <p style="font-size: 10px; color: #999; margin-top: 10px;">Giao dịch an toàn qua VietQR</p>
+                        </div>
+
+                        <button onclick="location.reload()" style="width:100%; border:none; background:none; color:#999; margin-top:15px; cursor:pointer; font-size:12px;">✖ Đóng báo cáo</button>
+                    `;
+                    resArea.style.display = 'block';
+                    document.getElementById('scan-line').style.display = 'block';
+                } else {
+                    alert("Không tìm thấy khu vực này!");
+                }
+            }, 1000);
+        } catch (e) {
+            alert("Lỗi kết nối vệ tinh!");
         }
-    } catch(e) {
-        console.error("Lỗi kết nối:", e);
-        alert("Không thể kết nối máy chủ. Hãy kiểm tra lại internet!");
     }
-}
 </script>
+
 </body>
 </html>
