@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ĐỊA CHÍNH BA VÌ - GIẢI MÃ TỌA ĐỘ</title>
+<title>Check Giá Đất Ba Vì</title>
 
 <!-- Google Analytics GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PQHFMSQBZ0"></script>
@@ -63,8 +63,8 @@ input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 15px rgba(212,1
 <audio id="sWin" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
 
 <div class="box">
-<h1>Check Giá Đất Ba Vì</h1>
-<input type="text" id="thonIn" placeholder="Nhập tên thôn (Vd: nhuan trach)">
+<h1>CHECK GIÁ ĐẤT BA VÌ</h1>
+<input type="text" id="thonIn" placeholder="Nhập tên thôn (Ví dụ: Nhuận Trạch)">
 <button class="btn" onclick="startAnalyze()">KIỂM TRA NGAY</button>
 </div>
 
@@ -86,7 +86,7 @@ input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 15px rgba(212,1
 <div id="payArea" class="pay-box">
 <b style="color:#856404;font-size:14px;">🍵 Mời trà đá 5.000đ để xem tọa độ</b>
 <div class="qr-frame">
-<img id="qrImg" src="" alt="QR Đang tải...">
+<img id="qrImg" src="" alt="QR đang tải...">
 </div>
 <u onclick="unlockSuccess()" style="color:var(--danger);font-weight:900;cursor:pointer;font-size:13px;">Đã chuyển khoản thành công? Bấm vào đây</u>
 </div>
@@ -111,25 +111,26 @@ const dictionary={
 
 function startAnalyze(){
 let val=document.getElementById('thonIn').value.trim();
-if(!val) return;
+if(val===""){alert("Vui lòng nhập tên thôn");return;}
 
 document.getElementById('sCheck').play();
 confetti({particleCount:100,spread:70,origin:{y:.6}});
 
 let key=val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d");
-let result=val.toUpperCase();
-for(let k in dictionary){ if(key.includes(k)){result=dictionary[k];break;} }
+
+let result=dictionary[key]||val;
 document.getElementById('outLoc').innerText=result;
 
-/* QR LPBANK */
 const stk="033963180001";
 const bank="LPB";
+
 const qrUrl=`https://img.vietqr.io/image/${bank}-${stk}-compact2.png?amount=5000&addInfo=${encodeURIComponent("CheckGia "+val)}&t=${Date.now()}`;
 
 const qrImg=document.getElementById('qrImg');
 qrImg.src=qrUrl;
+
 qrImg.onerror=function(){
-this.src="https://via.placeholder.com/220x220?text=QR+khong+tai+duoc";
+this.src="https://quickchart.io/qr?size=220&text=LPB-033963180001";
 };
 
 document.getElementById('resultCard').style.display='block';
