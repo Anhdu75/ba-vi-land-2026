@@ -132,12 +132,6 @@ qrImg.src = qrUrl;
 qrImg.onerror = function(){
     this.src = "https://quickchart.io/qr?size=220&text=LPBANK-033963180001";
 };
-const qrImg=document.getElementById('qrImg');
-qrImg.src=qrUrl;
-
-qrImg.onerror=function(){
-this.src="https://quickchart.io/qr?size=220&text=LPB-033963180001";
-};
 
 document.getElementById('resultCard').style.display='block';
 }
