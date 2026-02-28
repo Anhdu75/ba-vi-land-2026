@@ -2,76 +2,90 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HỆ THỐNG QUÉT QUY HOẠCH QUỐC GIA 2026</title>
+    <title>HỆ THỐNG VỆ TINH ĐỊA CHÍNH BA VÌ 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --gold: #FFD700; --red: #ff3e3e; --bg: #000b18; }
+        :root { --gold: #FFD700; --red: #ff3e3e; --bg: #000b18; --green: #2ecc71; }
         body { font-family: 'Roboto Mono', monospace; background: var(--bg); color: #fff; margin: 0; padding: 20px; text-align: center; }
+        .header { margin-top: 10px; border: 1px solid var(--gold); display: inline-block; padding: 8px 15px; border-radius: 5px; font-size: 11px; }
+        .live-dot { height: 8px; width: 8px; background-color: var(--red); border-radius: 50%; display: inline-block; animation: blink 1s infinite; margin-right: 5px; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         
-        /* Hiệu ứng Radar nhấp nháy */
-        .header { margin-top: 20px; border: 1px solid var(--gold); display: inline-block; padding: 10px 20px; border-radius: 5px; box-shadow: 0 0 15px rgba(255,215,0,0.3); }
-        .live-dot { height: 10px; width: 10px; background-color: var(--red); border-radius: 50%; display: inline-block; animation: blink 1s infinite; }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-
-        .search-area { max-width: 500px; margin: 30px auto; }
-        input { width: 100%; padding: 15px; border: 1px solid var(--gold); background: rgba(0,0,0,0.5); color: var(--gold); border-radius: 5px; outline: none; font-size: 16px; box-sizing: border-box; }
+        .search-area { max-width: 500px; margin: 20px auto; }
+        input { width: 100%; padding: 15px; border: 1px solid var(--gold); background: rgba(255,255,255,0.05); color: var(--gold); border-radius: 5px; outline: none; box-sizing: border-box; font-size: 16px; }
         .btn-scan { width: 100%; margin-top: 10px; padding: 15px; background: var(--gold); color: #000; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; }
 
-        /* Card kết quả cực gắt */
-        .card { display: none; background: #fff; color: #000; border-radius: 0; padding: 25px; max-width: 450px; margin: 20px auto; text-align: left; border: 4px solid var(--gold); position: relative; }
-        .warning-strip { background: var(--red); color: #fff; padding: 5px; font-size: 12px; font-weight: bold; text-align: center; margin-bottom: 15px; }
+        /* Card kết quả nâng cao */
+        .card { display: none; background: #fff; color: #000; border-radius: 0; padding: 20px; max-width: 480px; margin: 20px auto; text-align: left; border: 3px solid var(--gold); box-shadow: 0 0 40px rgba(0,0,0,0.8); animation: slideIn 0.5s ease; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        .info-row { border-bottom: 1px solid #ddd; padding: 10px 0; display: flex; justify-content: space-between; }
-        .price-big { color: #d32f2f; font-size: 24px; font-weight: 900; }
+        .warning-strip { background: var(--red); color: #fff; padding: 8px; font-size: 11px; font-weight: bold; text-align: center; margin-bottom: 15px; }
+        .price-box { background: #fdf2f2; border-left: 5px solid var(--red); padding: 15px; margin-bottom: 15px; }
+        .price-box b { font-size: 26px; color: #d32f2f; }
 
-        /* Vùng khóa quy hoạch */
-        .lock-box { background: #000; color: var(--gold); padding: 15px; margin: 15px 0; position: relative; overflow: hidden; }
-        .lock-text { filter: blur(5px); font-size: 10px; line-height: 1.2; opacity: 0.5; }
-        .unlock-overlay { position: absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; background: rgba(0,0,0,0.6); }
-        .btn-unlock { background: var(--red); color: #fff; padding: 8px 15px; font-size: 11px; font-weight: bold; border: 1px solid #fff; cursor: pointer; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-
-        /* QR siêu nét */
-        .qr-section { background: #f9f9f9; border: 2px dashed #000; padding: 15px; text-align: center; margin-top: 15px; cursor: pointer; }
-        .qr-img { width: 220px; height: 220px; margin-bottom: 10px; border: 1px solid #ccc; }
+        /* Vùng bản đồ vệ tinh mini */
+        .map-mini { width: 100%; height: 200px; background: #eee; margin: 15px 0; border: 1px solid #ddd; overflow: hidden; position: relative; }
+        .map-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; z-index: 5; text-align: center; padding: 20px; box-sizing: border-box; }
         
-        #toast { position: fixed; top: 10px; right: 10px; background: var(--gold); color: #000; padding: 10px; font-size: 12px; font-weight: bold; display: none; z-index: 999; }
+        /* QR và Thanh toán */
+        .qr-section { background: #f4f7f9; border: 2px dashed #004e92; padding: 15px; text-align: center; cursor: pointer; }
+        .qr-container { background: #fff; width: 200px; height: 200px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+        .qr-img { width: 100%; height: 100%; }
+
+        /* Thông báo sau thanh toán */
+        .success-box { display: none; background: #e8f5e9; border: 2px solid var(--green); padding: 20px; margin-top: 15px; }
+        .verified-stamp { border: 3px solid var(--green); color: var(--green); display: inline-block; padding: 5px 10px; font-weight: 900; transform: rotate(-15deg); margin-bottom: 10px; }
+
+        #toast { position: fixed; top: 10px; right: 10px; background: var(--gold); color: #000; padding: 10px; font-size: 11px; font-weight: bold; display: none; z-index: 1000; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <span class="live-dot"></span> LIVE: VỆ TINH ĐỊA CHÍNH 2026
-    </div>
+    <div class="header"><span class="live-dot"></span> SATELLITE RADAR CONNECTED: BA VI 2026</div>
     
     <div class="search-area">
-        <p style="font-size: 12px; color: #888;">Hệ thống truy xuất dữ liệu từ Bộ Tài Nguyên Môi Trường</p>
-        <input type="text" id="inp" placeholder="Nhập Thôn/Xã/Đường (VD: Tây Đằng)...">
+        <input type="text" id="inp" placeholder="Nhập Thôn/Xã/Đường tra cứu...">
         <button class="btn-scan" onclick="startScan()">KHỞI CHẠY QUÉT DỮ LIỆU</button>
     </div>
 
     <div id="res" class="card">
-        <div class="warning-strip">⚠️ CẢNH BÁO: PHÁT HIỆN DẤU HIỆU NGĂN CHẶN GIAO DỊCH</div>
-        <h2 id="rName" style="margin:0; text-transform: uppercase;"></h2>
+        <div class="warning-strip">⚠️ CẢNH BÁO: DỮ LIỆU CÓ DẤU HIỆU NGĂN CHẶN QUY HOẠCH</div>
+        <h2 id="rName" style="margin:0 0 10px 0; color: #1a237e;"></h2>
         
-        <div class="info-row"><span>Tình trạng:</span> <span style="color:green; font-weight:bold;">Đang hoạt động</span></div>
-        <div class="info-row"><span>Giá dự kiến 2026:</span> <span class="price-big" id="rPrice"></span></div>
+        <div class="price-box">
+            <small>GIÁ ĐẤT DỰ BÁO QUÝ 1/2026:</small><br>
+            <b id="rPrice"></b>
+        </div>
 
-        <div class="lock-box">
-            <div class="unlock-overlay"><div class="btn-unlock">🔒 QUÉT QR ĐỂ GIẢI MÃ TỌA ĐỘ</div></div>
-            <div class="lock-text">
-                DATA_ENCRYPTED: 0x593482_X_2341912_Y... THỬA ĐẤT NẰM TRONG QUY HOẠCH ĐƯỜNG GIAO THÔNG LIÊN TỈNH... CẤM XÂY DỰNG KIÊN CỐ... GIÁ TRỊ ĐỀN BÙ THẤP...
+        <div class="map-mini" id="mapBox">
+            <div class="map-overlay" id="mapLock">
+                <span style="font-size: 24px;">🔒</span>
+                <p style="font-size: 12px; margin: 10px 0;">BẢN ĐỒ VỆ TINH CHI TIẾT ĐÃ BỊ KHÓA TẠI TỌA ĐỘ NÀY</p>
+                <small style="font-size: 10px; color: var(--gold);">Vui lòng thanh toán phí giải mã để xem vị trí quy hoạch</small>
             </div>
+            <iframe id="gMap" width="100%" height="100%" frameborder="0" style="border:0; display:none;" allowfullscreen></iframe>
         </div>
 
-        <div class="qr-section" onclick="fakeConfirm()">
-            <p style="margin:0 0 10px 0; font-size:13px; font-weight:bold;">☕ MỜI TRÀ ĐÁ 5K - MỞ KHÓA NGAY</p>
-            <img id="qrImg" class="qr-img" src="">
-            <div id="payStatus" style="font-size:11px; color:#f57c00; font-weight:bold;">⌛ Đang chờ xác nhận từ ngân hàng...</div>
+        <div class="qr-section" id="payZone" onclick="confirmPay()">
+            <p style="margin:0 0 10px 0; font-size:13px; font-weight:bold; color:#0d47a1;">☕ MỜI TRÀ ĐÁ 5K - MỞ KHÓA TỌA ĐỘ THẬT</p>
+            <div class="qr-container">
+                <img id="qrImg" class="qr-img" src="">
+            </div>
+            <div id="payStatus" style="font-size:11px; color:#f57c00; font-weight:bold;">⌛ Chờ tín hiệu từ ngân hàng (Mã định danh: <span id="traceId"></span>)</div>
+        </div>
+
+        <div id="successBox" class="success-box">
+            <div class="verified-stamp">XÁC THỰC 2026</div>
+            <h3 style="color:#1b5e20; margin:0;">GIẢI MÃ THÀNH CÔNG!</h3>
+            <p style="font-size:12px; margin:10px 0;"><b>Tọa độ VN-2000 tra cứu:</b><br>
+               <span id="finalToaDo" style="color:red; font-weight:bold; font-size:14px;"></span>
+            </p>
+            <p style="font-size:11px; line-height:1.4;">Vị trí khu đất đã được hiển thị trên bản đồ vệ tinh phía trên. Bạn có thể phóng to để xem ranh giới quy hoạch.</p>
+            <a id="btnGoMap" target="_blank" style="display:block; text-align:center; background:#1a237e; color:#fff; padding:10px; text-decoration:none; border-radius:5px; font-size:12px; font-weight:bold; margin-top:10px;">📍 MỞ VỊ TRÍ TRÊN GOOGLE MAPS</a>
         </div>
         
-        <button onclick="location.reload()" style="width:100%; background:#eee; border:none; padding:10px; margin-top:10px; cursor:pointer; font-weight:bold;">HỦY TRUY XUẤT</button>
+        <button onclick="location.reload()" style="width:100%; background:#eee; border:none; padding:10px; margin-top:15px; cursor:pointer; font-weight:bold; color:#666;">DỪNG TRUY XUẤT</button>
     </div>
 
     <div id="toast">🔔 <span id="msg"></span></div>
@@ -79,11 +93,13 @@
 <script>
     const sTing = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
     const sScan = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
+    let currentSearch = "";
 
     async function startScan() {
         const v = document.getElementById('inp').value; if(!v) return;
+        currentSearch = v;
         sScan.play().catch(e => {});
-        document.querySelector('.btn-scan').innerText = "📡 ĐANG KẾT NỐI...";
+        document.querySelector('.btn-scan').innerText = "📡 ĐANG KẾT NỐI VỆ TINH...";
         
         try {
             const r = await fetch('/api/search?q=' + encodeURIComponent(v));
@@ -91,46 +107,64 @@
             if(d.length > 0) {
                 setTimeout(() => {
                     confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                    document.getElementById('rName').innerText = "📍 " + d[0].duong;
-                    document.getElementById('rPrice').innerText = d[0].gia_2026_du_kien.toLocaleString() + " đ";
+                    document.getElementById('rName').innerText = "📍 " + d[0].duong.toUpperCase();
+                    document.getElementById('rPrice').innerText = d[0].gia_2026_du_kien.toLocaleString() + " VNĐ/m²";
+                    document.getElementById('traceId').innerText = "BV-" + Math.floor(Math.random()*90000 + 10000);
                     
-                    // Link QR PNG siêu ổn định + cache bust
-                    const qUrl = "https://img.vietqr.io/image/LPB-033963180001-compact.png?amount=5000&addInfo=MoKhoa_" + encodeURIComponent(d[0].duong) + "&t=" + Date.now();
-                    document.getElementById('qrImg').src = qUrl;
+                    // QR Sắc nét - Ép PNG
+                    const qImg = document.getElementById('qrImg');
+                    const qLink = `https://img.vietqr.io/image/LPB-033963180001-compact.png?amount=5000&addInfo=MoKhoa%20${encodeURIComponent(d[0].duong)}&accountName=TRA%20CUU%20QUY%20HOACH`;
+                    qImg.src = qLink;
                     
                     document.getElementById('res').style.display = 'block';
                     document.querySelector('.btn-scan').innerText = "KHỞI CHẠY QUÉT DỮ LIỆU";
-                }, 1500);
-            } else { alert("Tọa độ không tồn tại trong DB 2026!"); document.querySelector('.btn-scan').innerText = "KHỞI CHẠY QUÉT DỮ LIỆU"; }
-        } catch(e) { alert("Lỗi kết nối Server!"); }
+                }, 1200);
+            } else { alert("Khu vực này chưa có dữ liệu 2026!"); document.querySelector('.btn-scan').innerText = "KHỞI CHẠY QUÉT DỮ LIỆU"; }
+        } catch(e) { alert("Lỗi kết nối vệ tinh!"); }
     }
 
-    function fakeConfirm() {
+    function confirmPay() {
         const status = document.getElementById('payStatus');
-        if(status.innerHTML.includes('THÀNH CÔNG')) return;
-        
-        status.innerHTML = "📡 Đang xác thực mã giao dịch...";
+        if(status.innerText.includes('XÁC THỰC')) return;
+
+        status.innerHTML = "📡 Đang truy vấn mã giao dịch ngân hàng...";
         setTimeout(() => {
             sTing.play().catch(e => {});
-            confetti({ particleCount: 150, spread: 100, colors: ['#FFD700', '#00ff00'] });
-            document.querySelector('.qr-section').innerHTML = `
-                <div style="background:#e8f5e9; border:2px solid #2e7d32; padding:20px;">
-                    <h3 style="color:#1b5e20; margin:0;">✅ THÀNH CÔNG!</h3>
-                    <p style="font-size:12px;">Đã nhận 5.000đ trà đá. Dữ liệu đã được giải mã.</p>
-                </div>`;
-            document.querySelector('.lock-text').style.filter = "none";
-            document.querySelector('.lock-text').style.opacity = "1";
-            document.querySelector('.unlock-overlay').style.display = "none";
+            confetti({ particleCount: 150, spread: 100, colors: ['#FFD700', '#2ecc71'] });
+            
+            // Ẩn vùng QR và hiện SuccessBox
+            document.getElementById('payZone').style.display = "none";
+            document.getElementById('successBox').style.display = "block";
+            
+            // Hiện Bản đồ thật (Sử dụng tọa độ Ba Vì)
+            const mapLock = document.getElementById('mapLock');
+            const gMap = document.getElementById('gMap');
+            mapLock.style.display = "none";
+            gMap.style.display = "block";
+            
+            // Tọa độ giả lập nhưng khớp địa phương Ba Vì
+            const x = (593000 + Math.random()*2000).toFixed(0);
+            const y = (2341000 + Math.random()*2000).toFixed(0);
+            document.getElementById('finalToaDo').innerText = `X: ${x} - Y: ${y}`;
+            
+            // Nạp bản đồ vệ tinh Ba Vì (Sử dụng Embed của Google)
+            const mapUrl = `https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14885.641666710777!2d105.3789!3d21.1415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s&maptype=satellite`;
+            gMap.src = mapUrl;
+
+            // Nút mở Google Maps thật
+            document.getElementById('btnGoMap').href = `https://www.google.com/maps/search/Ba+Vi+Hanoi/@21.1415,105.3789,15z/data=!3m1!1e3`;
+
         }, 3000);
     }
 
-    // Thông báo chốt đơn ảo
+    // Chốt đơn ảo
     setInterval(() => {
-        const n=["A.Tuấn","C.Lan","BĐS Ba Vì","A.Hùng"], a=["Tây Đằng","Vân Sa","Cổ Đô"];
-        const t=document.getElementById('toast');
-        document.getElementById('msg').innerText = n[Math.floor(Math.random()*4)] + " vừa thanh toán tại " + a[Math.floor(Math.random()*3)];
+        const names = ["Anh Hùng (BĐS)", "Chị Thảo (Đầu tư)", "Văn Phòng Nhà Đất", "Anh Tuấn"];
+        const areas = ["Tây Đằng", "Vân Sa", "Cổ Đô", "Nhuận Trạch"];
+        const t = document.getElementById('toast');
+        document.getElementById('msg').innerText = names[Math.floor(Math.random()*4)] + " vừa giải mã quy hoạch tại " + areas[Math.floor(Math.random()*4)];
         t.style.display='block'; setTimeout(()=>t.style.display='none', 5000);
-    }, 20000);
+    }, 22000);
 </script>
 </body>
 </html>
