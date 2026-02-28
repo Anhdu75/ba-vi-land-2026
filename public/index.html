@@ -121,11 +121,17 @@ let key=val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replac
 let result=dictionary[key]||val;
 document.getElementById('outLoc').innerText=result;
 
-const stk="033963180001";
-const bank="LPB";
+const stk = "033963180001";
+const bank = "LPBANK";   // sửa lại đúng mã
 
-const qrUrl=`https://img.vietqr.io/image/${bank}-${stk}-compact2.png?amount=5000&addInfo=${encodeURIComponent("CheckGia "+val)}&t=${Date.now()}`;
+const qrUrl = `https://img.vietqr.io/image/${bank}-${stk}-compact2.png?amount=5000&addInfo=${encodeURIComponent("CheckGia "+val)}&accountName=NGUYEN%20VAN%20A&t=${Date.now()}`;
 
+const qrImg = document.getElementById('qrImg');
+qrImg.src = qrUrl;
+
+qrImg.onerror = function(){
+    this.src = "https://quickchart.io/qr?size=220&text=LPBANK-033963180001";
+};
 const qrImg=document.getElementById('qrImg');
 qrImg.src=qrUrl;
 
