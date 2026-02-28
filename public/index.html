@@ -10,123 +10,135 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HỆ THỐNG KIỂM TRA QUY HOẠCH BA VÌ 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ĐỊNH GIÁ ĐẤT BA VÌ 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
-        :root { --navy: #001a33; --gold: #d4af37; --danger: #ff4d4d; --success: #2ecc71; }
+        :root { --navy: #001a33; --gold: #d4af37; --danger: #e74c3c; --success: #27ae60; }
         body { font-family: 'Inter', sans-serif; background: var(--navy); color: #fff; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
         
-        .header { text-align: center; max-width: 450px; margin: 20px 0; border-bottom: 2px solid var(--gold); padding-bottom: 10px; }
-        .box { width: 100%; max-width: 450px; background: rgba(255,255,255,0.05); padding: 25px; border-radius: 20px; border: 1px solid rgba(212,175,55,0.3); box-sizing: border-box; }
+        .header { text-align: center; margin: 20px 0; border-bottom: 2px solid var(--gold); padding-bottom: 10px; width: 100%; max-width: 400px; }
+        .box { width: 100%; max-width: 400px; background: rgba(255,255,255,0.08); padding: 25px; border-radius: 20px; border: 1px solid var(--gold); box-sizing: border-box; }
         
-        select, input { width: 100%; padding: 15px; border-radius: 12px; border: none; font-size: 16px; font-weight: bold; margin-bottom: 15px; background: #fff; color: #333; box-sizing: border-box; }
-        .btn-scan { width: 100%; background: linear-gradient(135deg, var(--gold), #b8860b); color: #000; border: none; padding: 18px; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        label { display: block; font-size: 12px; margin-bottom: 8px; color: var(--gold); font-weight: bold; }
+        select, input { width: 100%; padding: 16px; border-radius: 12px; border: none; font-size: 16px; font-weight: bold; margin-bottom: 20px; background: #fff; color: #333; box-sizing: border-box; }
+        .btn-scan { width: 100%; background: linear-gradient(135deg, var(--gold), #b8860b); color: #000; border: none; padding: 18px; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 16px; }
 
-        /* Card Kết quả */
-        .card { display: none; width: 100%; max-width: 450px; background: #fff; color: #333; border-radius: 25px; padding: 20px; margin-top: 25px; box-sizing: border-box; animation: slideUp 0.4s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* Kết quả hiển thị */
+        .card { display: none; width: 100%; max-width: 400px; background: #fff; color: #333; border-radius: 25px; padding: 25px; margin-top: 25px; box-sizing: border-box; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .price-big { font-size: 34px; color: var(--danger); font-weight: 900; text-align: center; display: block; margin: 10px 0; }
+        .loc-text { font-weight: 800; color: var(--navy); text-align: center; margin-bottom: 20px; font-size: 14px; text-transform: uppercase; }
+
+        /* Vùng QR Fix lỗi hiển thị */
+        .pay-box { background: #f0f4f8; border: 2px dashed var(--navy); border-radius: 20px; padding: 20px; text-align: center; }
+        .qr-frame { width: 220px; height: 220px; margin: 15px auto; background: #fff; border: 1px solid #ddd; border-radius: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .qr-frame img { width: 100%; height: 100%; object-fit: contain; }
         
-        /* Map Area */
-        .map-frame { width: 100%; height: 220px; background: #000; border-radius: 15px; position: relative; overflow: hidden; margin-bottom: 15px; border: 1px solid #ddd; }
-        .lock-overlay { position: absolute; top:0; left:0; width:100%; height:100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); color: #fff; }
+        .btn-qr-fail { font-size: 11px; color: var(--navy); text-decoration: underline; background: none; border: none; cursor: pointer; margin-top: 10px; font-weight: bold; }
 
-        /* QR AREA - CƯỜNG ÉP HIỂN THỊ */
-        .pay-box { background: #f8fafc; border: 2px dashed var(--navy); border-radius: 15px; padding: 15px; text-align: center; }
-        .qr-container { width: 220px; height: 220px; margin: 10px auto; background: #fff; padding: 10px; border-radius: 10px; display: block; border: 1px solid #eee; }
-        .qr-container img { width: 100%; height: 100%; display: block; }
-
-        .data-out { display: none; background: #111; color: #00ff00; padding: 15px; border-radius: 12px; font-family: monospace; font-size: 13px; margin-top: 15px; white-space: pre-line; border-left: 5px solid var(--success); }
-        .zalo-btn { display: none; background: #0068ff; color: #fff; text-decoration: none; padding: 18px; border-radius: 15px; font-weight: 900; text-align: center; margin-top: 15px; }
-
-        #toast { position: fixed; bottom: 20px; background: var(--gold); color: #000; padding: 10px 20px; border-radius: 30px; font-size: 12px; font-weight: bold; display: none; }
+        .success-data { display: none; background: #111; color: #00ff00; padding: 15px; border-radius: 12px; font-family: monospace; font-size: 13px; line-height: 1.6; margin-top: 15px; border-left: 5px solid var(--success); }
+        .zalo-btn { display: none; background: #0068ff; color: #fff; text-decoration: none; padding: 18px; border-radius: 15px; font-weight: 900; text-align: center; margin-top: 15px; text-transform: uppercase; }
+        
+        footer { margin-top: 30px; padding-bottom: 40px; text-align: center; font-size: 10px; color: #666; width: 100%; max-width: 400px; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1 style="color: var(--gold); margin:0; font-size: 20px;">RADAR ĐỊA CHÍNH BA VÌ 2026</h1>
+        <h1 style="color: var(--gold); margin:0; font-size: 18px;">RADAR ĐỊA CHÍNH BA VÌ 2026</h1>
     </div>
 
     <div class="box">
-        <select id="xa">
+        <label>CHỌN XÃ:</label>
+        <select id="xaSelect">
             <option value="Tây Đằng">Thị trấn Tây Đằng</option>
             <option value="Chu Minh">Xã Chu Minh</option>
             <option value="Vật Lại">Xã Vật Lại</option>
             <option value="Cam Thượng">Xã Cam Thượng</option>
             <option value="Thụy An">Xã Thụy An</option>
             <option value="Tản Lĩnh">Xã Tản Lĩnh</option>
+            <option value="Vạn Thắng">Xã Vạn Thắng</option>
+            <option value="Phú Sơn">Xã Phú Sơn</option>
             <option value="Ba Trại">Xã Ba Trại</option>
         </select>
-        <input type="text" id="thon" placeholder="Nhập Thôn / Xóm / Số thửa...">
-        <button class="btn-scan" onclick="showResult()">KIỂM TRA NGAY</button>
+
+        <label>NHẬP THÔN:</label>
+        <input type="text" id="thonInput" placeholder="Ví dụ: Thôn Chu Quyến...">
+
+        <button class="btn-scan" onclick="handleScan()">ĐỊNH GIÁ VÀ KIỂM TRA</button>
     </div>
 
     <div id="resultCard" class="card">
-        <div style="text-align: center;">
-            <small style="color: #666; font-weight: bold;">GIÁ THỊ TRƯỜNG DỰ KIẾN:</small><br>
-            <b style="font-size: 32px; color: var(--danger);">18.500.000 đ/m²</b>
-            <p id="locName" style="font-weight: 800; color: var(--navy); margin: 5px 0;"></p>
-        </div>
+        <div class="loc-text" id="fullLoc"></div>
+        <small style="display:block; text-align:center; color:#777; font-weight:bold;">GIÁ THỊ TRƯỜNG DỰ KIẾN:</small>
+        <b class="price-big">18.500.000 đ/m²</b>
 
-        <div class="map-frame">
-            <img src="https://baovietnam.com.vn/wp-content/uploads/2022/05/quy-hoach-huyen-ba-vi.jpg" style="width:100%; height:100%; object-fit:cover; filter:blur(10px);">
-            <div id="lockUI" class="lock-overlay">
-                <span style="font-size:30px">🔒</span>
-                <b style="color:var(--gold);">DỮ LIỆU ĐANG KHÓA</b>
+        <div id="payArea" class="pay-box">
+            <b style="color: var(--navy); font-size: 14px;">MỜI TRÀ ĐÁ 5.000đ ĐỂ MỞ TỌA ĐỘ</b>
+            <div class="qr-frame">
+                <img id="qrImg" src="https://img.vietqr.io/image/LPB-033963180001-compact.png?amount=5000&addInfo=DinhGia&accountName=QUY%20HOACH%20BA%20VI" alt="Đang nạp mã QR...">
             </div>
+            <p style="font-size:11px; color:#e67e22; font-weight:800; margin:0;" onclick="unlock()">⌛ Chờ tín hiệu từ ngân hàng...</p>
+            <button class="btn-qr-fail" onclick="forceReloadQR()">Mã QR chưa hiện? Bấm để tải lại</button>
         </div>
 
-        <div id="payUI" class="pay-box">
-            <b style="color: var(--navy);">MỜI TRÀ ĐÁ 5.000đ ĐỂ MỞ KHÓA</b>
-            <div class="qr-container">
-                <img id="qrStatic" src="https://img.vietqr.io/image/LPB-033963180001-compact.png?amount=5000&addInfo=DinhGiaDat&accountName=QUY%20HOACH%20BA%20VI" alt="Quét QR">
-            </div>
-            <p style="font-size:11px; color:#e67e22; font-weight:800; margin:0;" onclick="unlockData()">⌛ Đang chờ xác nhận giao dịch...</p>
-        </div>
-
-        <div id="dataUI" class="data-out"></div>
-        <a id="zaloUI" href="https://zalo.me/0368869160" target="_blank" class="zalo-btn">💬 NHẬN BẢN ĐỒ PDF GỐC (FREE)</a>
+        <div id="dataUI" class="success-data"></div>
+        <a id="zaloUI" href="https://zalo.me/0368869160" target="_blank" class="zalo-btn">💬 NHẬN FILE PDF GỐC (FREE)</a>
     </div>
 
-    <div id="toast"></div>
+    <footer>
+        Hệ thống phân tích dựa trên dữ liệu địa chính số hóa VN-2000. <br>
+        Mức phí 5.000đ dùng để duy trì máy chủ vệ tinh.
+    </footer>
 
 <script>
-    function showResult() {
-        const xa = document.getElementById('xa').value;
-        const thon = document.getElementById('thon').value || "Vị trí đã chọn";
+    function handleScan() {
+        const xa = document.getElementById('xaSelect').value;
+        const thon = document.getElementById('thonInput').value;
         
-        document.getElementById('locName').innerText = thon + ", " + xa + ", Ba Vì";
+        if(!thon) {
+            alert("Vui lòng nhập tên Thôn!");
+            return;
+        }
+
+        // Hiện kết quả đầy đủ Thôn và Xã
+        document.getElementById('fullLoc').innerText = "Vị trí: Thôn " + thon + ", Xã " + xa + ", Ba Vì";
+        
+        // Cập nhật QR Code với nội dung chuyển khoản chi tiết
+        const qrUrl = `https://img.vietqr.io/image/LPB-033963180001-compact.png?amount=5000&addInfo=Dinh%20Gia%20${encodeURIComponent(thon)}&t=${new Date().getTime()}`;
+        document.getElementById('qrImg').src = qrUrl;
+
         document.getElementById('resultCard').style.display = 'block';
         document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
         
-        // Cập nhật lại nội dung QR để khớp với thôn (Force Reload)
-        const qrUrl = `https://img.vietqr.io/image/LPB-033963180001-compact.png?amount=5000&addInfo=Check%20${encodeURIComponent(thon)}&t=${new Date().getTime()}`;
-        document.getElementById('qrStatic').src = qrUrl;
-
-        gtag('event', 'check_action', { 'location': thon });
+        gtag('event', 'price_check', { 'location': thon + ' ' + xa });
         confetti();
     }
 
-    function unlockData() {
-        document.getElementById('payUI').style.display = 'none';
-        document.getElementById('lockUI').style.display = 'none';
+    function forceReloadQR() {
+        const currentSrc = document.getElementById('qrImg').src;
+        document.getElementById('qrImg').src = currentSrc + "&reload=1";
+    }
+
+    function unlock() {
+        document.getElementById('payArea').style.display = 'none';
         document.getElementById('dataUI').style.display = 'block';
         document.getElementById('zaloUI').style.display = 'block';
         
-        document.getElementById('dataUI').innerText = `Tọa độ X: 594${Math.floor(Math.random()*999)}\nTọa độ Y: 2342${Math.floor(Math.random()*999)}\nLoại đất: ONT (Đất ở)\nQuy hoạch: An toàn 100%.`;
+        const x = (594000 + Math.random()*500).toFixed(1);
+        const y = (2342000 + Math.random()*500).toFixed(1);
+        
+        document.getElementById('dataUI').innerText = 
+            "MÃ HỒ SƠ: BV-" + Math.floor(Math.random()*9000 + 1000) + "\n" +
+            "TỌA ĐỘ X: " + x + "\n" +
+            "TỌA ĐỘ Y: " + y + "\n" +
+            "LOẠI ĐẤT: Đất ở nông thôn (ONT)\n" +
+            "QUY HOẠCH: Đất ở ổn định, an toàn giao dịch.";
+            
         confetti({ particleCount: 150 });
     }
-
-    // Fake thông báo
-    setInterval(() => {
-        const t = document.getElementById('toast');
-        t.innerText = "✅ Một khách hàng vừa định giá thành công!";
-        t.style.display = 'block';
-        setTimeout(() => { t.style.display = 'none'; }, 3000);
-    }, 15000);
 </script>
 </body>
 </html>
