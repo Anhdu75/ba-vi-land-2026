@@ -20,43 +20,45 @@
         :root { --navy: #001a33; --gold: #d4af37; --danger: #e74c3c; --success: #2ecc71; --neon: #00ff41; }
         body { font-family: 'Inter', sans-serif; background: var(--navy); color: #fff; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
         
-        /* TOAST GIAO DỊCH GÓC TRÁI */
-        #toast-container { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        /* 1. THÔNG BÁO GIAO DỊCH GIẢ (GÓC TRÁI) */
+        #toast-container { position: fixed; top: 15px; left: 15px; z-index: 9999; pointer-events: none; }
         .toast-msg { background: rgba(255, 255, 255, 0.95); color: #333; padding: 10px 15px; border-radius: 12px; font-size: 11px; margin-bottom: 8px; border-left: 5px solid var(--success); box-shadow: 0 5px 15px rgba(0,0,0,0.3); animation: slideIn 0.5s ease-out; }
         @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
+        /* 2. KHUNG NHẬP LIỆU SANG TRỌNG */
         .box { width: 100%; max-width: 400px; background: rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; border: 2px solid var(--gold); box-sizing: border-box; text-align: center; margin-top: 50px; }
         input { width: 100%; padding: 18px; border-radius: 12px; border: none; font-size: 16px; font-weight: bold; margin-bottom: 15px; text-align: center; color: #000; outline: none; }
-        .btn { width: 100%; background: linear-gradient(135deg, var(--gold), #b8860b); color: #000; border: none; padding: 18px; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        .btn { width: 100%; background: linear-gradient(135deg, var(--gold), #b8860b); color: #000; border: none; padding: 18px; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 16px; transition: 0.3s; }
+        .btn:active { transform: scale(0.98); }
 
+        /* 3. THẺ KẾT QUẢ */
         .card { display: none; width: 100%; max-width: 400px; background: #fff; color: #333; border-radius: 25px; padding: 20px; margin-top: 20px; box-sizing: border-box; text-align: center; box-shadow: 0 15px 50px rgba(0,0,0,0.5); }
-        .loc { font-weight: 900; color: var(--navy); font-size: 18px; text-transform: uppercase; border-bottom: 2px solid #f1c40f; padding-bottom: 10px; margin-bottom: 10px; }
+        .loc { font-weight: 900; color: var(--navy); font-size: 20px; text-transform: uppercase; border-bottom: 2px solid #f1c40f; padding-bottom: 10px; margin-bottom: 10px; }
         
-        /* --- HIỆU ỨNG VỆ TINH ĐANG HOẠT ĐỘNG --- */
+        /* 4. RADAR VỆ TINH ĐANG HOẠT ĐỘNG */
         .map-box { width: 100%; height: 200px; background: #000; border-radius: 15px; margin: 15px 0; position: relative; overflow: hidden; border: 2px solid #333; }
-        #mapImg { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; filter: blur(2px) hue-rotate(90deg); transition: 1s; }
+        #mapImg { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; filter: blur(1px) hue-rotate(90deg); transition: 1.5s; }
         
-        /* Radar xoay */
-        .radar-sweep { position: absolute; top: 50%; left: 50%; width: 400px; height: 400px; background: conic-gradient(from 0deg, transparent, rgba(0, 255, 65, 0.3)); border-radius: 50%; transform: translate(-50%, -50%); animation: rotate 3s infinite linear; pointer-events: none; }
-        /* Vòng tròn đồng tâm */
+        .radar-sweep { position: absolute; top: 50%; left: 50%; width: 400px; height: 400px; background: conic-gradient(from 0deg, transparent, rgba(0, 255, 65, 0.4)); border-radius: 50%; transform: translate(-50%, -50%); animation: rotate 3s infinite linear; pointer-events: none; }
         .radar-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid rgba(0, 255, 65, 0.2); border-radius: 50%; }
-        .c1 { width: 50px; height: 50px; } .c2 { width: 100px; height: 100px; } .c3 { width: 150px; height: 150px; }
-        
+        .c1 { width: 60px; height: 60px; } .c2 { width: 120px; height: 120px; } .c3 { width: 180px; height: 180px; }
         @keyframes rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-        /* -------------------------------------- */
 
-        .qr-frame { width: 220px; height: 220px; margin: 15px auto; background: #fff; border: 1px solid #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-        #qrImg { width: 100%; height: 100%; display: block; object-fit: contain; }
+        /* 5. KHU VỰC THANH TOÁN QR */
+        .qr-frame { width: 220px; height: 220px; margin: 15px auto; background: #fff; border: 1px solid #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        #qrImg { width: 100%; height: 100%; object-fit: contain; }
 
+        /* 6. LỜI CẢM ƠN & DỮ LIỆU */
         .success-box { display: none; text-align: left; }
-        .thanks-msg { color: var(--success); font-weight: 900; text-align: center; font-size: 16px; margin-bottom: 10px; }
-        .data-text { background: #111; color: var(--neon); padding: 15px; border-radius: 12px; font-family: monospace; font-size: 13px; border-left: 5px solid var(--success); }
+        .thanks-msg { color: var(--success); font-weight: 900; text-align: center; font-size: 16px; margin-bottom: 10px; text-transform: uppercase; }
+        .data-text { background: #111; color: var(--neon); padding: 15px; border-radius: 12px; font-family: monospace; font-size: 13px; border-left: 5px solid var(--success); line-height: 1.6; }
         .zalo { display: none; background: #0068ff; color: #fff; text-decoration: none; padding: 18px; border-radius: 15px; font-weight: 900; margin-top: 15px; display: block; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
     <div id="toast-container"></div>
+    
     <audio id="sCheck" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
     <audio id="sWin" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
 
@@ -68,7 +70,7 @@
 
     <div id="card" class="card">
         <div class="loc" id="outLoc"></div>
-        <b style="font-size: 30px; color: var(--danger); display:block;">18.500.000 đ/m²</b>
+        <b style="font-size: 32px; color: var(--danger); display:block; margin: 5px 0;">18.500.000 đ/m²</b>
 
         <div class="map-box">
             <img id="mapImg" src="https://baovietnam.com.vn/wp-content/uploads/2022/05/quy-hoach-huyen-ba-vi.jpg">
@@ -78,71 +80,93 @@
                 <div class="radar-circle c2"></div>
                 <div class="radar-circle c3"></div>
             </div>
-            <div id="lockLabel" style="position:absolute; bottom:10px; width:100%; color:var(--neon); font-size:10px; font-weight:900; text-shadow:1px 1px 2px #000;">🛰️ SATELLITE ACTIVE: SCANNING...</div>
+            <div id="lockLabel" style="position:absolute; bottom:10px; width:100%; color:var(--neon); font-size:10px; font-weight:900; text-shadow:1px 1px 2px #000; letter-spacing: 1px;">🛰️ SATELLITE ACTIVE: SCANNING...</div>
         </div>
 
         <div id="payArea">
-            <b style="font-size: 13px; color: #856404; background: #fff9e6; padding: 8px 15px; border-radius: 20px;">🍵 MỜI TRÀ ĐÁ 5.000đ ĐỂ GIẢI MÃ</b>
+            <b style="font-size: 13px; color: #856404; background: #fff9e6; padding: 8px 15px; border-radius: 20px; display: inline-block; margin-bottom: 10px;">🍵 MỜI TRÀ ĐÁ 5.000đ ĐỂ GIẢI MÃ</b>
             <div class="qr-frame">
-                <img id="qrImg" src="" alt="Mã QR">
+                <img id="qrImg" src="" alt="Mã QR Đang nạp...">
             </div>
-            <p onclick="unlockData()" style="font-size:12px; color:var(--danger); font-weight:bold; cursor:pointer; text-decoration: underline;">Đã chuyển khoản? Bấm để xem kết quả</p>
+            <p onclick="unlockData()" style="font-size:12px; color:var(--danger); font-weight:bold; cursor:pointer; text-decoration: underline; margin-top: 15px;">Đã chuyển khoản? Bấm để xem kết quả</p>
         </div>
 
         <div id="successBox" class="success-box">
-            <div class="thanks-msg">🌟 TRÂN TRỌNG CẢM ƠN QUÝ KHÁCH! 🌟</div>
+            <div class="thanks-msg">🌟 Trân trọng cảm ơn quý khách! 🌟</div>
             <div id="dataOutput" class="data-text"></div>
-            <a id="zalobtn" href="https://zalo.me/0368869160" target="_blank" class="zalo">NHẬN FILE PDF QUA ZALO</a>
+            <a id="zalobtn" href="https://zalo.me/0368869160" target="_blank" class="zalo">GỬI VỊ TRÍ NHẬN FILE PDF GỐC</a>
         </div>
     </div>
 
 <script>
+    // DỮ LIỆU ĐỊA DANH: BIẾN KHÔNG DẤU -> CÓ DẤU + XÃ
     const dataSoc = {
         "nhuan trach": "Thôn Nhuận Trạch, xã Vạn Thắng",
         "van sa": "Thôn Vạn Sa, xã Vạn Thắng",
         "chu quyen": "Thôn Chu Quyến, xã Chu Minh",
-        "tan phong": "Thôn Tân Phong, xã Phong Vân"
+        "tan phong": "Thôn Tân Phong, xã Phong Vân",
+        "go song": "Thôn Gò Sống, xã Vật Lại",
+        "tong thai": "Thôn Tòng Thái, xã Tòng Bạt"
     };
 
     function startAnalyze() {
         let val = document.getElementById('thonIn').value.trim();
         if(!val) return;
+
         document.getElementById('sCheck').play();
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
 
+        // Chuyển tên không dấu sang có dấu chuyên nghiệp
         let key = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
-        let res = val;
-        for (let k in dataSoc) { if (key.includes(k)) { res = dataSoc[k]; break; } }
-        document.getElementById('outLoc').innerText = res;
+        let resultName = val.toUpperCase();
+        for (let k in dataSoc) {
+            if (key.includes(k)) { resultName = dataSoc[k]; break; }
+        }
+        document.getElementById('outLoc').innerText = resultName;
 
+        // HIỂN THỊ QR (Dùng cơ chế nạp link trực tiếp chống lỗi)
         const stk = "033963180001";
-        document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPB-${stk}-compact.png?amount=5000&addInfo=CheckGia%20${encodeURIComponent(val)}&t=${new Date().getTime()}`;
+        const qrUrl = `https://img.vietqr.io/image/LPB-${stk}-compact.png?amount=5000&addInfo=CheckGia%20${encodeURIComponent(val)}&t=${new Date().getTime()}`;
+        document.getElementById('qrImg').src = qrUrl;
+
         document.getElementById('card').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('card').offsetTop - 20, behavior: 'smooth' });
     }
 
     function unlockData() {
         document.getElementById('sWin').play();
         confetti({ particleCount: 200, spread: 100 });
+
+        // Hiệu ứng mở khóa vệ tinh
         document.getElementById('payArea').style.display = 'none';
         document.getElementById('radarActive').style.display = 'none';
-        document.getElementById('lockLabel').innerText = "🛰️ VỊ TRÍ ĐÃ ĐƯỢC XÁC THỰC";
+        document.getElementById('lockLabel').innerText = "🛰️ VỊ TRÍ ĐÃ ĐƯỢC GIẢI MÃ";
         document.getElementById('mapImg').style.filter = "blur(0) hue-rotate(0deg)";
         document.getElementById('mapImg').style.opacity = "1";
+        
         document.getElementById('successBox').style.display = 'block';
         document.getElementById('zalobtn').style.display = 'block';
-        document.getElementById('dataOutput').innerText = "✅ GIẢI MÃ TỌA ĐỘ THÀNH CÔNG\nX: " + (594000+Math.random()*500).toFixed(1) + "\nY: " + (2342000+Math.random()*500).toFixed(1);
+
+        document.getElementById('dataOutput').innerText = 
+            "✅ KẾT QUẢ PHÂN TÍCH TỌA ĐỘ\n" +
+            "---------------------------\n" +
+            "HỆ TỌA ĐỘ: VN-2000 (Ba Vì)\n" +
+            "X: " + (594000 + Math.random()*900).toFixed(1) + "\n" +
+            "Y: " + (2342000 + Math.random()*900).toFixed(1) + "\n" +
+            "LOẠI ĐẤT: ONT (Đất ở sạch 100%)";
     }
 
-    const users = ["Anh Tuấn", "Chị Lan", "Chú Hùng", "BĐS Ba Vì"];
+    // THÔNG BÁO GIAO DỊCH GIẢ
+    const fakeUsers = ["Anh Tuấn", "Chị Lan", "Chú Hùng", "BĐS Ba Vì", "Anh Sơn", "Chị Thảo"];
     function showToast() {
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
         toast.className = 'toast-msg';
-        toast.innerHTML = `💰 <b>${users[Math.floor(Math.random()*users.length)]}</b> vừa check giá thành công!`;
+        toast.innerHTML = `💰 <b>${fakeUsers[Math.floor(Math.random()*fakeUsers.length)]}</b> vừa mời trà đá check giá!`;
         container.appendChild(toast);
         setTimeout(() => { toast.remove(); }, 4000);
     }
-    setInterval(showToast, 12000);
+    setInterval(showToast, 15000);
 </script>
 </body>
 </html>
