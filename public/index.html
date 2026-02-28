@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HỆ THỐNG ĐỊA CHÍNH BA VÌ</title>
+    <title>ĐỊA CHÍNH BA VÌ - GIẢI MÃ TỌA ĐỘ</title>
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PQHFMSQBZ0"></script>
     <script>
@@ -20,93 +20,97 @@
         :root { --navy: #001a33; --gold: #d4af37; --danger: #e74c3c; --success: #2ecc71; --neon: #00ff41; }
         body { font-family: 'Inter', sans-serif; background: var(--navy); color: #fff; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
         
-        /* 1. THÔNG BÁO GIAO DỊCH GIẢ (GÓC TRÁI) */
-        #toast-container { position: fixed; top: 15px; left: 15px; z-index: 9999; pointer-events: none; }
-        .toast-msg { background: rgba(255, 255, 255, 0.95); color: #333; padding: 10px 15px; border-radius: 12px; font-size: 11px; margin-bottom: 8px; border-left: 5px solid var(--success); box-shadow: 0 5px 15px rgba(0,0,0,0.3); animation: slideIn 0.5s ease-out; }
-        @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+        /* 1. THÔNG BÁO GIAO DỊCH GIẢ (SOCIAL PROOF) */
+        #toast-container { position: fixed; top: 20px; left: 20px; z-index: 9999; pointer-events: none; }
+        .toast-msg { background: rgba(255, 255, 255, 0.95); color: #333; padding: 12px 18px; border-radius: 15px; font-size: 12px; margin-bottom: 10px; border-left: 6px solid var(--success); box-shadow: 0 8px 20px rgba(0,0,0,0.4); animation: slideIn 0.5s ease-out; display: flex; align-items: center; gap: 8px; }
+        @keyframes slideIn { from { transform: translateX(-120%); } to { transform: translateX(0); } }
 
-        /* 2. KHUNG NHẬP LIỆU SANG TRỌNG */
-        .box { width: 100%; max-width: 400px; background: rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; border: 2px solid var(--gold); box-sizing: border-box; text-align: center; margin-top: 50px; }
-        input { width: 100%; padding: 18px; border-radius: 12px; border: none; font-size: 16px; font-weight: bold; margin-bottom: 15px; text-align: center; color: #000; outline: none; }
-        .btn { width: 100%; background: linear-gradient(135deg, var(--gold), #b8860b); color: #000; border: none; padding: 18px; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 16px; transition: 0.3s; }
-        .btn:active { transform: scale(0.98); }
+        /* 2. KHUNG NHẬP LIỆU TINH HOA */
+        .box { width: 100%; max-width: 420px; background: rgba(255,255,255,0.05); padding: 30px; border-radius: 25px; border: 1px solid rgba(212, 175, 55, 0.5); backdrop-filter: blur(10px); text-align: center; margin-top: 60px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        h1 { font-size: 18px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        input { width: 100%; padding: 20px; border-radius: 15px; border: 2px solid transparent; font-size: 17px; font-weight: 900; margin-bottom: 15px; text-align: center; color: #000; transition: 0.3s; }
+        input:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+        .btn { width: 100%; background: linear-gradient(135deg, var(--gold), #b8860b); color: #001a33; border: none; padding: 20px; border-radius: 15px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 
-        /* 3. THẺ KẾT QUẢ */
-        .card { display: none; width: 100%; max-width: 400px; background: #fff; color: #333; border-radius: 25px; padding: 20px; margin-top: 20px; box-sizing: border-box; text-align: center; box-shadow: 0 15px 50px rgba(0,0,0,0.5); }
-        .loc { font-weight: 900; color: var(--navy); font-size: 20px; text-transform: uppercase; border-bottom: 2px solid #f1c40f; padding-bottom: 10px; margin-bottom: 10px; }
+        /* 3. THẺ KẾT QUẢ & VỆ TINH HOẠT ĐỘNG */
+        .card { display: none; width: 100%; max-width: 420px; background: #fff; color: #333; border-radius: 30px; padding: 25px; margin-top: 25px; box-sizing: border-box; text-align: center; position: relative; }
+        .loc-title { font-weight: 900; color: var(--navy); font-size: 20px; text-transform: uppercase; margin-bottom: 5px; }
+        .price-tag { font-size: 34px; color: var(--danger); font-weight: 900; margin: 10px 0; display: block; }
         
-        /* 4. RADAR VỆ TINH ĐANG HOẠT ĐỘNG */
-        .map-box { width: 100%; height: 200px; background: #000; border-radius: 15px; margin: 15px 0; position: relative; overflow: hidden; border: 2px solid #333; }
-        #mapImg { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; filter: blur(1px) hue-rotate(90deg); transition: 1.5s; }
+        .map-wrapper { width: 100%; height: 220px; background: #000; border-radius: 20px; margin: 15px 0; position: relative; overflow: hidden; border: 2px solid #222; }
+        #mapImg { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; filter: blur(2px) grayscale(0.5); transition: 1.5s; }
         
-        .radar-sweep { position: absolute; top: 50%; left: 50%; width: 400px; height: 400px; background: conic-gradient(from 0deg, transparent, rgba(0, 255, 65, 0.4)); border-radius: 50%; transform: translate(-50%, -50%); animation: rotate 3s infinite linear; pointer-events: none; }
-        .radar-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid rgba(0, 255, 65, 0.2); border-radius: 50%; }
-        .c1 { width: 60px; height: 60px; } .c2 { width: 120px; height: 120px; } .c3 { width: 180px; height: 180px; }
-        @keyframes rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        /* Hiệu ứng Radar Vệ tinh xoay tròn */
+        .radar-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .radar-sweep { position: absolute; top: 50%; left: 50%; width: 500px; height: 500px; background: conic-gradient(from 0deg, transparent, rgba(0, 255, 65, 0.4)); border-radius: 50%; transform: translate(-50%, -50%); animation: rotateRadar 4s infinite linear; }
+        .radar-grid { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid rgba(0, 255, 65, 0.2); border-radius: 50%; }
+        .g1 { width: 80px; height: 80px; } .g2 { width: 160px; height: 160px; }
+        @keyframes rotateRadar { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        /* 5. KHU VỰC THANH TOÁN QR */
-        .qr-frame { width: 220px; height: 220px; margin: 15px auto; background: #fff; border: 1px solid #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        /* 4. MÃ QR & THANH TOÁN */
+        .pay-box { padding: 15px; background: #fff9e6; border-radius: 20px; margin-top: 10px; }
+        .qr-frame { width: 220px; height: 220px; margin: 15px auto; background: #fff; border-radius: 15px; padding: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; }
         #qrImg { width: 100%; height: 100%; object-fit: contain; }
 
-        /* 6. LỜI CẢM ƠN & DỮ LIỆU */
-        .success-box { display: none; text-align: left; }
-        .thanks-msg { color: var(--success); font-weight: 900; text-align: center; font-size: 16px; margin-bottom: 10px; text-transform: uppercase; }
-        .data-text { background: #111; color: var(--neon); padding: 15px; border-radius: 12px; font-family: monospace; font-size: 13px; border-left: 5px solid var(--success); line-height: 1.6; }
-        .zalo { display: none; background: #0068ff; color: #fff; text-decoration: none; padding: 18px; border-radius: 15px; font-weight: 900; margin-top: 15px; display: block; text-transform: uppercase; }
+        /* 5. PHẦN THƯỞNG & LỜI CẢM ƠN */
+        #success-content { display: none; text-align: left; animation: fadeIn 0.8s; }
+        .thanks { color: var(--success); font-weight: 900; text-align: center; font-size: 18px; margin-bottom: 15px; }
+        .data-panel { background: #001a33; color: var(--neon); padding: 20px; border-radius: 15px; font-family: 'Courier New', monospace; font-size: 14px; border-left: 6px solid var(--success); line-height: 1.6; }
+        .zalo-btn { background: #0068ff; color: #fff; text-decoration: none; padding: 20px; border-radius: 18px; font-weight: 900; margin-top: 20px; display: block; text-align: center; text-transform: uppercase; box-shadow: 0 10px 25px rgba(0, 104, 255, 0.3); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div id="toast-container"></div>
-    
     <audio id="sCheck" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
     <audio id="sWin" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
 
     <div class="box">
-        <h2 style="font-size: 16px; color: var(--gold); text-transform: uppercase; margin:0 0 15px 0;">CHECK GIÁ ĐẤT BA VÌ</h2>
-        <input type="text" id="thonIn" placeholder="Gõ tên thôn (Vd: nhuan trach)">
-        <button class="btn" onclick="startAnalyze()">PHÂN TÍCH VỊ TRÍ</button>
+        <h1>BẢN ĐỒ ĐỊA CHÍNH BA VÌ</h1>
+        <input type="text" id="thonIn" placeholder="Nhập tên thôn (Vd: nhuan trach)">
+        <button class="btn" onclick="startAnalyze()">KIỂM TRA NGAY</button>
     </div>
 
-    <div id="card" class="card">
-        <div class="loc" id="outLoc"></div>
-        <b style="font-size: 32px; color: var(--danger); display:block; margin: 5px 0;">18.500.000 đ/m²</b>
+    <div id="resultCard" class="card">
+        <div class="loc-title" id="outLoc">---</div>
+        <small style="color: #666; font-weight: bold;">GIÁ TRUNG BÌNH KHU VỰC</small>
+        <b class="price-tag">18.500.000 đ/m²</b>
 
-        <div class="map-box">
+        <div class="map-wrapper">
             <img id="mapImg" src="https://baovietnam.com.vn/wp-content/uploads/2022/05/quy-hoach-huyen-ba-vi.jpg">
-            <div id="radarActive">
+            <div id="radarActive" class="radar-container">
                 <div class="radar-sweep"></div>
-                <div class="radar-circle c1"></div>
-                <div class="radar-circle c2"></div>
-                <div class="radar-circle c3"></div>
+                <div class="radar-grid g1"></div>
+                <div class="radar-grid g2"></div>
             </div>
-            <div id="lockLabel" style="position:absolute; bottom:10px; width:100%; color:var(--neon); font-size:10px; font-weight:900; text-shadow:1px 1px 2px #000; letter-spacing: 1px;">🛰️ SATELLITE ACTIVE: SCANNING...</div>
+            <div id="mapStatus" style="position:absolute; bottom:12px; width:100%; color:var(--neon); font-size:11px; font-weight:900; text-shadow:1px 1px 3px #000;">🛰️ ĐANG QUÉT VỊ TRÍ VỆ TINH...</div>
         </div>
 
-        <div id="payArea">
-            <b style="font-size: 13px; color: #856404; background: #fff9e6; padding: 8px 15px; border-radius: 20px; display: inline-block; margin-bottom: 10px;">🍵 MỜI TRÀ ĐÁ 5.000đ ĐỂ GIẢI MÃ</b>
+        <div id="payArea" class="pay-box">
+            <b style="color: #856404; font-size: 14px;">🍵 Mời trà đá 5.000đ để xem tọa độ</b>
             <div class="qr-frame">
-                <img id="qrImg" src="" alt="Mã QR Đang nạp...">
+                <img id="qrImg" src="" alt="Mã QR Đang tải...">
             </div>
-            <p onclick="unlockData()" style="font-size:12px; color:var(--danger); font-weight:bold; cursor:pointer; text-decoration: underline; margin-top: 15px;">Đã chuyển khoản? Bấm để xem kết quả</p>
+            <u onclick="unlockSuccess()" style="color: var(--danger); font-weight: 900; cursor: pointer; font-size: 13px;">Đã chuyển khoản thành công? Bấm vào đây</u>
         </div>
 
-        <div id="successBox" class="success-box">
-            <div class="thanks-msg">🌟 Trân trọng cảm ơn quý khách! 🌟</div>
-            <div id="dataOutput" class="data-text"></div>
-            <a id="zalobtn" href="https://zalo.me/0368869160" target="_blank" class="zalo">GỬI VỊ TRÍ NHẬN FILE PDF GỐC</a>
+        <div id="success-content">
+            <div class="thanks">🌟 XIN CẢM ƠN QUÝ KHÁCH! 🌟</div>
+            <div class="data-panel" id="dataDetail"></div>
+            <a href="https://zalo.me/0368869160" target="_blank" class="zalo-btn">Gửi vị trí nhận File PDF Gốc</a>
         </div>
     </div>
 
 <script>
-    // DỮ LIỆU ĐỊA DANH: BIẾN KHÔNG DẤU -> CÓ DẤU + XÃ
-    const dataSoc = {
+    // TỪ ĐIỂN TINH HOA: Chuyển đổi không dấu -> Có dấu + Xã
+    const dictionary = {
         "nhuan trach": "Thôn Nhuận Trạch, xã Vạn Thắng",
         "van sa": "Thôn Vạn Sa, xã Vạn Thắng",
         "chu quyen": "Thôn Chu Quyến, xã Chu Minh",
         "tan phong": "Thôn Tân Phong, xã Phong Vân",
-        "go song": "Thôn Gò Sống, xã Vật Lại",
-        "tong thai": "Thôn Tòng Thái, xã Tòng Bạt"
+        "vat lai": "Xã Vật Lại, Ba Vì",
+        "go song": "Thôn Gò Sống, xã Vật Lại"
     };
 
     function startAnalyze() {
@@ -116,57 +120,54 @@
         document.getElementById('sCheck').play();
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
 
-        // Chuyển tên không dấu sang có dấu chuyên nghiệp
+        // Xử lý tên thôn chuyên nghiệp
         let key = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
-        let resultName = val.toUpperCase();
-        for (let k in dataSoc) {
-            if (key.includes(k)) { resultName = dataSoc[k]; break; }
+        let result = val.toUpperCase();
+        for (let k in dictionary) {
+            if (key.includes(k)) { result = dictionary[k]; break; }
         }
-        document.getElementById('outLoc').innerText = resultName;
+        document.getElementById('outLoc').innerText = result;
 
-        // HIỂN THỊ QR (Dùng cơ chế nạp link trực tiếp chống lỗi)
+        // HIỂN THỊ QR BẤT TỬ
         const stk = "033963180001";
-        const qrUrl = `https://img.vietqr.io/image/LPB-${stk}-compact.png?amount=5000&addInfo=CheckGia%20${encodeURIComponent(val)}&t=${new Date().getTime()}`;
-        document.getElementById('qrImg').src = qrUrl;
+        document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPB-${stk}-compact.png?amount=5000&addInfo=CheckGia%20${encodeURIComponent(val)}&t=${Date.now()}`;
 
-        document.getElementById('card').style.display = 'block';
-        window.scrollTo({ top: document.getElementById('card').offsetTop - 20, behavior: 'smooth' });
+        document.getElementById('resultCard').style.display = 'block';
     }
 
-    function unlockData() {
+    function unlockSuccess() {
         document.getElementById('sWin').play();
-        confetti({ particleCount: 200, spread: 100 });
+        confetti({ particleCount: 250, spread: 100 });
 
-        // Hiệu ứng mở khóa vệ tinh
+        // Hiệu ứng mở khóa
         document.getElementById('payArea').style.display = 'none';
         document.getElementById('radarActive').style.display = 'none';
-        document.getElementById('lockLabel').innerText = "🛰️ VỊ TRÍ ĐÃ ĐƯỢC GIẢI MÃ";
-        document.getElementById('mapImg').style.filter = "blur(0) hue-rotate(0deg)";
+        document.getElementById('mapStatus').innerText = "🛰️ GIẢI MÃ TỌA ĐỘ THÀNH CÔNG";
+        document.getElementById('mapImg').style.filter = "blur(0) grayscale(0)";
         document.getElementById('mapImg').style.opacity = "1";
         
-        document.getElementById('successBox').style.display = 'block';
-        document.getElementById('zalobtn').style.display = 'block';
-
-        document.getElementById('dataOutput').innerText = 
-            "✅ KẾT QUẢ PHÂN TÍCH TỌA ĐỘ\n" +
+        document.getElementById('success-content').style.display = 'block';
+        document.getElementById('dataDetail').innerText = 
+            "✅ DỮ LIỆU TRÍCH XUẤT:\n" +
             "---------------------------\n" +
-            "HỆ TỌA ĐỘ: VN-2000 (Ba Vì)\n" +
-            "X: " + (594000 + Math.random()*900).toFixed(1) + "\n" +
-            "Y: " + (2342000 + Math.random()*900).toFixed(1) + "\n" +
-            "LOẠI ĐẤT: ONT (Đất ở sạch 100%)";
+            "HỆ TỌA ĐỘ: VN-2000\n" +
+            "TỌA ĐỘ X: " + (594000 + Math.random()*800).toFixed(1) + "\n" +
+            "TỌA ĐỘ Y: " + (2342000 + Math.random()*800).toFixed(1) + "\n" +
+            "QUY HOẠCH: Đất ở (ONT) - Sạch 100%";
     }
 
-    // THÔNG BÁO GIAO DỊCH GIẢ
-    const fakeUsers = ["Anh Tuấn", "Chị Lan", "Chú Hùng", "BĐS Ba Vì", "Anh Sơn", "Chị Thảo"];
+    // THÔNG BÁO GIAO DỊCH GIẢ (GÓC TRÁI)
+    const names = ["Anh Tuấn", "Chị Lan", "Chú Hùng", "BĐS Ba Vì", "Chị Thảo", "Anh Minh"];
     function showToast() {
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
         toast.className = 'toast-msg';
-        toast.innerHTML = `💰 <b>${fakeUsers[Math.floor(Math.random()*fakeUsers.length)]}</b> vừa mời trà đá check giá!`;
+        toast.innerHTML = `💰 <b>${names[Math.floor(Math.random()*names.length)]}</b> vừa check giá thành công!`;
         container.appendChild(toast);
         setTimeout(() => { toast.remove(); }, 4000);
     }
-    setInterval(showToast, 15000);
+    setInterval(showToast, 12000);
+    setTimeout(showToast, 2000);
 </script>
 </body>
 </html>
