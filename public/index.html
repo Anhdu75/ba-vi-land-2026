@@ -117,20 +117,20 @@ document.getElementById('sCheck').play();
 confetti({particleCount:100,spread:70,origin:{y:.6}});
 
 let key=val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d");
-
 let result=dictionary[key]||val;
 document.getElementById('outLoc').innerText=result;
 
-const stk = "033963180001";
-const bank = "LPBANK";   // sửa lại đúng mã
+/* QR LPBANK CHUẨN */
+const stk="033963180001";
+const bank="LPBANK";
 
-const qrUrl = `https://img.vietqr.io/image/${bank}-${stk}-compact2.png?amount=5000&addInfo=${encodeURIComponent("CheckGia "+val)}&accountName=NGUYEN%20VAN%20A&t=${Date.now()}`;
+const qrUrl=`https://img.vietqr.io/image/${bank}-${stk}-compact2.png?amount=5000&addInfo=${encodeURIComponent("CheckGia "+val)}&t=${Date.now()}`;
 
-const qrImg = document.getElementById('qrImg');
-qrImg.src = qrUrl;
+const qrImg=document.getElementById('qrImg');
+qrImg.src=qrUrl;
 
-qrImg.onerror = function(){
-    this.src = "https://quickchart.io/qr?size=220&text=LPBANK-033963180001";
+qrImg.onerror=function(){
+this.src="https://quickchart.io/qr?size=220&text=Chuyen%205000%20vao%20033963180001";
 };
 
 document.getElementById('resultCard').style.display='block';
