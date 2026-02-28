@@ -7,202 +7,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        :root {
-            --gold: #FFD700;
-            --dark-blue: #000428;
-            --glass: rgba(255, 255, 255, 0.1);
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(to bottom, #004e92, #000428);
-            color: white;
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            overflow-x: hidden;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 450px;
-            padding: 40px 20px;
-            text-align: center;
-        }
-
-        /* Hiệu ứng Logo Radar */
-        .radar-logo {
-            width: 80px;
-            height: 80px;
-            border: 2px solid var(--gold);
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 20px var(--gold);
-        }
-
-        .radar-logo::after {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 1px solid var(--gold);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-
-        .slogan-top {
-            font-size: 10px;
-            letter-spacing: 4px;
-            color: var(--gold);
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        h1 {
-            font-size: 26px;
-            font-weight: 900;
-            margin: 0 0 30px 0;
-            background: linear-gradient(to right, #fff, var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Thanh tìm kiếm High-tech */
-        .search-wrapper {
-            position: relative;
-            margin-bottom: 40px;
-        }
-
-        input {
-            width: 100%;
-            padding: 18px 25px;
-            box-sizing: border-box;
-            border-radius: 50px;
-            border: 1px solid rgba(255,255,255,0.3);
-            background: var(--glass);
-            color: white;
-            font-size: 16px;
-            backdrop-filter: blur(10px);
-            outline: none;
-            transition: 0.3s;
-        }
-
-        input:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-        }
-
-        .search-btn {
-            position: absolute;
-            right: 8px;
-            top: 8px;
-            background: var(--gold);
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-weight: 900;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 12px;
-        }
-
-        /* Thẻ kết quả 3D */
-        .result-card {
-            display: none;
-            background: white;
-            color: #333;
-            border-radius: 30px;
-            padding: 30px;
-            text-align: left;
-            position: relative;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            animation: flipIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes flipIn {
-            from { transform: perspective(1000px) rotateX(-30deg); opacity: 0; }
-            to { transform: perspective(1000px) rotateX(0); opacity: 1; }
-        }
-
-        .price-box {
-            background: #fff4e5;
-            padding: 20px;
-            border-radius: 20px;
-            margin: 15px 0;
-            border-left: 5px solid #ff9800;
-        }
-
-        .price-val {
-            font-size: 30px;
-            font-weight: 900;
-            color: #e65100;
-            display: block;
-        }
-
-        /* Làm mờ kiểu quân đội */
-        .secure-blur {
-            filter: blur(7px);
-            background: #eee;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 12px;
-            color: #999;
-        }
-
-        .lock-badge {
-            display: inline-block;
-            background: #000;
-            color: var(--gold);
-            padding: 4px 12px;
-            border-radius: 5px;
-            font-size: 10px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .qr-pay {
-            text-align: center;
-            margin-top: 25px;
-            padding: 20px;
-            background: #fafafa;
-            border-radius: 20px;
-            border: 2px solid #eee;
-        }
-
-        .qr-img {
-            width: 200px;
-            border-radius: 15px;
-            border: 5px solid white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .scanning-line {
-            height: 2px;
-            background: var(--gold);
-            position: absolute;
-            width: 100%;
-            top: 0;
-            box-shadow: 0 0 10px var(--gold);
-            animation: scan 2s linear infinite;
-            display: none;
-        }
-
-        @keyframes scan {
-            0% { top: 0; }
-            100% { top: 100%; }
-        }
+        :root { --gold: #FFD700; --dark-blue: #000428; --glass: rgba(255, 255, 255, 0.1); }
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(to bottom, #004e92, #000428); color: white; margin: 0; min-height: 100vh; display: flex; justify-content: center; overflow-x: hidden; }
+        .app-container { width: 100%; max-width: 450px; padding: 40px 20px; text-align: center; }
+        .radar-logo { width: 80px; height: 80px; border: 2px solid var(--gold); border-radius: 50%; margin: 0 auto 20px; position: relative; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px var(--gold); }
+        .radar-logo::after { content: ""; position: absolute; width: 100%; height: 100%; border: 1px solid var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+        .slogan-top { font-size: 10px; letter-spacing: 4px; color: var(--gold); font-weight: 700; margin-bottom: 5px; }
+        h1 { font-size: 26px; font-weight: 900; margin: 0 0 30px 0; background: linear-gradient(to right, #fff, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .search-wrapper { position: relative; margin-bottom: 40px; }
+        input { width: 100%; padding: 18px 25px; box-sizing: border-box; border-radius: 50px; border: 1px solid rgba(255,255,255,0.3); background: var(--glass); color: white; font-size: 16px; backdrop-filter: blur(10px); outline: none; }
+        .search-btn { position: absolute; right: 8px; top: 8px; background: var(--gold); color: #000; border: none; padding: 10px 20px; border-radius: 40px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 12px; }
+        .result-card { display: none; background: white; color: #333; border-radius: 30px; padding: 30px; text-align: left; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.5); animation: flipIn 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes flipIn { from { transform: perspective(1000px) rotateX(-30deg); opacity: 0; } to { transform: perspective(1000px) rotateX(0); opacity: 1; } }
+        .price-box { background: #fff4e5; padding: 20px; border-radius: 20px; margin: 15px 0; border-left: 5px solid #ff9800; }
+        .price-val { font-size: 30px; font-weight: 900; color: #e65100; display: block; }
+        .secure-blur { filter: blur(7px); background: #eee; padding: 15px; border-radius: 10px; font-family: monospace; font-size: 12px; color: #999; line-height: 1.6; }
+        .lock-badge { display: inline-block; background: #000; color: var(--gold); padding: 4px 12px; border-radius: 5px; font-size: 10px; font-weight: bold; margin-bottom: 10px; }
+        .qr-pay { text-align: center; margin-top: 25px; padding: 20px; background: #fafafa; border-radius: 20px; border: 2px solid #eee; }
+        .qr-img { width: 200px; height: 200px; border-radius: 15px; border: 5px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); display: block; margin: 0 auto; }
+        .scanning-line { height: 2px; background: var(--gold); position: absolute; width: 100%; top: 0; box-shadow: 0 0 10px var(--gold); animation: scan 2s linear infinite; display: none; z-index: 5; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
     </style>
 </head>
 <body>
@@ -217,9 +42,7 @@
         <button class="search-btn" onclick="handleSearch()">QUÉT</button>
     </div>
 
-    <div id="loading" style="display:none; color: var(--gold);">
-        📡 Đang kết nối vệ tinh...
-    </div>
+    <div id="loading" style="display:none; color: var(--gold);">📡 Đang kết nối vệ tinh...</div>
 
     <div id="result-area" class="result-card">
         <div class="scanning-line" id="scan-line"></div>
@@ -229,12 +52,7 @@
 
 <script>
     function fire() {
-        confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#FFD700', '#ffffff', '#FFA500']
-        });
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#FFD700', '#ffffff', '#FFA500'] });
     }
 
     async function handleSearch() {
@@ -255,44 +73,45 @@
                 loading.style.display = 'none';
                 if(data.length > 0) {
                     const item = data[0];
-                    fire(); // Bắn pháo hoa vàng
+                    fire();
                     
+                    // Xử lý link QR riêng biệt để tránh lỗi hiển thị
+                    const qrCodeUrl = "https://img.vietqr.io/image/LPB-033963180001-compact.jpg?amount=5000&addInfo=MoKhoa_" + encodeURIComponent(item.duong);
+
                     document.getElementById('content-main').innerHTML = `
                         <div style="font-size: 12px; font-weight: bold; color: #2e7d32;">✅ DỮ LIỆU ĐÃ XÁC THỰC</div>
-                        <h2 style="margin: 5px 0;">📍 ${item.duong}</h2>
+                        <h2 style="margin: 5px 0;">📍 ` + item.duong + `</h2>
                         
                         <div class="price-box">
                             <small>GIÁ NIÊM YẾT DỰ BÁO 2026</small>
-                            <span class="price-val">${item.gia_2026_du_kien.toLocaleString()} đ/m²</span>
+                            <span class="price-val">` + item.gia_2026_du_kien.toLocaleString() + ` đ/m²</span>
                         </div>
 
                         <div class="lock-badge">THÔNG TIN QUY HOẠCH & TỌA ĐỘ 🛰️</div>
-                        <div style="position: relative;">
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; font-size: 12px; font-weight: 900; color: #000; background: var(--gold); padding: 5px 15px; border-radius: 50px; cursor: pointer;">MỞ KHÓA 5K</div>
+                        <div style="position: relative; margin-bottom: 10px;">
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; font-size: 12px; font-weight: 900; color: #000; background: var(--gold); padding: 8px 15px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">MỞ KHÓA 5K</div>
                             <div class="secure-blur">
-                                Tọa độ X: 593.122 - Y: 2.341.552 <br>
-                                Thửa đất: 88 - Tờ bản đồ: 04 <br>
-                                Tình trạng: Quy hoạch đất ở đô thị. <br>
-                                Ghi chú: Cách dự án Vinhomes 1.2km.
+                                Tọa độ VN-2000: X: 593.122 - Y: 2.341.552 <br>
+                                Thửa đất số: 88 - Tờ bản đồ: 04 <br>
+                                Trạng thái: Quy hoạch đất ở nông thôn. <br>
+                                Ghi chú: Có đường quy hoạch 12m đi qua.
                             </div>
                         </div>
 
                         <div class="qr-pay">
-                            <p style="font-size: 13px; font-weight: 700; margin-top: 0;">MỜI TÁC GIẢ TRÀ ĐÁ ĐỂ XEM CHI TIẾT</p>
-                           <img src="https://img.vietqr.io/image/LPB-033963180001-compact.jpg?amount=5000&addInfo=MoKhoa_${encodeURIComponent(item.duong)}" 
-     class="qr-img" 
-     onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=Chuyen%205k%20mo%20khoa%20BDS%20Ba%20Vi'">
-                            <p style="font-size: 10px; color: #999; margin-top: 10px;">Giao dịch an toàn qua VietQR</p>
+                            <p style="font-size: 13px; font-weight: 700; margin-top: 0; color: #1565c0;">☕ MỜI TÁC GIẢ TRÀ ĐÁ ĐỂ XEM CHI TIẾT</p>
+                            <img src="` + qrCodeUrl + `" class="qr-img" alt="Mã QR Thanh Toán">
+                            <p style="font-size: 10px; color: #999; margin-top: 10px;">Hệ thống sẽ mở khóa sau khi nhận chuyển khoản</p>
                         </div>
 
-                        <button onclick="location.reload()" style="width:100%; border:none; background:none; color:#999; margin-top:15px; cursor:pointer; font-size:12px;">✖ Đóng báo cáo</button>
+                        <button onclick="location.reload()" style="width:100%; border:none; background:#f5f5f5; color:#666; margin-top:15px; padding:10px; border-radius:10px; cursor:pointer; font-weight:bold;">✖ Đóng báo cáo</button>
                     `;
                     resArea.style.display = 'block';
                     document.getElementById('scan-line').style.display = 'block';
                 } else {
                     alert("Không tìm thấy khu vực này!");
                 }
-            }, 1000);
+            }, 800);
         } catch (e) {
             alert("Lỗi kết nối vệ tinh!");
         }
