@@ -279,7 +279,9 @@
 
                         <div class="qr-pay">
                             <p style="font-size: 13px; font-weight: 700; margin-top: 0;">MỜI TÁC GIẢ TRÀ ĐÁ ĐỂ XEM CHI TIẾT</p>
-                            <img src="https://img.vietqr.io/image/LPB-033963180001-compact.jpg?amount=5000&addInfo=MoKhoa_${item.duong}" class="qr-img">
+                           <img src="https://img.vietqr.io/image/LPB-033963180001-compact.jpg?amount=5000&addInfo=MoKhoa_${encodeURIComponent(item.duong)}" 
+     class="qr-img" 
+     onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=Chuyen%205k%20mo%20khoa%20BDS%20Ba%20Vi'">
                             <p style="font-size: 10px; color: #999; margin-top: 10px;">Giao dịch an toàn qua VietQR</p>
                         </div>
 
