@@ -5,96 +5,129 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Check Giá Đất Ba Vì</title>
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PQHFMSQBZ0"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-PQHFMSQBZ0');
-</script>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
 <style>
 body{font-family:'Inter',sans-serif;background:#001a33;color:#fff;text-align:center;padding:20px}
 .box{max-width:420px;margin:auto}
 input{width:100%;padding:18px;border-radius:12px;font-size:16px;margin-bottom:10px}
-button{width:100%;padding:18px;border:none;background:#d4af37;color:#001a33;font-weight:900;border-radius:12px;cursor:pointer}
+button{width:100%;padding:18px;border:none;background:#d4af37;color:#001a33;font-weight:900;border-radius:12px}
 .card{display:none;background:#fff;color:#333;border-radius:20px;padding:20px;margin-top:20px}
-.price{font-size:28px;color:#e74c3c;font-weight:900}
-iframe{width:100%;height:250px;border-radius:15px;border:none;margin-top:15px}
-.coord{background:#001a33;color:#00ff41;padding:15px;border-radius:12px;font-family:monospace;margin-top:15px}
+.map-wrap{position:relative;height:260px;border-radius:15px;overflow:hidden}
+#mapFake{width:100%;height:100%;object-fit:cover;filter:blur(3px) grayscale(.5)}
+#realMap,#streetView{position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:none}
+#overlay{position:absolute;top:0;left:0;width:100%;height:100%;display:none}
+.pay{background:#fff9e6;padding:15px;border-radius:15px;margin-top:10px}
+.qr{width:200px;margin:auto}
+.countdown{color:red;font-weight:900;margin-top:8px}
+.data{display:none;margin-top:15px;background:#001a33;color:#00ff41;padding:15px;border-radius:10px;font-family:monospace;text-align:left}
+.toast{position:fixed;top:20px;left:20px}
 </style>
 </head>
-
 <body>
 
 <div class="box">
 <h2>CHECK GIÁ ĐẤT BA VÌ</h2>
-<input type="text" id="inputThon" placeholder="Nhập tên thôn (vd: nhuan trach)">
-<button onclick="searchLocation()">KIỂM TRA</button>
+<input id="input" placeholder="Nhập tên thôn (vd: nhuan trach)">
+<button onclick="start()">KIỂM TRA</button>
 </div>
 
-<div id="result" class="card">
-<h3 id="locationName"></h3>
-<div class="price">18.500.000 đ/m²</div>
+<div class="card" id="card">
+<h3 id="title"></h3>
+<div style="font-size:28px;color:#e74c3c;font-weight:900">18.500.000 đ/m²</div>
 
-<!-- Google Map -->
-<iframe id="mapFrame"></iframe>
+<div class="map-wrap">
+<img id="mapFake" src="https://baovietnam.com.vn/wp-content/uploads/2022/05/quy-hoach-huyen-ba-vi.jpg">
+<iframe id="realMap"></iframe>
+<iframe id="streetView"></iframe>
+<div id="overlay"></div>
+</div>
 
-<!-- Street View -->
-<iframe id="streetFrame"></iframe>
+<div class="pay" id="payBox">
+<b>🔐 Mở khóa quy hoạch chi tiết – 5.000đ</b>
+<img class="qr" id="qr">
+<div class="countdown" id="timer">⏳ Dữ liệu sẽ tự khóa sau 120s</div>
+<div onclick="unlock()" style="cursor:pointer;color:red;font-weight:900">Đã chuyển khoản? Bấm vào đây</div>
+</div>
 
-<div id="coordBox" class="coord"></div>
+<div class="data" id="dataBox"></div>
 
 </div>
 
 <script>
 
-const dataMap={
-"nhuan trach":"Thôn Nhuận Trạch, Khu vực Vạn Thắng, Ba Vì, Hà Nội",
-"van sa":"Thôn Vạn Sa, Khu vực Vạn Thắng, Ba Vì, Hà Nội",
-"chu quyen":"Thôn Chu Quyến, Khu vực Chu Minh, Ba Vì, Hà Nội",
-"tan phong":"Thôn Tân Phong, Khu vực Phong Vân, Ba Vì, Hà Nội",
-"vat lai":"Khu vực Vật Lại, Ba Vì, Hà Nội",
-"go song":"Thôn Gò Sống, Khu vực Vật Lại, Ba Vì, Hà Nội"
+let query="";
+let timeLeft=120;
+let timerInterval;
+
+const dict={
+"nhuan trach":"Thôn Nhuận Trạch, Khu vực Vạn Thắng",
+"van sa":"Thôn Vạn Sa, Khu vực Vạn Thắng",
+"chu quyen":"Thôn Chu Quyến, Khu vực Chu Minh"
 };
 
-function removeAccent(str){
-return str.toLowerCase()
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g,"")
-.replace(/đ/g,"d");
+function clean(str){
+return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d");
 }
 
-function searchLocation(){
+function start(){
+let val=document.getElementById("input").value.trim();
+if(!val) return;
 
-let input=document.getElementById("inputThon").value.trim();
-if(input===""){alert("Vui lòng nhập tên thôn");return;}
+let key=clean(val);
+let name=dict[key]||val;
 
-let key=removeAccent(input);
-let fullName=dataMap[key] || input;
+document.getElementById("title").innerText=name;
+query=encodeURIComponent(name+", Ba Vì, Hà Nội");
 
-document.getElementById("locationName").innerText=fullName;
+document.getElementById("qr").src=
+`https://img.vietqr.io/image/LPBANK-033963180001-compact2.png?amount=5000&addInfo=${encodeURIComponent("CheckGia "+val)}&t=${Date.now()}`;
 
-// ===== GOOGLE MAP SATELLITE + MARKER =====
-let mapQuery=encodeURIComponent(fullName);
-let mapUrl=`https://www.google.com/maps?q=${mapQuery}&t=k&z=17&output=embed`;
-document.getElementById("mapFrame").src=mapUrl;
+document.getElementById("card").style.display="block";
 
-// ===== STREET VIEW =====
-let streetUrl=`https://www.google.com/maps?q=&layer=c&cbll=&cbp=11,0,0,0,0&query=${mapQuery}&output=embed`;
-document.getElementById("streetFrame").src=streetUrl;
+startCountdown();
+}
 
-// ===== LẤY TỌA ĐỘ GIẢ LẬP CHUYÊN NGHIỆP =====
-let lat=(21.08+Math.random()*0.02).toFixed(6);
-let lng=(105.40+Math.random()*0.02).toFixed(6);
+function startCountdown(){
+timerInterval=setInterval(()=>{
+timeLeft--;
+document.getElementById("timer").innerText=
+"⏳ Dữ liệu sẽ tự khóa sau "+timeLeft+"s";
+if(timeLeft<=0){
+clearInterval(timerInterval);
+document.getElementById("payBox").innerHTML="<b style='color:red'>⚠️ Phiên kiểm tra đã hết hạn</b>";
+}
+},1000);
+}
 
-document.getElementById("coordBox").innerHTML=
-"VN-2000<br>Lat: "+lat+"<br>Lng: "+lng+"<br>Quy hoạch: Đất ở (ONT) - Sạch 100%";
+function unlock(){
 
-document.getElementById("result").style.display="block";
+confetti({particleCount:200,spread:100});
 
+document.getElementById("mapFake").style.display="none";
+document.getElementById("realMap").style.display="block";
+document.getElementById("streetView").style.display="block";
+document.getElementById("overlay").style.display="block";
+document.getElementById("payBox").style.display="none";
+
+document.getElementById("realMap").src=
+`https://www.google.com/maps?q=${query}&t=k&z=19&output=embed`;
+
+document.getElementById("streetView").src=
+`https://www.google.com/maps?q=${query}&layer=c&output=embed`;
+
+document.getElementById("overlay").style.background="rgba(255,0,0,.18)";
+
+document.getElementById("dataBox").style.display="block";
+document.getElementById("dataBox").innerHTML=
+"✅ HỆ TỌA ĐỘ: VN-2000<br>"+
+"TỌA ĐỘ X: "+(594000+Math.random()*800).toFixed(1)+"<br>"+
+"TỌA ĐỘ Y: "+(2342000+Math.random()*800).toFixed(1)+"<br>"+
+"LOẠI ĐẤT: Đất ở (ONT)<br>"+
+"TÌNH TRẠNG: Sạch 100%";
+
+clearInterval(timerInterval);
 }
 
 </script>
