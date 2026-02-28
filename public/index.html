@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HỆ THỐNG ĐỊA CHÍNH BA VÌ</title>
+    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PQHFMSQBZ0"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -11,37 +12,45 @@
       gtag('js', new Date());
       gtag('config', 'G-PQHFMSQBZ0');
     </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
-        :root { --navy: #001a33; --gold: #d4af37; --danger: #e74c3c; --success: #2ecc71; }
+        :root { --navy: #001a33; --gold: #d4af37; --danger: #e74c3c; --success: #2ecc71; --neon: #00ff41; }
         body { font-family: 'Inter', sans-serif; background: var(--navy); color: #fff; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
         
-        /* Toast thông báo giả */
+        /* TOAST GIAO DỊCH GÓC TRÁI */
         #toast-container { position: fixed; top: 15px; left: 15px; z-index: 9999; }
         .toast-msg { background: rgba(255, 255, 255, 0.95); color: #333; padding: 10px 15px; border-radius: 12px; font-size: 11px; margin-bottom: 8px; border-left: 5px solid var(--success); box-shadow: 0 5px 15px rgba(0,0,0,0.3); animation: slideIn 0.5s ease-out; }
         @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
         .box { width: 100%; max-width: 400px; background: rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; border: 2px solid var(--gold); box-sizing: border-box; text-align: center; margin-top: 50px; }
-        input { width: 100%; padding: 18px; border-radius: 12px; border: none; font-size: 16px; font-weight: bold; margin-bottom: 15px; text-align: center; }
+        input { width: 100%; padding: 18px; border-radius: 12px; border: none; font-size: 16px; font-weight: bold; margin-bottom: 15px; text-align: center; color: #000; outline: none; }
         .btn { width: 100%; background: linear-gradient(135deg, var(--gold), #b8860b); color: #000; border: none; padding: 18px; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
 
         .card { display: none; width: 100%; max-width: 400px; background: #fff; color: #333; border-radius: 25px; padding: 20px; margin-top: 20px; box-sizing: border-box; text-align: center; box-shadow: 0 15px 50px rgba(0,0,0,0.5); }
-        .loc { font-weight: 900; color: var(--navy); font-size: 18px; text-transform: uppercase; border-bottom: 2px solid #f1c40f; padding-bottom: 10px; }
+        .loc { font-weight: 900; color: var(--navy); font-size: 18px; text-transform: uppercase; border-bottom: 2px solid #f1c40f; padding-bottom: 10px; margin-bottom: 10px; }
         
-        /* Map Box - Chuyển đổi trạng thái */
-        .map-box { width: 100%; height: 200px; background: #000; border-radius: 15px; margin: 15px 0; position: relative; overflow: hidden; border: 1px solid #ddd; }
-        #mapImg { width: 100%; height: 100%; object-fit: cover; transition: all 1s ease; filter: blur(5px) grayscale(1); opacity: 0.6; }
-        .radar { position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.3), transparent); animation: scan 2s infinite linear; }
-        @keyframes scan { 0% { left: -100%; } 100% { left: 100%; } }
+        /* --- HIỆU ỨNG VỆ TINH ĐANG HOẠT ĐỘNG --- */
+        .map-box { width: 100%; height: 200px; background: #000; border-radius: 15px; margin: 15px 0; position: relative; overflow: hidden; border: 2px solid #333; }
+        #mapImg { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; filter: blur(2px) hue-rotate(90deg); transition: 1s; }
+        
+        /* Radar xoay */
+        .radar-sweep { position: absolute; top: 50%; left: 50%; width: 400px; height: 400px; background: conic-gradient(from 0deg, transparent, rgba(0, 255, 65, 0.3)); border-radius: 50%; transform: translate(-50%, -50%); animation: rotate 3s infinite linear; pointer-events: none; }
+        /* Vòng tròn đồng tâm */
+        .radar-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid rgba(0, 255, 65, 0.2); border-radius: 50%; }
+        .c1 { width: 50px; height: 50px; } .c2 { width: 100px; height: 100px; } .c3 { width: 150px; height: 150px; }
+        
+        @keyframes rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        /* -------------------------------------- */
 
-        .qr-frame { width: 210px; height: 210px; margin: 15px auto; background: #fff; border: 1px solid #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-        #qrImg { width: 100%; height: 100%; object-fit: contain; }
+        .qr-frame { width: 220px; height: 220px; margin: 15px auto; background: #fff; border: 1px solid #eee; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        #qrImg { width: 100%; height: 100%; display: block; object-fit: contain; }
 
         .success-box { display: none; text-align: left; }
         .thanks-msg { color: var(--success); font-weight: 900; text-align: center; font-size: 16px; margin-bottom: 10px; }
-        .data-text { background: #111; color: #00ff00; padding: 15px; border-radius: 12px; font-family: monospace; font-size: 13px; line-height: 1.6; border-left: 5px solid var(--success); }
+        .data-text { background: #111; color: var(--neon); padding: 15px; border-radius: 12px; font-family: monospace; font-size: 13px; border-left: 5px solid var(--success); }
         .zalo { display: none; background: #0068ff; color: #fff; text-decoration: none; padding: 18px; border-radius: 15px; font-weight: 900; margin-top: 15px; display: block; text-transform: uppercase; }
     </style>
 </head>
@@ -54,21 +63,26 @@
     <div class="box">
         <h2 style="font-size: 16px; color: var(--gold); text-transform: uppercase; margin:0 0 15px 0;">CHECK GIÁ ĐẤT BA VÌ</h2>
         <input type="text" id="thonIn" placeholder="Gõ tên thôn (Vd: nhuan trach)">
-        <button class="btn" onclick="startAnalyze()">PHÂN TÍCH NGAY</button>
+        <button class="btn" onclick="startAnalyze()">PHÂN TÍCH VỊ TRÍ</button>
     </div>
 
     <div id="card" class="card">
         <div class="loc" id="outLoc"></div>
-        <b style="font-size: 32px; color: var(--danger); display:block; margin: 5px 0;">18.500.000 đ/m²</b>
+        <b style="font-size: 30px; color: var(--danger); display:block;">18.500.000 đ/m²</b>
 
         <div class="map-box">
             <img id="mapImg" src="https://baovietnam.com.vn/wp-content/uploads/2022/05/quy-hoach-huyen-ba-vi.jpg">
-            <div id="radarLine" class="radar"></div>
-            <div id="lockLabel" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#fff; font-weight:900; font-size:12px; text-shadow:2px 2px 4px #000; width:100%;">🔒 ĐANG QUÉT VỆ TINH...</div>
+            <div id="radarActive">
+                <div class="radar-sweep"></div>
+                <div class="radar-circle c1"></div>
+                <div class="radar-circle c2"></div>
+                <div class="radar-circle c3"></div>
+            </div>
+            <div id="lockLabel" style="position:absolute; bottom:10px; width:100%; color:var(--neon); font-size:10px; font-weight:900; text-shadow:1px 1px 2px #000;">🛰️ SATELLITE ACTIVE: SCANNING...</div>
         </div>
 
-        <div id="pay">
-            <b style="font-size: 13px; color: #856404; background: #fff9e6; padding: 8px 15px; border-radius: 20px;">🍵 MỜI TRÀ ĐÁ 5.000đ ĐỂ XEM VỊ TRÍ</b>
+        <div id="payArea">
+            <b style="font-size: 13px; color: #856404; background: #fff9e6; padding: 8px 15px; border-radius: 20px;">🍵 MỜI TRÀ ĐÁ 5.000đ ĐỂ GIẢI MÃ</b>
             <div class="qr-frame">
                 <img id="qrImg" src="" alt="Mã QR">
             </div>
@@ -109,35 +123,22 @@
     function unlockData() {
         document.getElementById('sWin').play();
         confetti({ particleCount: 200, spread: 100 });
-
-        // BIẾN ĐỔI BẢN ĐỒ: Từ mờ sang rõ, từ Quy hoạch sang Vệ tinh
-        const mImg = document.getElementById('mapImg');
-        mImg.src = "https://www.google.com/maps/vt/pb=!1m4!1m3!1i14!2i13012!3i7554!2m3!1e0!2sm!3i420120488!3m8!2svi!3sVN!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!5f2"; 
-        mImg.style.filter = "blur(0) grayscale(0)";
-        mImg.style.opacity = "1";
-        
-        document.getElementById('radarLine').style.display = 'none';
-        document.getElementById('lockLabel').style.display = 'none';
-        document.getElementById('pay').style.display = 'none';
+        document.getElementById('payArea').style.display = 'none';
+        document.getElementById('radarActive').style.display = 'none';
+        document.getElementById('lockLabel').innerText = "🛰️ VỊ TRÍ ĐÃ ĐƯỢC XÁC THỰC";
+        document.getElementById('mapImg').style.filter = "blur(0) hue-rotate(0deg)";
+        document.getElementById('mapImg').style.opacity = "1";
         document.getElementById('successBox').style.display = 'block';
         document.getElementById('zalobtn').style.display = 'block';
-
-        document.getElementById('dataOutput').innerText = 
-            "✅ KẾT QUẢ GIẢI MÃ TỌA ĐỘ\n" +
-            "---------------------------\n" +
-            "HỆ TỌA ĐỘ: VN-2000 (Ba Vì)\n" +
-            "X: " + (594000+Math.random()*500).toFixed(1) + "\n" +
-            "Y: " + (2342000+Math.random()*500).toFixed(1) + "\n" +
-            "LOẠI ĐẤT: ONT (Sạch 100%)";
+        document.getElementById('dataOutput').innerText = "✅ GIẢI MÃ TỌA ĐỘ THÀNH CÔNG\nX: " + (594000+Math.random()*500).toFixed(1) + "\nY: " + (2342000+Math.random()*500).toFixed(1);
     }
 
-    // SOCIAL PROOF
-    const users = ["Anh Tuấn", "Chị Lan", "Chú Hùng", "BĐS Ba Vì", "Anh Sơn"];
+    const users = ["Anh Tuấn", "Chị Lan", "Chú Hùng", "BĐS Ba Vì"];
     function showToast() {
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
         toast.className = 'toast-msg';
-        toast.innerHTML = `💰 <b>${users[Math.floor(Math.random()*users.length)]}</b> vừa mời trà đá thành công!`;
+        toast.innerHTML = `💰 <b>${users[Math.floor(Math.random()*users.length)]}</b> vừa check giá thành công!`;
         container.appendChild(toast);
         setTimeout(() => { toast.remove(); }, 4000);
     }
