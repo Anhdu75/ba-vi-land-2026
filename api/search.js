@@ -79,15 +79,24 @@ export default function handler(req, res) {
         });
     });
 
-    // 4. XỬ LÝ TÌM KIẾM
-    const { q } = req.query;
-    if (!q) return res.status(200).json([]);
-
-    const query = q.toLowerCase();
-    const result = finalData.filter(item => 
-        item.duong.toLowerCase().includes(query)
-    );
-
-    // Trả về kết quả (Giới hạn 10 để mượt giao diện)
-    res.status(200).json(result.slice(0, 10));
+   // Hàm hỗ trợ loại bỏ dấu tiếng Việt
+function removeAccents(str) {
+  return str.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/đ/g, 'd').replace(/Đ/g, 'D');
 }
+
+// 4. XỬ LÝ TÌM KIẾM THÔNG MINH
+const { q } = req.query;
+if (!q) return res.status(200).json([]);
+
+const searchKey = removeAccents(q.toLowerCase());
+
+const result = finalData.filter(item => {
+  // Chuyển tên gốc trong data sang không dấu để so sánh
+  const nameNoAccent = removeAccents(item.duong.toLowerCase());
+  return nameNoAccent.includes(searchKey);
+});
+
+// Trả về kết quả (Giới hạn 10 để mượt giao diện)
+res.status(200).json(result.slice(0, 10));
