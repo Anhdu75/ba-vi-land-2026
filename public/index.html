@@ -81,7 +81,6 @@ không thay thế thông tin pháp lý từ cơ quan nhà nước.
 </div>
 
 </div>
-
 <script>
 
 const locations = {
@@ -89,6 +88,65 @@ const locations = {
 "van sa":"Thôn Vạn Sa, xã Vạn Thắng",
 "chu quyen":"Thôn Chu Quyến, xã Chu Minh"
 };
+
+function normalize(str){
+return str.toLowerCase().normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d");
+}
+
+let currentQuery="";
+let currentName="";
+
+function start(){
+let val=document.getElementById("input").value.trim();
+if(!val) return;
+
+let key=normalize(val);
+currentName=locations[key]||val;
+currentQuery=encodeURIComponent(currentName+", Ba Vì, Hà Nội");
+
+document.getElementById("locationName").innerText=currentName;
+document.getElementById("card").style.display="block";
+
+document.getElementById("qrImg").src=
+`https://img.vietqr.io/image/LPB-033963180001-compact.png?amount=5000&addInfo=${encodeURIComponent("BaoCao "+val)}&t=${Date.now()}`;
+
+gtag('event','check_location',{location:currentName});
+}
+
+function unlock(){
+confetti({particleCount:150,spread:90});
+document.getElementById("payBox").style.display="none";
+document.getElementById("radar").style.display="none";
+document.getElementById("mapImg").style.display="none";
+
+document.getElementById("mapFrame").src=
+`https://www.google.com/maps?q=${currentQuery}&t=k&z=18&output=embed`;
+document.getElementById("mapFrame").style.display="block";
+
+document.getElementById("btnView").style.display="block";
+
+gtag('event','unlock_report',{value:5000});
+}
+
+function showResult(){
+document.getElementById("resultBox").style.display="block";
+document.getElementById("btnView").style.display="none";
+document.getElementById("shareBox").style.display="block";
+
+document.getElementById("resultBox").innerText=
+"=== BÁO CÁO PHÂN TÍCH ===\n\n"+
+"Địa điểm: "+currentName+"\n"+
+"Giá tham khảo: 18 - 22 triệu/m²\n"+
+"Tiềm năng: Khu vực có giao dịch ổn định.\n"+
+"Khuyến nghị: Nên khảo sát thực tế trước khi quyết định.";
+
+let url=window.location.href;
+document.getElementById("shareFb").href=
+`https://www.facebook.com/sharer/sharer.php?u=${url}`;
+document.getElementById("shareZalo").href=
+`https://zalo.me/share?url=${url}`;
+}
 
 const luckyQuotes = [
         "✨ 'Mua vàng thì lỗ, mua thổ thì lời' - Chúc bạn sớm đại thắng!",
