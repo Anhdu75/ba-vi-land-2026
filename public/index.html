@@ -118,6 +118,7 @@
     </div>
 
 <script>
+    // TỪ ĐIỂN: KHÔNG DẤU -> CÓ DẤU + XÃ (Bạn có thể thêm bao nhiêu tùy ý)
     const geoDictionary = {
         "nhuan trach": "Thôn Nhuận Trạch, Xã Vạn Thắng",
         "van sa": "Thôn Vạn Sa, Xã Vạn Thắng",
@@ -125,7 +126,9 @@
         "tan phong": "Thôn Tân Phong, Xã Phong Vân",
         "vat lai": "Xã Vật Lại, Ba Vì",
         "tay dang": "Thị trấn Tây Đằng",
-        "go song": "Thôn Gò Sống, Xã Vật Lại"
+        "go song": "Thôn Gò Sống, Xã Vật Lại",
+        "cam tan": "Thôn Cẩm Tân, Xã Cẩm Lĩnh",
+        "yen thanh": "Thôn Yên Thành, Xã Tản Lĩnh"
     };
 
     const luckyQuotes = [
@@ -133,26 +136,48 @@
         "🌱 'Đất lành chim đậu' - Mảnh đất này mang lại bình an & tài lộc.",
         "💰 'Đầu tư vào đất là con đường ngắn nhất tới tự do tài chính'.",
         "🚀 'Đừng chờ mua bất động sản, hãy mua bất động sản rồi chờ đợi'.",
-        "💎 'Mỗi mét đất hôm nay là một viên kim cương của ngày mai'.",
-        "🧧 'Phúc lộc đầy nhà, mua đâu thắng đó'!",
-        "🌊 'Tiền vào như nước sông Đà, tiền ra nhỏ giọt như cafe phin'."
+        "💎 'Mỗi mét đất hôm nay là một viên kim cương của ngày mai'."
     ];
 
     function startSearch() {
         const val = document.getElementById('userInput').value.trim();
         if(!val) return;
+        
         document.getElementById('sndCheck').play();
         confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
 
-        let key = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
-        let result = val.toUpperCase();
-        for (let k in geoDictionary) { if (key.includes(k)) { result = geoDictionary[k]; break; } }
-        document.getElementById('outLoc').innerText = result;
+        // CHUYỂN ĐỔI CHỮ NHẬP VÀO SANG DẠNG KHÔNG DẤU ĐỂ SO KHỚP
+        let inputNoDiacritics = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
+        
+        let foundResult = "";
 
-        // Cập nhật mã ngân hàng LPBANK (Liên Việt) chuẩn VietQR
+        // VÒNG LẶP KIỂM TRA TRONG TỪ ĐIỂN
+        for (let key in geoDictionary) {
+            if (inputNoDiacritics.includes(key)) {
+                foundResult = geoDictionary[key]; // Lấy tên có dấu + xã từ từ điển
+                break;
+            }
+        }
+
+        // NẾU KHÔNG CÓ TRONG TỪ ĐIỂN THÌ GIỮ NGUYÊN CHỮ KHÁCH GÕ (NHƯNG VIẾT HOA)
+        if (foundResult === "") {
+            foundResult = val.toUpperCase();
+        }
+
+        // HIỂN THỊ LÊN MÀN HÌNH
+        document.getElementById('outLoc').innerText = foundResult;
+
+        // CẬP NHẬT MÃ QR (Dùng mã ngân hàng LPBANK)
         const stk = "033963180001";
-        document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-${stk}-compact.png?amount=5000&addInfo=CheckGia%20${encodeURIComponent(val)}&t=${Date.now()}`;
+        document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-${stk}-compact.png?amount=5000&addInfo=CheckGia%20${encodeURIComponent(inputNoDiacritics)}&t=${Date.now()}`;
+        
+        // Hiện thẻ kết quả
         document.getElementById('resultCard').style.display = 'block';
+        // Reset lại trạng thái nếu khách check lần 2
+        document.getElementById('payBox').style.display = 'block';
+        document.getElementById('successBox').style.display = 'none';
+        document.getElementById('mapImg').style.filter = "blur(3px)";
+        document.getElementById('radarLayer').style.display = 'block';
     }
 
     function unlockData() {
@@ -178,20 +203,22 @@
             "• TRỤC X: " + (594000 + Math.random()*500).toFixed(1) + "\n" +
             "• TRỤC Y: " + (2342000 + Math.random()*500).toFixed(1) + "\n" +
             "• QUY HOẠCH: ĐẤT Ở NÔNG THÔN (ONT)\n" +
-            "• TRẠNG THÁI: SẠCH, AN TOÀN.";
+            "• TRẠNG THÁI: SẠCH, KHÔNG TRANH CHẤP.";
             
         confetti({ particleCount: 100, spread: 70 });
     }
 
-    // Social Proof ảo
+    // Thông báo giao dịch ảo
     const fakeNames = ["Anh Tuấn", "Chị Lan", "Chú Hùng", "BĐS Ba Vì", "Anh Sơn"];
     setInterval(() => {
         const container = document.getElementById('toast-container');
-        const t = document.createElement('div');
-        t.className = 'toast-msg';
-        t.innerHTML = `💰 <b>${fakeNames[Math.floor(Math.random()*fakeNames.length)]}</b> vừa check thành công!`;
-        container.appendChild(t);
-        setTimeout(() => t.remove(), 4000);
+        if(container) {
+            const t = document.createElement('div');
+            t.className = 'toast-msg';
+            t.innerHTML = `💰 <b>${fakeNames[Math.floor(Math.random()*fakeNames.length)]}</b> vừa check giá thành công!`;
+            container.appendChild(t);
+            setTimeout(() => t.remove(), 4000);
+        }
     }, 15000);
 </script>
 </body>
