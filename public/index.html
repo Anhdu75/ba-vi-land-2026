@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Check Giá Đất Ba Vì</title>
+<title>Check Giá Đất</title>
 
-<!-- GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PQHFMSQBZ0"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
@@ -32,24 +31,25 @@ button{width:100%;padding:16px;border:none;border-radius:12px;font-weight:900;cu
 @keyframes spin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
 .pay{margin-top:15px}
 .qr{width:200px;margin:auto}
-.success{display:none;margin-top:15px;text-align:left;background:#111;color:#00ff41;padding:15px;border-radius:12px;font-family:monospace}
+.success{display:none;margin-top:15px;text-align:left;background:#111;color:#00ff41;padding:15px;border-radius:12px;font-family:monospace;white-space:pre-line}
 .notice{font-size:11px;color:#666;margin-top:10px}
-.share{margin-top:15px}
+.share{margin-top:15px;display:none}
 .share a{display:block;margin-top:8px;background:#0068ff;color:#fff;padding:12px;border-radius:10px;text-decoration:none}
+#btnView{display:none !important;background:#e67e22;color:#fff;margin-top:10px}
 </style>
 </head>
 
 <body>
 
 <div class="box">
-<h2 style="color:#d4af37">CHECK GIÁ ĐẤT BA VÌ</h2>
+<h2 style="color:#d4af37">CHECK GIÁ ĐẤT</h2>
 <input id="input" placeholder="Nhập tên thôn (vd: nhuan trach)">
 <button class="btn-main" onclick="start()">PHÂN TÍCH VỊ TRÍ</button>
 </div>
 
 <div class="card" id="card">
 <div class="loc" id="locationName"></div>
-<div style="font-size:26px;color:#e74c3c;font-weight:900">18 - 22 triệu/m²</div>
+<div style="font-size:26px;color:#e74c3c;font-weight:900" id="priceTop"></div>
 
 <div class="map-box">
 <img id="mapImg" src="https://baovietnam.com.vn/wp-content/uploads/2022/05/quy-hoach-huyen-ba-vi.jpg">
@@ -65,61 +65,65 @@ Tôi đã chuyển khoản
 </button>
 </div>
 
-<button id="btnView" style="display:none;background:#e67e22;color:#fff;margin-top:10px"
-onclick="showResult()">XEM KẾT QUẢ</button>
+<button id="btnView" onclick="showResult()">XEM KẾT QUẢ</button>
 
 <div class="success" id="resultBox"></div>
 
 <div class="notice">
-Dữ liệu mang tính tham khảo tổng hợp thị trường, 
+Thông tin mang tính tham khảo tổng hợp thị trường, 
 không thay thế thông tin pháp lý từ cơ quan nhà nước.
 </div>
 
-<div class="share" id="shareBox" style="display:none">
+<div class="share" id="shareBox">
 <a id="shareFb" target="_blank">Chia sẻ Facebook</a>
 <a id="shareZalo" target="_blank">Chia sẻ Zalo</a>
 </div>
 
 </div>
+
 <script>
 
 const locations = {
-"nhuan trach": {name:"Thôn Nhuận Trạch, khu vực Vạn Thắng, Ba Vì, Hà Nội", lat:21.2333, lng:105.4000, price:"18 - 22 triệu/m²"},
-"van sa": {name:"Thôn Vạn Sa, khu vực Vạn Thắng, Ba Vì, Hà Nội", lat:21.2350, lng:105.4012, price:"19 - 23 triệu/m²"},
-"chu quyen": {name:"Thôn Chu Quyến, khu vực Chu Minh, Ba Vì, Hà Nội", lat:21.2400, lng:105.3900, price:"17 - 21 triệu/m²"}
+"nhuan trach": {name:"Thôn Nhuận Trạch, khu vực Vạn Thắng", lat:21.2333, lng:105.4000, price:"18 - 22 triệu/m²"},
+"van sa": {name:"Thôn Vạn Sa, khu vực Tản Hồng", lat:21.2350, lng:105.4012, price:"19 - 23 triệu/m²"},
+"chu quyen": {name:"Thôn Chu Quyến, khu vực Chu Minh", lat:21.2400, lng:105.3900, price:"17 - 21 triệu/m²"}
 };
 
 function normalize(str){
-return str.toLowerCase()
-.normalize("NFD")
+return str.toLowerCase().normalize("NFD")
 .replace(/[\u0300-\u036f]/g,"")
 .replace(/đ/g,"d");
 }
 
 let currentData=null;
+let paid=false;
 
 function start(){
 let val=document.getElementById("input").value.trim();
 if(!val) return;
 
 let key=normalize(val);
+
 currentData=locations[key] || {
-    name:"Thôn "+val+", khu vực Ba Vì, Hà Nội",
-    lat:21.2333,
-    lng:105.4000,
-    price:"18 - 22 triệu/m²"
+name:"Thôn "+val.charAt(0).toUpperCase()+val.slice(1)+", khu vực chưa xác định",
+lat:21.2333,
+lng:105.4000,
+price:"18 - 22 triệu/m²"
 };
 
 document.getElementById("locationName").innerText=currentData.name;
-document.querySelector(".card").style.display="block";
+document.getElementById("priceTop").innerText=currentData.price;
+document.getElementById("card").style.display="block";
 
 document.getElementById("qrImg").src=
 `https://img.vietqr.io/image/LPBANK-033963180001-compact2.png?amount=5000&addInfo=${encodeURIComponent("BaoCao "+val)}&t=${Date.now()}`;
 
-gtag('event','check_location',{location:currentData.name});
+paid=false;
 }
 
 function unlock(){
+paid=true;
+
 confetti({particleCount:150,spread:90});
 
 document.getElementById("payBox").style.display="none";
@@ -131,46 +135,46 @@ document.getElementById("mapFrame").src=
 
 document.getElementById("mapFrame").style.display="block";
 document.getElementById("btnView").style.display="block";
-
-gtag('event','unlock_report',{value:5000});
 }
 
 function showResult(){
-document.getElementById("resultBox").style.display="block";
-document.getElementById("btnView").style.display="none";
-document.getElementById("shareBox").style.display="block";
 
-document.getElementById("resultBox").innerText=
-"=== BÁO CÁO PHÂN TÍCH ===\n\n"+
-"Địa điểm: "+currentData.name+"\n"+
-"Giá tham khảo: "+currentData.price+"\n"+
-"Tiềm năng: Khu vực có giao dịch ổn định.\n"+
-"Khuyến nghị: Nên khảo sát thực tế trước khi quyết định.\n\n"+
-"--- NÂNG CẤP 1 ---\n"+
-"Xem bản đồ vệ tinh chi tiết.\n\n"+
-"--- NÂNG CẤP 2 ---\n"+
-"Phân tích hạ tầng & quy hoạch 2026.\n\n"+
-"--- NÂNG CẤP 3 ---\n"+
-"Xuất báo cáo PDF chuyên sâu.";
-
-let url=window.location.href;
-document.getElementById("shareFb").href=
-`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-
-document.getElementById("shareZalo").href=
-`https://sp.zalo.me/share_inline/index.html?url=${encodeURIComponent(url)}`;
+if(!paid){
+alert("Vui lòng thanh toán trước khi xem kết quả.");
+return;
 }
 
-const luckyQuotes = [
-"✨ 'Mua vàng thì lỗ, mua thổ thì lời'",
-"🌱 'Đất lành chim đậu'",
-"💰 'Đầu tư hôm nay, thảnh thơi mai sau'",
-"💎 'Bất động sản là kênh giữ giá bền vững'",
-"🚀 'Kiên nhẫn là chìa khóa thành công'"
-];
+document.getElementById("resultBox").style.display="block";
+document.getElementById("shareBox").style.display="block";
+document.getElementById("btnView").style.display="none";
+
+document.getElementById("resultBox").innerText=
+
+"=== PHÂN TÍCH CƠ BẢN ===\n\n"+
+"Địa điểm: "+currentData.name+"\n"+
+"Giá tham khảo: "+currentData.price+"\n"+
+"Thanh khoản: Ổn định\n"+
+"Vị trí: Gần khu dân cư, tiếp cận thuận tiện\n\n"+
+
+"=== NÂNG CẤP 2: QUY HOẠCH & HẠ TẦNG ===\n"+
+"Định hướng sử dụng đất: Đất ở nông thôn\n"+
+"Hệ tọa độ: VN-2000\n"+
+"Khả năng tăng giá: Trung bình - khá\n"+
+"Yếu tố hỗ trợ: Hạ tầng cải thiện\n\n"+
+
+"=== NÂNG CẤP 3: CHIẾN LƯỢC ===\n"+
+"✔ Phù hợp đầu tư dài hạn\n"+
+"✔ Phù hợp xây dựng ở thực\n"+
+"✔ Tích sản 3-5 năm\n\n"+
+
+"Chỉ số tổng hợp: 7.5/10\n\n"+
+
+"✨ 'Mua vàng thì lỗ, mua thổ thì lời.'";
+
+}
 
 setInterval(() => {
-const names=["Anh Tuấn","Chị Lan","Chú Hùng","BĐS Ba Vì","Môi giới 24h"];
+const names=["Anh Tuấn","Chị Lan","Chú Hùng","Môi giới 24h"];
 const toast=document.createElement('div');
 toast.style.position="fixed";
 toast.style.bottom="20px";
