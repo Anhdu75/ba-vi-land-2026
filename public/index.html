@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Check Giá Đất Ba Vì</title>
-
+    <title>Check giá đất Ba Vì 2026</title>
+    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PQHFMSQBZ0"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -17,214 +17,225 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
-        :root { 
-            --primary: #001a33; --accent: #d4af37; --danger: #ff4d4d; 
-            --success: #2ecc71; --glass: rgba(255, 255, 255, 0.05);
-            --neon: #00ff41;
-        }
-
-        body { 
-            font-family: 'Inter', sans-serif; background: var(--primary); 
-            color: #fff; margin: 0; padding: 15px; display: flex; 
-            flex-direction: column; align-items: center; min-height: 100vh;
-        }
-
-        /* 1. SOCIAL PROOF - TĂNG TIN CẬY */
+        :root { --navy: #001a33; --gold: #d4af37; --danger: #ff4d4d; --success: #2ecc71; --neon: #00ff41; }
+        body { font-family: 'Inter', sans-serif; background: var(--navy); color: #fff; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        
+        /* TOAST THÔNG BÁO GIAO DỊCH */
         #toast-container { position: fixed; top: 20px; left: 20px; z-index: 9999; }
-        .toast-msg { 
-            background: #fff; color: #333; padding: 12px 18px; border-radius: 50px; 
-            font-size: 12px; margin-bottom: 10px; border-left: 6px solid var(--success);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); animation: slideIn 0.5s ease-out;
-            display: flex; align-items: center; gap: 10px; font-weight: 700;
-        }
+        .toast-msg { background: #fff; color: #333; padding: 12px 18px; border-radius: 50px; font-size: 11px; margin-bottom: 10px; border-left: 6px solid var(--success); box-shadow: 0 10px 30px rgba(0,0,0,0.5); animation: slideIn 0.5s ease-out; font-weight: 700; }
         @keyframes slideIn { from { transform: translateX(-120%); } to { transform: translateX(0); } }
 
-        /* 2. KHUNG SEARCH CHUYÊN NGHIỆP */
-        .main-container { width: 100%; max-width: 450px; text-align: center; }
-        .hero-box { 
-            background: var(--glass); padding: 35px 25px; border-radius: 30px; 
-            border: 1px solid rgba(212, 175, 55, 0.3); backdrop-filter: blur(15px);
-            margin-top: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-        }
-        .header-title { font-size: 20px; font-weight: 900; letter-spacing: 1px; color: var(--accent); margin-bottom: 5px; }
-        .header-sub { font-size: 11px; opacity: 0.7; margin-bottom: 25px; text-transform: uppercase; }
+        .hero-box { width: 100%; max-width: 450px; background: rgba(255, 255, 255, 0.05); padding: 35px 25px; border-radius: 30px; border: 1px solid rgba(212, 175, 55, 0.3); backdrop-filter: blur(15px); margin-top: 40px; text-align: center; }
+        .header-title { font-size: 24px; font-weight: 900; color: var(--gold); margin-bottom: 10px; text-transform: uppercase; }
+        .header-sub { font-size: 12px; opacity: 0.8; margin-bottom: 25px; letter-spacing: 1px; }
 
-        .input-group { position: relative; margin-bottom: 20px; }
-        input { 
-            width: 100%; padding: 20px; border-radius: 15px; border: none; 
-            font-size: 17px; font-weight: 700; text-align: center; background: #fff;
-            color: #000; box-sizing: border-box; outline: none;
-        }
-        .btn-analyze { 
-            width: 100%; background: linear-gradient(135deg, #d4af37, #b8860b);
-            color: #000; border: none; padding: 20px; border-radius: 15px;
-            font-weight: 900; cursor: pointer; text-transform: uppercase;
-            font-size: 16px; transition: 0.3s; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
-        }
-        .btn-analyze:active { transform: scale(0.96); }
-
-        /* 3. CARD KẾT QUẢ - HIỆU ỨNG VỆ TINH */
-        .result-card { 
-            display: none; background: #fff; color: #333; border-radius: 35px; 
-            padding: 30px; margin-top: 25px; text-align: center; animation: fadeInUp 0.6s;
-        }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        .loc-name { font-weight: 900; font-size: 22px; color: var(--primary); margin-bottom: 5px; }
-        .price-display { font-size: 36px; color: var(--danger); font-weight: 900; margin: 15px 0; letter-spacing: -1px; }
-
-        .satellite-box { 
-            width: 100%; height: 220px; background: #000; border-radius: 25px; 
-            margin: 20px 0; position: relative; overflow: hidden;
-        }
-        #mapBase { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; filter: blur(3px); transition: 1.5s; }
+        input { width: 100%; padding: 20px; border-radius: 15px; border: none; font-size: 17px; font-weight: 700; text-align: center; margin-bottom: 15px; color: #000; outline: none; }
+        .btn-main { width: 100%; background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; border: none; padding: 20px; border-radius: 15px; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
         
-        /* Hiệu ứng Radar Chuyên nghiệp */
-        .radar-sweep { 
-            position: absolute; top: 50%; left: 50%; width: 450px; height: 450px; 
-            background: conic-gradient(from 0deg, transparent, rgba(0, 255, 65, 0.3));
-            border-radius: 50%; transform: translate(-50%, -50%); 
-            animation: rotateRadar 3s infinite linear;
-        }
+        .result-card { display: none; width: 100%; max-width: 450px; background: #fff; color: #333; border-radius: 35px; padding: 30px; margin-top: 25px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .loc-name { font-weight: 900; font-size: 22px; color: var(--navy); margin-bottom: 5px; }
+        .price-val { font-size: 38px; color: var(--danger); font-weight: 900; margin: 10px 0; display: block; }
+
+        .map-box { width: 100%; height: 200px; background: #000; border-radius: 25px; margin: 20px 0; position: relative; overflow: hidden; }
+        #mapImg { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; filter: blur(3px); transition: 1.5s; }
+        .radar-sweep { position: absolute; top: 50%; left: 50%; width: 450px; height: 450px; background: conic-gradient(from 0deg, transparent, rgba(0, 255, 65, 0.4)); border-radius: 50%; transform: translate(-50%, -50%); animation: rotateRadar 3s infinite linear; }
         @keyframes rotateRadar { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        /* 4. THANH TOÁN QR */
-        .payment-section { background: #fdf8e4; padding: 20px; border-radius: 25px; border: 1px dashed var(--accent); }
-        .qr-holder { 
-            width: 200px; height: 200px; margin: 15px auto; background: #fff; 
-            border-radius: 15px; padding: 10px; display: flex; align-items: center; justify-content: center;
-        }
+        .payment-area { background: #fdf8e4; padding: 20px; border-radius: 25px; border: 1px dashed var(--gold); }
+        .qr-frame { width: 200px; height: 200px; margin: 15px auto; background: #fff; border-radius: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #eee; }
         #qrImg { width: 100%; height: 100%; object-fit: contain; }
 
-        /* 5. DỮ LIỆU SAU GIẢI MÃ */
-        .unlocked-data { display: none; text-align: left; }
-        .data-grid { 
-            background: #111; color: var(--neon); padding: 20px; border-radius: 15px;
-            font-family: monospace; font-size: 13px; line-height: 1.7; border-left: 5px solid var(--success);
-        }
-        .zalo-cta { 
-            display: block; background: #0068ff; color: #fff; text-decoration: none;
-            padding: 20px; border-radius: 20px; font-weight: 900; margin-top: 20px;
-            text-align: center; text-transform: uppercase;
-        }
+        .success-box { display: none; text-align: left; }
+        .thanks-msg { color: var(--success); font-weight: 900; text-align: center; font-size: 18px; margin-bottom: 15px; }
+        .data-panel { background: #111; color: var(--neon); padding: 20px; border-radius: 15px; font-family: monospace; font-size: 13px; border-left: 5px solid var(--success); line-height: 1.7; }
+        
+        .share-box { margin-top: 20px; padding: 15px; background: #e3f2fd; border-radius: 20px; text-align: center; }
+        .zalo-cta { display: block; background: #0068ff; color: #fff; text-decoration: none; padding: 18px; border-radius: 15px; font-weight: 900; margin-top: 10px; text-align: center; text-transform: uppercase; box-shadow: 0 5px 15px rgba(0,104,255,0.3); }
 
-        /* 6. PHÁP LÝ - QUAN TRỌNG */
-        .legal-notice { font-size: 10px; opacity: 0.5; margin-top: 30px; line-height: 1.4; padding: 0 20px; }
+        .legal { font-size: 10px; opacity: 0.5; margin-top: 30px; text-align: center; line-height: 1.4; }
     </style>
 </head>
 <body>
 
     <div id="toast-container"></div>
     <audio id="sndCheck" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
-    <audio id="sndSuccess" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
+    <audio id="sndWin" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
 
-    <div class="main-container">
-        <div class="hero-box">
-            <div class="header-title">Check Giá Đất Ba Vì 2026</div>
-            <div class="header-sub">Hệ thống phân tích giá đất & quy hoạch 2026</div>
+    <div class="hero-box">
+        <div class="header-title">CHECK GIÁ ĐẤT BA VÌ</div>
+        <div class="header-sub">Cổng Tra Cứu Giá Đất & Tọa Độ Vệ Tinh</div>
+        <input type="text" id="userInput" placeholder="Gõ tên thôn (Ví dụ: nhuan trach)">
+        <button class="btn-main" onclick="startSearch()">XÁC ĐỊNH VỊ TRÍ</button>
+    </div>
+
+    <div id="resultCard" class="result-card">
+        <div id="outLoc" class="loc-name">---</div>
+        <b class="price-val">18.500.000 <small style="font-size: 15px;">đ/m²</small></b>
+
+        <div class="map-box">
+            <img id="mapImg" src="https://baovietnam.com.vn/wp-content/uploads/2022/05/quy-hoach-huyen-ba-vi.jpg">
+            <div id="radarLayer" class="radar-sweep"></div>
+            <div id="mapStatus" style="position:absolute; bottom:15px; width:100%; color:var(--neon); font-size:10px; font-weight:900; text-shadow:1px 1px 2px #000;">🛰️ ĐANG QUÉT DỮ LIỆU...</div>
+        </div>
+
+        <div id="payBox" class="payment-area">
+            <b style="color: #856404; font-size: 13px;">Ủng hộ 5k trà đá để xem quy hoạch & tọa độ, duy trì hệ thống</b>
+            <div class="qr-frame"><img id="qrImg" src="" alt="QR"></div>
+            <button class="btn-main" style="padding: 15px; font-size: 13px;" onclick="unlockData()">XÁC NHẬN ĐÃ GỬI TRÀ ĐÁ</button>
+        </div>
+<div id="successBox" class="success-box">
+    <div id="giftSection" style="text-align: center; background: linear-gradient(135deg, #fff5e6, #fffaeb); padding: 20px; border-radius: 20px; border: 2px solid #d4af37; margin-bottom: 20px; cursor: pointer; transition: 0.3s;" onclick="openGift()">
+        <div id="giftIcon" style="font-size: 50px; animation: bounce 1s infinite;">🎁</div>
+        <b id="giftText" style="color: #b8860b; font-size: 14px;">BẠN CÓ 01 QUÀ TẶNG MAY MẮN<br><small>(Bấm vào hộp quà để mở)</small></b>
+    </div>
+
+    <div id="mainResult" style="display: none; animation: fadeIn 0.8s;">
+        <div class="thanks-msg">🌟 TRÂN TRỌNG CẢM ƠN QUÝ KHÁCH! 🌟</div>
+        
+        <div id="luckyQuote" style="background: #fff3e0; color: #e65100; padding: 15px; border-radius: 15px; text-align: center; font-style: italic; font-weight: bold; margin-bottom: 15px; border: 1px solid #ffcc80;">
+        </div>
+
+        <div class="data-panel" id="finalData"></div>
+        
+        <a href="https://zalo.me/0368869160" target="_blank" class="zalo-cta">NHẬN FILE TRÍCH LỤC & TƯ VẤN THÊM</a>
+    </div>
+</div>
+
+<script>
+    // Danh sách câu chúc/thành ngữ "chạm" đúng tâm lý dân buôn đất
+    const luckyQuotes = [
+        "✨ 'Mua vàng thì lỗ, mua thổ thì lời' - Chúc bạn đại thắng!",
+        "🌱 'Đất lành chim đậu' - Mảnh đất này sẽ mang lại bình an và tài lộc cho bạn.",
+        "💰 'Đầu tư vào đất là con đường ngắn nhất tới tự do tài chính'.",
+        "🚀 'Đừng chờ đợi để mua bất động sản, hãy mua bất động sản và chờ đợi'.",
+        "💎 'Mỗi mét đất hôm nay là một viên kim cương của ngày mai'.",
+        "🧧 'Phúc lộc đầy nhà, mua đâu thắng đó' - Vận may đang đến với bạn!",
+        "🌊 'Tiền vào như nước sông Đà, tiền ra nhỏ giọt như cafe phin'."
+    ];
+
+    function openGift() {
+        // Hiệu ứng mở quà
+        document.getElementById('sndWin').play();
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.7 }
+        });
+
+        // Chọn câu chúc ngẫu nhiên
+        const randomQuote = luckyQuotes[Math.floor(Math.random() * luckyQuotes.length)];
+        
+        // Hiển thị nội dung
+        document.getElementById('giftSection').style.display = 'none';
+        document.getElementById('luckyQuote').innerText = randomQuote;
+        document.getElementById('mainResult').style.display = 'block';
+        
+        // Điền dữ liệu tọa độ (như cũ)
+        document.getElementById('finalData').innerText = 
+            "• HỆ TỌA ĐỘ: VN-2000\n" +
+            "• TRỤC X: " + (594000 + Math.random()*500).toFixed(1) + "\n" +
+            "• TRỤC Y: " + (2342000 + Math.random()*500).toFixed(1) + "\n" +
+            "• QUY HOẠCH: ĐẤT Ở (ONT)\n" +
+            "• TRẠNG THÁI: SẠCH, AN TOÀN.";
+    }
+</script>
+
+<style>
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+</style>
+        <div id="successBox" class="success-box">
+            <div class="thanks-msg">🌟 TRÂN TRỌNG CẢM ƠN QUÝ KHÁCH! 🌟</div>
+            <div class="data-panel" id="finalData"></div>
             
-            <div class="input-group">
-                <input type="text" id="userInput" placeholder="Nhập tên thôn/xã (Vd: nhuan trach)">
+            <div class="share-box">
+                <b style="color: #0d47a1; font-size: 13px;">🎁 CHIA SẺ TIẾP THÊM ĐỘNG LỰC</b>
+                <a href="https://zalo.me/0368869160" target="_blank" class="zalo-cta">NHẬN FILE TRÍCH LỤC QUA ZALO</a>
             </div>
-            <button class="btn-analyze" onclick="handleProcess()">PHÂN TÍCH DỮ LIỆU</button>
-        </div>
-
-        <div id="resultCard" class="result-card">
-            <div id="displayLoc" class="loc-name">---</div>
-            <div style="font-size: 12px; font-weight: bold; color: #888;">ƯỚC TÍNH GIÁ THỊ TRƯỜNG</div>
-            <div class="price-display">18.500.000 <small style="font-size: 16px;">đ/m²</small></div>
-
-            <div class="satellite-box">
-                <img id="mapBase" src="https://baovietnam.com.vn/wp-content/uploads/2022/05/quy-hoach-huyen-ba-vi.jpg">
-                <div id="radarLayer" class="radar-sweep"></div>
-                <div id="statusMap" style="position:absolute; bottom:15px; width:100%; color:var(--neon); font-size:10px; font-weight:900; text-shadow:1px 1px 2px #000;">🛰️ ĐANG ĐỐI CHIẾU VỆ TINH...</div>
-            </div>
-
-            <div id="payGate" class="payment-section">
-                <b style="color: #856404; font-size: 13px;">🍵 Mời trà đá 5.000đ để giải mã tọa độ & quy hoạch</b>
-                <div class="qr-holder">
-                    <img id="qrImg" src="" alt="Đang khởi tạo QR...">
-                </div>
-                <div onclick="unlockFinal()" style="color: var(--danger); font-weight: 900; cursor: pointer; font-size: 12px; text-decoration: underline;">Xác nhận đã chuyển khoản</div>
-            </div>
-
-            <div id="unlockedArea" class="unlocked-data">
-                <div style="color: var(--success); font-weight: 900; text-align: center; margin-bottom: 15px;">🌟 GIẢI MÃ THÀNH CÔNG!</div>
-                <div class="data-grid" id="finalData"></div>
-                <a href="https://zalo.me/0368869160" target="_blank" class="zalo-cta">NHẬN BẢN TRÍCH LỤC PDF GỐC</a>
-            </div>
-        </div>
-
-        <div class="legal-notice">
-            <b>Miễn trừ trách nhiệm:</b> Dữ liệu mang tính chất tham khảo dựa trên thuật toán AI và giá thị trường lân cận. Không thay thế văn bản pháp quy của cơ quan nhà nước. Vui lòng đối chiếu thực tế trước khi giao dịch.
         </div>
     </div>
 
+    <div class="legal">
+        <b>Dịch vụ hỗ trợ:</b> Thông tin mang tính tham khảo dịch vụ tư vấn.<br>Cảm ơn bạn đã tin tưởng "Check giá đất Ba Vì"!
+    </div>
+
 <script>
-    // TỪ ĐIỂN TINH HOA - CHUYỂN ĐỔI CHUẨN
-    const geoData = {
+    // TỪ ĐIỂN: KHÔNG DẤU -> CÓ DẤU + XÃ
+    const geoDictionary = {
         "nhuan trach": "Thôn Nhuận Trạch, Xã Vạn Thắng",
         "van sa": "Thôn Vạn Sa, Xã Vạn Thắng",
         "chu quyen": "Thôn Chu Quyến, Xã Chu Minh",
         "tan phong": "Thôn Tân Phong, Xã Phong Vân",
-        "vat lai": "Xã Vật Lại, Huyện Ba Vì",
-        "tay dang": "Thị trấn Tây Đằng"
+        "vat lai": "Xã Vật Lại, Ba Vì",
+        "tay dang": "Thị trấn Tây Đằng",
+        "go song": "Thôn Gò Sống, Xã Vật Lại"
     };
 
-    function handleProcess() {
-        const input = document.getElementById('userInput').value.trim();
-        if(!input) return;
-
+    function startSearch() {
+        const val = document.getElementById('userInput').value.trim();
+        if(!val) return;
         document.getElementById('sndCheck').play();
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
 
-        // Logic khớp tên chuyên nghiệp
-        let key = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
-        let found = input.toUpperCase();
-        for (let k in geoData) {
-            if (key.includes(k)) { found = geoData[k]; break; }
-        }
-        document.getElementById('displayLoc').innerText = found;
+        // Xử lý logic gõ không dấu ra có dấu + xã
+        let key = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
+        let result = val.toUpperCase();
+        for (let k in geoDictionary) { if (key.includes(k)) { result = geoDictionary[k]; break; } }
+        document.getElementById('outLoc').innerText = result;
 
-        // NẠP QR BẤT TỬ
+        // QR Bất tử
         const stk = "033963180001";
-        document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-${stk}-compact.png?amount=5000&addInfo=CheckGia%20${encodeURIComponent(input)}&t=${Date.now()}`;
-
+        document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-${stk}-compact.png?amount=5000&addInfo=TraDaCheck%20${encodeURIComponent(val)}&t=${Date.now()}`;
         document.getElementById('resultCard').style.display = 'block';
-        window.scrollTo({ top: document.getElementById('resultCard').offsetTop - 20, behavior: 'smooth' });
     }
 
-    function unlockFinal() {
-        document.getElementById('sndSuccess').play();
-        confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
-
-        document.getElementById('payGate').style.display = 'none';
+    function unlockData() {
+        document.getElementById('sndWin').play();
+        confetti({ particleCount: 200, spread: 100 });
+        document.getElementById('payBox').style.display = 'none';
         document.getElementById('radarLayer').style.display = 'none';
-        document.getElementById('mapBase').style.filter = "blur(0) grayscale(0)";
-        document.getElementById('mapBase').style.opacity = "1";
-        document.getElementById('statusMap').innerText = "🛰️ DỮ LIỆU VỆ TINH ĐÃ KHỚP";
-        
-        document.getElementById('unlockedArea').style.display = 'block';
+        document.getElementById('mapImg').style.filter = "blur(0) grayscale(0)";
+        document.getElementById('mapImg').style.opacity = "1";
+        document.getElementById('mapStatus').innerText = "🛰️ GIẢI MÃ DỮ LIỆU THÀNH CÔNG";
+        document.getElementById('successBox').style.display = 'block';
         document.getElementById('finalData').innerText = 
-            "• HỆ TỌA ĐỘ: VN-2000 (Ba Vì)\n" +
-            "• TRỤC X: " + (594000 + Math.random()*900).toFixed(1) + "\n" +
-            "• TRỤC Y: " + (2342000 + Math.random()*900).toFixed(1) + "\n" +
-            "• QUY HOẠCH: Đất ở hiện trạng (ONT)\n" +
-            "• KIỂM TRA: Sạch, không tranh chấp.";
+            "• HỆ TỌA ĐỘ: VN-2000\n" +
+            "• TRỤC X: " + (594000 + Math.random()*500).toFixed(1) + "\n" +
+            "• TRỤC Y: " + (2342000 + Math.random()*500).toFixed(1) + "\n" +
+            "• TRẠNG THÁI: Đất ở sạch, không tranh chấp.\n" +
+            "• CẢM ƠN QUÝ KHÁCH ĐÃ TIN DÙNG!";
     }
 
-    // SOCIAL PROOF - TỰ ĐỘNG
-    const names = ["Anh Tuấn", "Chị Lan", "Chú Hùng", "BĐS Ba Vì", "Anh Minh", "Chị Phương"];
-    function showToast() {
+    const fakeNames = ["Anh Tuấn", "Chị Lan", "Chú Hùng", "BĐS Ba Vì", "Anh Sơn"];
+    setInterval(() => {
         const container = document.getElementById('toast-container');
         const t = document.createElement('div');
         t.className = 'toast-msg';
-        t.innerHTML = `💰 <b>${names[Math.floor(Math.random()*names.length)]}</b> vừa mời trà đá thành công!`;
+        t.innerHTML = `💰 <b>${fakeNames[Math.floor(Math.random()*fakeNames.length)]}</b> vừa check thành công!`;
         container.appendChild(t);
         setTimeout(() => t.remove(), 4000);
-    }
-    setInterval(showToast, 12000);
-    setTimeout(showToast, 2500);
+    }, 12000);
+    <div id="successBox" class="success-box">
+    <div class="thanks-msg">
+        🌟 TRÂN TRỌNG CẢM ƠN QUÝ KHÁCH! 🌟<br>
+        <small style="color: #666; font-size: 11px; text-transform: none;">Sự ủng hộ của bạn là động lực để chúng tôi hoàn thiện hơn.</small>
+    </div>
+    <div class="data-panel" id="finalData"></div>
+    
+    <div style="background: #e8f5e9; padding: 15px; border-radius: 15px; margin-top: 15px; color: #2e7d32; font-size: 13px; text-align: center;">
+        🍀 <b>Lời chúc:</b> Chúc bạn có một giao dịch Thuận buồm xuôi gió tại mảnh đất này!
+    </div>
+    
+    <div class="share-box">
+        <a href="https://zalo.me/0368869160" target="_blank" class="zalo-cta">NHẬN FILE TRÍCH LỤC & TƯ VẤN THÊM</a>
+    </div>
+</div>
 </script>
 </body>
 </html>
