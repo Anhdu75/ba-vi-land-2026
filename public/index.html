@@ -84,46 +84,52 @@ không thay thế thông tin pháp lý từ cơ quan nhà nước.
 <script>
 
 const locations = {
-"nhuan trach":"Thôn Nhuận Trạch, xã Vạn Thắng",
-"van sa":"Thôn Vạn Sa, xã Vạn Thắng",
-"chu quyen":"Thôn Chu Quyến, xã Chu Minh"
+"nhuan trach": {name:"Thôn Nhuận Trạch, khu vực Vạn Thắng, Ba Vì, Hà Nội", lat:21.2333, lng:105.4000, price:"18 - 22 triệu/m²"},
+"van sa": {name:"Thôn Vạn Sa, khu vực Vạn Thắng, Ba Vì, Hà Nội", lat:21.2350, lng:105.4012, price:"19 - 23 triệu/m²"},
+"chu quyen": {name:"Thôn Chu Quyến, khu vực Chu Minh, Ba Vì, Hà Nội", lat:21.2400, lng:105.3900, price:"17 - 21 triệu/m²"}
 };
 
 function normalize(str){
-return str.toLowerCase().normalize("NFD")
-.replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d");
+return str.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.replace(/đ/g,"d");
 }
 
-let currentQuery="";
-let currentName="";
+let currentData=null;
 
 function start(){
 let val=document.getElementById("input").value.trim();
 if(!val) return;
 
 let key=normalize(val);
-currentName=locations[key]||val;
-currentQuery=encodeURIComponent(currentName+", Ba Vì, Hà Nội");
+currentData=locations[key] || {
+    name:"Thôn "+val+", khu vực Ba Vì, Hà Nội",
+    lat:21.2333,
+    lng:105.4000,
+    price:"18 - 22 triệu/m²"
+};
 
-document.getElementById("locationName").innerText=currentName;
-document.getElementById("card").style.display="block";
+document.getElementById("locationName").innerText=currentData.name;
+document.querySelector(".card").style.display="block";
 
 document.getElementById("qrImg").src=
-`https://img.vietqr.io/image/LPB-033963180001-compact.png?amount=5000&addInfo=${encodeURIComponent("BaoCao "+val)}&t=${Date.now()}`;
+`https://img.vietqr.io/image/LPBANK-033963180001-compact2.png?amount=5000&addInfo=${encodeURIComponent("BaoCao "+val)}&t=${Date.now()}`;
 
-gtag('event','check_location',{location:currentName});
+gtag('event','check_location',{location:currentData.name});
 }
 
 function unlock(){
 confetti({particleCount:150,spread:90});
+
 document.getElementById("payBox").style.display="none";
 document.getElementById("radar").style.display="none";
 document.getElementById("mapImg").style.display="none";
 
 document.getElementById("mapFrame").src=
-`https://www.google.com/maps?q=${currentQuery}&t=k&z=18&output=embed`;
-document.getElementById("mapFrame").style.display="block";
+`https://www.google.com/maps?q=${currentData.lat},${currentData.lng}&t=k&z=18&output=embed`;
 
+document.getElementById("mapFrame").style.display="block";
 document.getElementById("btnView").style.display="block";
 
 gtag('event','unlock_report',{value:5000});
@@ -136,97 +142,48 @@ document.getElementById("shareBox").style.display="block";
 
 document.getElementById("resultBox").innerText=
 "=== BÁO CÁO PHÂN TÍCH ===\n\n"+
-"Địa điểm: "+currentName+"\n"+
-"Giá tham khảo: 18 - 22 triệu/m²\n"+
+"Địa điểm: "+currentData.name+"\n"+
+"Giá tham khảo: "+currentData.price+"\n"+
 "Tiềm năng: Khu vực có giao dịch ổn định.\n"+
-"Khuyến nghị: Nên khảo sát thực tế trước khi quyết định.";
+"Khuyến nghị: Nên khảo sát thực tế trước khi quyết định.\n\n"+
+"--- NÂNG CẤP 1 ---\n"+
+"Xem bản đồ vệ tinh chi tiết.\n\n"+
+"--- NÂNG CẤP 2 ---\n"+
+"Phân tích hạ tầng & quy hoạch 2026.\n\n"+
+"--- NÂNG CẤP 3 ---\n"+
+"Xuất báo cáo PDF chuyên sâu.";
 
 let url=window.location.href;
 document.getElementById("shareFb").href=
-`https://www.facebook.com/sharer/sharer.php?u=${url}`;
+`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+
 document.getElementById("shareZalo").href=
-`https://zalo.me/share?url=${url}`;
+`https://sp.zalo.me/share_inline/index.html?url=${encodeURIComponent(url)}`;
 }
 
 const luckyQuotes = [
-        "✨ 'Mua vàng thì lỗ, mua thổ thì lời' - Chúc bạn sớm đại thắng!",
-        "🌱 'Đất lành chim đậu' - Mảnh đất này mang lại sinh khí & tài lộc.",
-        "💰 'Đừng chờ mua bất động sản, hãy mua bất động sản rồi chờ đợi'.",
-        "💎 'Bất động sản là con đường ngắn nhất tới tự do tài chính'.",
-        "🚀 'Đầu tư hôm nay, thảnh thơi mai sau. Chúc bạn thành công!'"
-    ];
+"✨ 'Mua vàng thì lỗ, mua thổ thì lời'",
+"🌱 'Đất lành chim đậu'",
+"💰 'Đầu tư hôm nay, thảnh thơi mai sau'",
+"💎 'Bất động sản là kênh giữ giá bền vững'",
+"🚀 'Kiên nhẫn là chìa khóa thành công'"
+];
 
-    function handleSearch() {
-        const val = document.getElementById('userInput').value.trim();
-        if(!val) return;
-        document.getElementById('userInput').blur();
+setInterval(() => {
+const names=["Anh Tuấn","Chị Lan","Chú Hùng","BĐS Ba Vì","Môi giới 24h"];
+const toast=document.createElement('div');
+toast.style.position="fixed";
+toast.style.bottom="20px";
+toast.style.left="20px";
+toast.style.background="#111";
+toast.style.color="#0f0";
+toast.style.padding="10px";
+toast.style.borderRadius="8px";
+toast.innerHTML=`💰 <b>${names[Math.floor(Math.random()*names.length)]}</b> vừa check thành công!`;
+document.body.appendChild(toast);
+setTimeout(()=>toast.remove(),4000);
+},12000);
 
-        document.getElementById('resultCard').style.display = 'block';
-        document.getElementById('payBox').style.display = 'block';
-        document.getElementById('giftSection').style.display = 'none';
-        document.getElementById('mainResult').style.display = 'none';
-        document.getElementById('googleMap').style.filter = "blur(12px)";
-        document.getElementById('radarLayer').style.display = 'flex';
-
-        let clean = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
-        let found = { n: "THÔN " + val.toUpperCase() + ", BA VÌ", p: "18.500.000", lat: 21.2333, lng: 105.4000 };
-
-        for (let k in dataGeo) {
-            if (clean.includes(k)) { found = dataGeo[k]; break; }
-        }
-
-        document.getElementById('outLoc').innerText = found.n;
-        document.getElementById('priceTag').innerHTML = found.p + " <small style='font-size: 13px;'>đ/m²</small>";
-        document.getElementById('googleMap').src = `https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3500.000000000000!2d${found.lng}!3d${found.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s&maptype=satellite`;
-        document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-033963180001-compact.png?amount=5000&addInfo=TraDa%20${encodeURIComponent(clean)}`;
-        
-        confetti({ particleCount: 30 });
-        window.scrollTo({ top: document.getElementById('resultCard').offsetTop - 10, behavior: 'smooth' });
-    }
-
-    function handlePayment() {
-        document.getElementById('payBox').style.display = 'none';
-        document.getElementById('radarLayer').style.display = 'none';
-        document.getElementById('googleMap').style.filter = "blur(0)";
-        document.getElementById('giftSection').style.display = 'block';
-        confetti({ particleCount: 150, spread: 70 });
-    }
-
-    function handleGift() {
-        document.getElementById('giftSection').style.display = 'none';
-        document.getElementById('mainResult').style.display = 'block';
-        document.getElementById('luckyQuote').innerText = luckyQuotes[Math.floor(Math.random() * luckyQuotes.length)];
-        document.getElementById('finalData').innerText = 
-            "✅ KẾT QUẢ PHÂN TÍCH QUY HOẠCH 2026\n" +
-            "• HỆ TỌA ĐỘ: VN-2000 (Trung ương)\n" +
-            "• TRỤC X: " + (594000 + Math.random()*500).toFixed(1) + "\n" +
-            "• TRỤC Y: " + (2342000 + Math.random()*500).toFixed(1) + "\n" +
-            "• QUY HOẠCH: ĐẤT Ở (Sổ đỏ lâu dài)\n" +
-            "• ĐÁNH GIÁ: Vị trí tiềm năng, hạ tầng tốt.";
-        confetti({ particleCount: 100 });
-    }
-
-    function share(type) {
-        const url = window.location.href;
-        if(type === 'fb') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`);
-        if(type === 'zalo') window.open(`https://sp.zalo.me/share_inline/index.html?url=${encodeURIComponent(url)}`);
-        if(type === 'copy') {
-            navigator.clipboard.writeText(url);
-            showToast("🔗 Đã sao chép liên kết!");
-        }
-    }
-
-    function showToast(txt) {
-        const container = document.getElementById('toast-container');
-        const t = document.createElement('div');
-        t.className = 'toast-msg'; t.innerHTML = txt;
-        container.appendChild(t); setTimeout(() => t.remove(), 3500);
-    }
-
-    setInterval(() => {
-        const names = ["Anh Tuấn", "Chị Lan", "Chú Hùng", "BĐS Ba Vì", "Môi giới 24h"];
-        showToast(`💰 <b>${names[Math.floor(Math.random()*names.length)]}</b> vừa check thành công!`);
-    }, 12000);
 </script>
 </body>
 </html>
