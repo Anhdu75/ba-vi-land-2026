@@ -6,7 +6,7 @@ export default function handler(req, res) {
     // 2. DANH SÁCH 31 XÃ VÀ CÁC THÔN (Dữ liệu gốc của bạn)
     const danhSachToanHuyen = [
         { xa: "Thị trấn Tây Đằng", thon: ["Đông", "Đoài", "Nam", "Bắc", "Lai Bồ", "Cao Nhang", "Phú Mỹ"] },
-        { xa: "Vạn Thắng", thon: ["Mai Trai", "La Xuyên", "Quang Ngọc", "Hậu Trạch", "Nhuận Trạch", "Tám Xuyên", "Chợ Mơ"] },
+        { xa: "Vạn Thắng", thon: ["Mai Trai", "La Xuyên", "Quang Ngọc", "Hậu Trạch", "Nhuận Trạch", "Tuấn Xuyên", "Chợ Mơ"] },
         { xa: "Vật Lại", thon: ["Vật Phụ", "Yên Thành", "Yên Bồ", "Vật Lại 1", "Vật Lại 2", "Vật Lại 3"] },
         { xa: "Phú Sơn", thon: ["Phú Hữu", "Yên Kỳ", "Lương Tụ", "Quy Mông", "Phú Mỹ"] },
         { xa: "Tản Hồng", thon: ["Vân Sa", "La Phẩm", "La Thượng"] },
