@@ -38,41 +38,52 @@
 
         /* KẾT QUẢ VN-2000 */
         .result-box { background: #111; color: var(--neon); padding: 15px; border-radius: 12px; font-family: monospace; font-size: 11px; line-height: 1.6; border-left: 5px solid var(--success); margin-bottom: 15px; }
-/* Bảng so sánh giá: An toàn & Chuyên nghiệp */
-.price-history-box {
-    margin-top: 15px;
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
+/* Khung chứa bảng so sánh - Thiết kế an toàn cho Mobile */
+.history-safe-box {
+    margin: 15px 0;
+    padding: 0;
+    background: #fff;
+    border: 1px solid #eef0f2;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
-.price-table {
+.history-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 12px;
+    font-size: 13px;
+    line-height: 1.2;
 }
-.price-table th {
+.history-table th {
     background: #f8f9fa;
-    color: #666;
-    padding: 10px;
-    text-align: left;
-    border-bottom: 2px solid #eee;
-}
-.price-table td {
+    color: #888;
+    font-weight: 700;
     padding: 12px 10px;
-    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+.history-table td {
+    padding: 12px 10px;
+    border-top: 1px solid #f1f3f5;
     color: #333;
-    font-weight: 600;
+    font-weight: 700;
 }
-.trend-tag {
-    padding: 2px 6px;
-    border-radius: 4px;
+.status-tag {
     font-size: 10px;
-    font-weight: 900;
+    padding: 3px 7px;
+    border-radius: 4px;
+    font-weight: 800;
 }
-.tag-up { background: #e8f5e9; color: #2ecc71; }
-.tag-hot { background: #ffebee; color: #ff4d4d; animation: blink 1.5s infinite; }
+.tag-blue { background: #e7f3ff; color: #007bff; }
+.tag-green { background: #ebfbee; color: #2ecc71; }
+.tag-red { background: #fff5f5; color: #ff4d4d; animation: pulse-light 2s infinite; }
+
+@keyframes pulse-light {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
 @keyframes blink { 50% { opacity: 0.6; } }
         /* KHỐI ỦNG HỘ (DONATION) */
         #donationBox { background: #fffdf2; border: 2px solid var(--gold); border-radius: 15px; padding: 20px; text-align: center; margin-top: 20px; }
@@ -106,9 +117,7 @@
             </div>
         </div>
 
-        <div id="unlockedData" style="display:none;">
-            <div class="result-box" id="vnPanel"></div>
-            <div class="price-history-box">
+       <div class="price-history-box">
     <table class="price-table">
         <thead>
             <tr>
@@ -250,7 +259,6 @@ try {
     console.log("Không thể hiển thị bảng so sánh giá");
 }
 // -------------------------------------------
-    }
 
     function thanksAction() {
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 } });
