@@ -41,12 +41,16 @@
         .history-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px; border: 1px solid #eee; }
         .history-table td { padding: 10px; border: 1px solid #eee; text-align: center; font-weight: 700; }
 
-        /* 7. KHỐI ỦNG HỘ */
+        /* 7. KHỐI ỦNG HỘ & STREAM */
         #donationBox { background: #fffdf2; border: 2px solid var(--gold); border-radius: 15px; padding: 15px; text-align: center; margin-top: 15px; }
-        .qr-wrap { width: 150px; height: 150px; margin: 10px auto; background: #fff; padding: 5px; border-radius: 10px; border: 1px solid #ddd; }
+        .qr-wrap { width: 150px; height: 150px; margin: 10px auto; background: #fff; padding: 5px; border-radius: 10px; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        #qrImg { width: 100%; display: none; } /* Mặc định ẩn để tránh hiện ô trắng lỗi */
         
         .share-row { display: flex; gap: 8px; margin: 15px 0; }
         .btn-s { flex: 1; padding: 12px; border-radius: 8px; border: none; font-size: 11px; font-weight: 800; color: #fff; text-align: center; text-decoration: none; }
+
+        /* 8. KHUNG MIỄN TRỪ PHÁP LÝ CỐ ĐỊNH */
+        .legal-notice { background: #fff1f0; border: 1px solid #ffa39e; padding: 12px; border-radius: 10px; margin-top: 15px; text-align: left; }
     </style>
 </head>
 <body>
@@ -104,25 +108,31 @@
                 <button onclick="copyUrl()" class="btn-s" style="background:#6c757d;">SAO CHÉP</button>
             </div>
 
-           <div id="donationBox">
-    <div style="background: #fff3cd; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px dashed #856404;">
-        <b style="color:#856404; font-size:13px;">☕ DUY TRÌ HỆ THỐNG</b>
-        <span style="font-size:10px; color:#666; display:block; margin-top:5px; text-align: justify;">
-            Mời Admin ly trà đá (5k) để duy trì máy chủ cập nhật giá đất 24/7 bạn nhé! 🙏
-        </span>
-    </div>
-    
-    <div class="qr-wrap"><img id="qrImg" style="width:100%"></div>
+            <div id="donationBox">
+                <div style="background: #fff3cd; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px dashed #856404;">
+                    <b style="color:#856404; font-size:13px;">☕ DUY TRÌ HỆ THỐNG</b>
+                    <span style="font-size:10px; color:#666; display:block; margin-top:5px; text-align: justify;">
+                        Mời Admin ly trà đá (5k) để duy trì máy chủ cập nhật giá đất 24/7 bạn nhé! 🙏
+                    </span>
+                </div>
+                
+                <div class="qr-wrap">
+                    <img id="qrImg" src="" alt="QR Ủng hộ" onload="this.style.display='block'">
+                    <span id="qrLoading" style="font-size: 10px; color: #999;">Đang tạo mã...</span>
+                </div>
 
-    <div style="height: 30px; overflow: hidden; background: #000; border-radius: 5px; margin-top: 10px; position: relative; border: 1px solid var(--gold);">
-        <div id="fakeStream" style="position: absolute; white-space: nowrap; font-size: 11px; color: var(--neon); line-height: 30px; font-family: monospace; left: 0;">
-            </div>
-    </div>
+                <div style="height: 30px; overflow: hidden; background: #000; border-radius: 5px; margin-top: 10px; position: relative; border: 1px solid var(--gold);">
+                    <div id="fakeStream" style="position: absolute; white-space: nowrap; font-size: 11px; color: var(--neon); line-height: 30px; font-family: monospace; left: 0;"></div>
+                </div>
 
-    <button class="btn-main btn-gold" style="background:var(--success); color:#fff; margin-top:10px;" onclick="thanks()">TÔI ĐÃ GỬI ỦNG HỘ 👍</button>
-</div>
-                <div class="qr-wrap"><img id="qrImg" style="width:100%"></div>
                 <button class="btn-main btn-gold" style="background:var(--success); color:#fff; margin-top:10px;" onclick="thanks()">TÔI ĐÃ GỬI ỦNG HỘ 👍</button>
+            </div>
+
+            <div class="legal-notice">
+                <b style="color:#cf1322; font-size:11px; display:block; margin-bottom:4px;">⚠️ MIỄN TRỪ PHÁP LÝ:</b>
+                <p style="font-size:10px; color:#555; line-height:1.5; margin:0; text-align: justify;">
+                    Dữ liệu được tổng hợp từ trí tuệ nhân tạo và phân tích thị trường tự do. Chúng tôi không chịu trách nhiệm cho bất kỳ quyết định mua bán nào của người dùng. Vui lòng kiểm tra kỹ pháp lý tại Phòng Tài Nguyên Môi Trường địa phương.
+                </p>
             </div>
 
             <a href="https://zalo.me/0368869160" target="_blank" class="btn-main" style="background:var(--zalo); color:#fff; margin-top:15px;">💬 TƯ VẤN TRỰC TIẾP (ZALO)</a>
@@ -139,6 +149,9 @@
         "Người giàu không làm việc vào thời gian nghỉ ngơi, họ để đất đai làm việc đó."
     ];
 
+    const fakeNames = ["Anh Tuấn", "Chị Thảo", "Môi giới 88", "Nhà đầu tư HN", "Anh Hùng Ba Vì", "Chị Lan Tây Đằng", "BĐS Miền Bắc", "Khách ẩn danh", "Lê Minh", "Hoàng Yến"];
+    const fakeActions = ["vừa mời trà đá 5k", "vừa ủng hộ cafe 20k", "vừa gửi 10k xây kênh", "vừa ủng hộ duy trì trạm", "vừa mời Admin ly trà đá"];
+
     function acceptLegal() {
         document.getElementById('legalPopup').style.display = 'none';
         localStorage.setItem('legal_accepted_2026_final', 'true');
@@ -153,6 +166,8 @@
         document.getElementById('unlockedData').style.display = 'none';
         document.getElementById('radarOverlay').style.display = 'flex';
         document.getElementById('mapFrame').style.filter = "blur(15px) grayscale(1)";
+        document.getElementById('qrImg').style.display = 'none';
+        document.getElementById('qrLoading').style.display = 'block';
 
         try {
             const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
@@ -163,22 +178,26 @@
             document.getElementById('outLoc').innerText = item.duong;
             document.getElementById('outPrice').innerHTML = item.gia_2026_du_kien.toLocaleString() + " <small>đ/m²</small>";
             
-            // FIX ĐỊNH VỊ VỆ TINH
             const fullAddr = `${item.duong}, Ba Vì, Hà Nội, Việt Nam`;
-            document.getElementById('mapFrame').src = `https://maps.google.com/maps?q=${encodeURIComponent(fullAddr)}&t=k&z=17&output=embed`;
-            document.getElementById('officeLink').href = `https://www.google.com/maps/search/${encodeURIComponent(fullAddr)}`;
+            document.getElementById('mapFrame').src = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodeURIComponent(fullAddr)}&maptype=satellite`;
+            document.getElementById('officeLink').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddr)}`;
             
-            // QR ỦNG HỘ
-            document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-033963180001-compact.png?amount=5000&addInfo=UNG%20HO%20${encodeURIComponent(item.duong)}`;
+            // Cập nhật QR và xử lý lỗi
+            const qrUrl = `https://img.vietqr.io/image/LPBANK-033963180001-compact.png?amount=5000&addInfo=TRA%20DA%20${encodeURIComponent(item.duong)}`;
+            const qrImg = document.getElementById('qrImg');
+            qrImg.src = qrUrl;
+            qrImg.onerror = () => { qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TRA-DA-BA-VI`; };
 
-            // CHÂM NGÔN NGẪU NHIÊN
             document.getElementById('quoteText').innerText = quotes[Math.floor(Math.random() * quotes.length)];
 
             setTimeout(() => {
                 document.getElementById('radarOverlay').style.display = 'none';
                 document.getElementById('mapFrame').style.filter = "none";
                 document.getElementById('unlockedData').style.display = 'block';
+                document.getElementById('qrLoading').style.display = 'none';
+                
                 startFakeStream();
+                
                 document.getElementById('vnPanel').innerText = `> THÔNG SỐ VỊ TRÍ (MÔ PHỎNG)\n• X: ${(594100 + Math.random()*500).toFixed(2)}\n• Y: ${(2342300 + Math.random()*500).toFixed(2)}\n• TRẠNG THÁI: ĐẤT Ở (ONT)`;
                 
                 const g26 = item.gia_2026_du_kien / 1000000;
@@ -195,6 +214,24 @@
         } catch (e) { alert("Lỗi kết nối máy chủ!"); }
     }
 
+    function startFakeStream() {
+        const streamDiv = document.getElementById('fakeStream');
+        let content = "";
+        for(let i=0; i<10; i++) {
+            const name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+            const action = fakeActions[Math.floor(Math.random() * fakeActions.length)];
+            content += ` • ${name} ${action} ... `;
+        }
+        streamDiv.innerText = content + content;
+        let pos = 0;
+        if(window.streamInterval) clearInterval(window.streamInterval);
+        window.streamInterval = setInterval(() => {
+            pos--;
+            if (Math.abs(pos) >= streamDiv.scrollWidth / 2) pos = 0;
+            streamDiv.style.transform = `translateX(${pos}px)`;
+        }, 30);
+    }
+
     function copyUrl() {
         navigator.clipboard.writeText(window.location.href);
         alert("Đã sao chép link!");
@@ -204,34 +241,6 @@
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 } });
         alert("Admin chân thành cảm ơn ly trà đá từ bạn! Chúc bạn đại thắng tại Ba Vì!");
     }
-    // --- LOGIC HỆ THỐNG TIỀN ẢO ---
-const fakeNames = ["Anh Tuấn", "Chị Thảo", "Môi giới 88", "Nhà đầu tư HN", "Anh Hùng Ba Vì", "Chị Lan Tây Đằng", "BĐS Miền Bắc", "Khách ẩn danh", "Lê Minh", "Hoàng Yến"];
-const fakeActions = ["vừa mời trà đá 5k", "vừa ủng hộ cafe 20k", "vừa gửi 10k xây kênh", "vừa ủng hộ duy trì trạm", "vừa mời Admin ly trà đá"];
-
-function startFakeStream() {
-    const streamDiv = document.getElementById('fakeStream');
-    let content = "";
-    // Tạo 1 chuỗi dài gồm 10 thông báo ngẫu nhiên
-    for(let i=0; i<10; i++) {
-        const name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
-        const action = fakeActions[Math.floor(Math.random() * fakeActions.length)];
-        content += ` • ${name} ${action} ... `;
-    }
-    streamDiv.innerText = content + content; // Nhân đôi để chạy không bị ngắt quãng
-
-    let pos = 0;
-    // Xóa interval cũ nếu có để tránh chạy chồng chéo
-    if(window.streamInterval) clearInterval(window.streamInterval);
-    
-    window.streamInterval = setInterval(() => {
-        pos--;
-        // Nếu chạy hết một nửa chuỗi thì quay lại từ đầu để tạo vòng lặp vô tận
-        if (Math.abs(pos) >= streamDiv.scrollWidth / 2) {
-            pos = 0;
-        }
-        streamDiv.style.transform = `translateX(${pos}px)`;
-    }, 30); // Tốc độ chạy chữ (30 là vừa đẹp)
-}
 </script>
 </body>
 </html>
