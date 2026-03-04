@@ -106,7 +106,7 @@
 
         <div id="unlockedData" style="display:none;">
             <div class="quote-box">
-                <b class="quote-title">🎁 Quà tặng tri thức dành cho bạn:</b>
+                <b class="quote-title">🎁 Quà tặng dành cho bạn:</b>
                 <span class="quote-text" id="quoteText">--</span>
             </div>
 
@@ -146,7 +146,7 @@
             </div>
 
             <div class="legal-notice">
-                <b>⚠️ MIỄN TRỪ PHÁP LÝ LỚP 2:</b> Dữ liệu mang tính chất mô phỏng thị trường. Vui lòng kiểm tra kỹ pháp lý tại cơ quan chức năng địa phương trước khi giao dịch.
+                <b>⚠️ LƯU Ý:</b> Dữ liệu mang tính chất mô phỏng thị trường. Vui lòng kiểm tra kỹ pháp lý tại cơ quan chức năng địa phương trước khi giao dịch.
             </div>
             
             <a href="https://zalo.me/0368869160" target="_blank" class="btn-main" style="background:var(--zalo); color:#fff; margin-top:15px;">💬 TƯ VẤN TRỰC TIẾP (ZALO)</a>
@@ -184,7 +184,28 @@
             const data = await res.json();
             if(!data.length) { alert("Không tìm thấy dữ liệu!"); return; }
             const item = data[0];
+// --- ĐOẠN THAY THẾ CHO QUÀ TẶNG ---
+const item = data[0];
 
+// 1. Nạp nội dung quà tặng ngay lập tức (Không chờ đợi)
+const danhSachChamNgon = [
+    "Đừng chờ đợi để mua bất động sản. Hãy mua bất động sản và chờ đợi. - Will Rogers",
+    "Bất động sản là món đầu tư an toàn nhất thế giới. - Franklin D. Roosevelt",
+    "Ba Vì là mảnh đất của tương lai, ai giữ được đất người đó giữ được thịnh vượng.",
+    "Đầu tư tốt nhất trên trái đất chính là Đất. - Louis Glickman",
+    "Mọi thứ đều thay đổi, chỉ có mặt đất là không sinh thêm. Hãy sở hữu nó!"
+];
+const cauNguNhien = danhSachChamNgon[Math.floor(Math.random() * danhSachChamNgon.length)];
+document.getElementById('quoteText').innerText = cauNguNhien;
+
+// 2. Cập nhật các thông tin khác
+document.getElementById('outLoc').innerText = item.duong;
+document.getElementById('outPrice').innerHTML = item.gia_2026_du_kien.toLocaleString() + " <small>đ/m²</small>";
+
+// 3. Hiển thị khối dữ liệu (Mở khóa quà tặng ngay)
+document.getElementById('unlockedData').style.display = 'block'; 
+// Lưu ý: Nếu bạn muốn quà tặng hiện ra ngay cùng Radar, hãy để dòng này ở đây.
+// Nếu muốn hiện sau 3 giây thì để trong hàm setTimeout như cũ.
             // 1. Cập nhật thông tin text
 document.getElementById('outLoc').innerText = item.duong;
 document.getElementById('outPrice').innerHTML = item.gia_2026_du_kien.toLocaleString() + " <small>đ/m²</small>";
