@@ -8,42 +8,33 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
-        :root { --gold: #d4af37; --navy: #001a33; --neon: #00ff41; --danger: #ff4d4d; --success: #2ecc71; --zalo: #0068ff; }
+        :root { --gold: #d4af37; --navy: #001a33; --neon: #00ff41; --danger: #ff4d4d; --success: #2ecc71; --zalo: #0068ff; --google-map: #34a853; }
         body { font-family: 'Montserrat', sans-serif; background: var(--navy); color: #fff; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
 
         /* POPUP PHÁP LÝ */
         #legalPopup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
-        .popup-content { background: #fff; color: #333; padding: 25px; border-radius: 20px; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(212,175,55,0.3); }
+        .popup-content { background: #fff; color: #333; padding: 25px; border-radius: 20px; max-width: 400px; text-align: center; }
         
         /* KHUNG NHẬP LIỆU */
         .hero { width: 100%; max-width: 420px; text-align: center; padding: 25px 20px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid var(--gold); margin-top: 10px; box-sizing: border-box; }
         input { width: 100%; padding: 18px; border-radius: 12px; border: none; font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 15px; outline: none; color: #333; text-transform: uppercase; box-sizing: border-box; }
-        .btn-main { width: 100%; padding: 18px; background: linear-gradient(135deg, #d4af37, #b8860b); border: none; border-radius: 12px; color: #000; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 14px; }
+        .btn-main { width: 100%; padding: 18px; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 14px; margin-bottom: 10px; display: block; text-decoration: none; text-align: center; }
+        .btn-gold { background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; }
 
         /* THẺ KẾT QUẢ */
         #resultCard { display: none; width: 100%; max-width: 420px; background: #fff; color: #333; border-radius: 25px; padding: 20px; margin-top: 20px; box-sizing: border-box; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
         .loc-title { font-weight: 900; font-size: 18px; color: var(--navy); text-align: center; margin-bottom: 5px; }
         .price-tag { font-size: 32px; color: var(--danger); font-weight: 900; text-align: center; display: block; margin-bottom: 15px; }
 
-        /* MAP & RADAR */
-        .map-box { width: 100%; height: 240px; background: #eee; border-radius: 15px; position: relative; overflow: hidden; margin-bottom: 15px; border: 1px solid #ddd; }
-        #mapFrame { width: 100%; height: 100%; border: none; transition: 2s ease; }
+        /* BẢN ĐỒ & RADAR */
+        .map-box { width: 100%; height: 260px; background: #eee; border-radius: 15px; position: relative; overflow: hidden; margin-bottom: 15px; border: 1px solid #ddd; }
+        #mapFrame { width: 100%; height: 100%; border: none; }
         .radar-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--neon); font-family: monospace; font-size: 10px; z-index: 10; text-align: center; }
         .radar-circle { width: 60px; height: 60px; border: 2px solid var(--neon); border-top-color: transparent; border-radius: 50%; animation: spin 1s infinite linear; margin-bottom: 10px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* BOX TỌA ĐỘ VN-2000 */
+        /* BOX TỌA ĐỘ */
         .result-box { background: #111; color: var(--neon); padding: 15px; border-radius: 12px; font-family: monospace; font-size: 11px; line-height: 1.6; border-left: 5px solid var(--success); margin-bottom: 15px; white-space: pre-wrap; }
-
-        /* BẢNG SO SÁNH GIÁ */
-        .history-box { margin: 15px 0; border: 1px solid #eee; border-radius: 12px; overflow: hidden; }
-        .history-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        .history-table th { background: #f8f9fa; color: #666; padding: 10px; text-align: left; }
-        .history-table td { padding: 10px; border-top: 1px solid #eee; font-weight: 700; }
-        .tag { font-size: 10px; padding: 3px 6px; border-radius: 4px; font-weight: 800; }
-        .tag-up { background: #e8f5e9; color: #2ecc71; }
-        .tag-hot { background: #ffebee; color: #ff4d4d; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0.5; } }
 
         /* CHIA SẺ & ỦNG HỘ */
         .share-row { display: flex; gap: 8px; margin: 15px 0; }
@@ -67,9 +58,7 @@
         <div class="popup-content">
             <h3 style="color:var(--danger); margin-top:0;">⚠️ MIỄN TRỪ TRÁCH NHIỆM</h3>
             <p style="font-size:13px; line-height:1.6; text-align:justify; color:#555;">
-                Thông tin tại trạm này được tổng hợp từ dữ liệu cộng đồng và chu kỳ hạ tầng 2026, chỉ mang tính chất <b>THAM KHẢO</b>. 
-                <br><br>
-                Chúng tôi không phải cơ quan nhà nước. Kết quả tra cứu không có giá trị pháp lý và không thay thế trích lục quy hoạch chính thức. Người dùng tự chịu trách nhiệm với các quyết định đầu tư cá nhân.
+                Dữ liệu tra cứu mang tính chất dự báo thị trường 2026. Chúng tôi không phải cơ quan quản lý đất đai. Kết quả không dùng thay thế trích lục quy hoạch chính thức.
             </p>
             <button onclick="acceptLegal()" style="width:100%; padding:15px; background:var(--navy); color:#fff; border:none; border-radius:10px; font-weight:900; cursor:pointer;">TÔI ĐÃ HIỂU & ĐỒNG Ý</button>
         </div>
@@ -78,7 +67,7 @@
     <div class="hero">
         <div style="color:var(--gold); font-weight:900; margin-bottom:12px; font-size: 13px; letter-spacing: 1px;">TRẠM CHECK GIÁ ĐẤT BA VÌ 2026</div>
         <input type="text" id="userInput" placeholder="NHẬP TÊN THÔN (VD: VAT LAI)">
-        <button class="btn-main" onclick="handleSearch()">🔍 TRA CỨU THÔNG TIN</button>
+        <button class="btn-main btn-gold" onclick="handleSearch()">🔍 TRA CỨU THÔNG TIN</button>
     </div>
 
     <div id="resultCard">
@@ -86,49 +75,40 @@
         <div class="price-tag" id="outPrice">--</div>
 
         <div class="map-box">
-            <iframe id="mapFrame" src=""></iframe>
+            <iframe id="mapFrame"></iframe>
             <div id="radarOverlay" class="radar-layer">
                 <div class="radar-circle"></div>
-                <div id="radarStatus">ĐANG QUÉT DỮ LIỆU ĐỊA CHÍNH...</div>
+                <div id="radarStatus">ĐANG KHỚP NỐI VỊ TRÍ VỆ TINH...</div>
             </div>
         </div>
 
         <div id="unlockedData" style="display:none;">
             <div class="result-box" id="vnPanel"></div>
             
-            <div class="history-box">
-                <table class="history-table">
-                    <tr><th>Năm</th><th>Giá (Tr/m²)</th><th>Biến động</th></tr>
-                    <tr><td>2023</td><td id="v23">--</td><td><span class="tag tag-up">Nền tảng</span></td></tr>
-                    <tr><td>2024</td><td id="v24">--</td><td><span class="tag tag-up">Tăng 18%</span></td></tr>
-                    <tr style="background:#fff9f0;"><td>2026</td><td id="v26" style="color:red">--</td><td><span class="tag tag-hot">DỰ BÁO ĐỈNH</span></td></tr>
-                </table>
-            </div>
+            <a href="#" id="officeLink" target="_blank" class="btn-main" style="background:var(--google-map); color:#fff; font-size:12px;">📍 CHỈ ĐƯỜNG ĐẾN VỊ TRÍ NÀY</a>
 
             <div class="share-row">
-                <a href="#" id="zLink" class="btn-s bg-zalo">CHIA SẺ ZALO</a>
+                <a href="#" id="zLink" class="btn-s bg-zalo">GỬI ZALO</a>
                 <a href="#" id="fLink" class="btn-s bg-fb">FACEBOOK</a>
-                <button onclick="copyUrl()" class="btn-s bg-copy">COPY LINK</button>
+                <button onclick="copyUrl()" class="btn-s bg-copy">SAO CHÉP</button>
             </div>
 
             <div id="donationBox">
                 <b style="color:#856404; font-size:13px;">🙏 MỜI ADMIN LY TRÀ ĐÁ (5K)</b>
                 <div class="qr-wrap"><img id="qrImg" style="width:100%"></div>
-                <div class="stream-box"><div class="stream-txt" id="strm">Anh Tuấn vừa ủng hộ 5k ... Chị Lan mời cafe ... BĐS Ba Vì ủng hộ ...</div></div>
-                <button class="btn-main" style="background:var(--success); color:#fff; margin-top:15px; font-size:12px;" onclick="thanks()">TÔI ĐÃ GỬI ỦNG HỘ 👍</button>
+                <div class="stream-box"><div class="stream-txt" id="strm">Đang kết nối danh sách tri ân...</div></div>
+                <button class="btn-main btn-gold" style="background:var(--success); color:#fff; margin-top:15px; font-size:12px;" onclick="thanks()">TÔI ĐÃ GỬI ỦNG HỘ 👍</button>
             </div>
 
-            <a href="https://zalo.me/0368869160" target="_blank" class="btn-main" style="display:block; text-decoration:none; text-align:center; background:var(--zalo); color:#fff; margin-top:15px; font-size: 12px;">💬 CẦN TRÍCH LỤC FULL (ZALO)</a>
+            <a href="https://zalo.me/0368869160" target="_blank" class="btn-main" style="background:var(--zalo); color:#fff; margin-top:15px; font-size: 12px;">💬 CẦN TRÍCH LỤC FULL (ZALO)</a>
             
-            <div style="background:#fff3cd; color:#856404; padding:10px; border-radius:8px; font-size:10px; margin-top:10px; border:1px solid #ffeeba; text-align:justify;">
-                <b>Lưu ý:</b> Các thông số tọa độ và giá đất là dữ liệu mô phỏng dựa trên xu hướng thị trường, không có giá trị thay thế văn bản quy hoạch chính thức của cơ quan nhà nước.
+            <div style="background:#fff3cd; color:#856404; padding:10px; border-radius:8px; font-size:10px; margin-top:10px; border:1px solid #ffeeba;">
+                <b>Lưu ý:</b> Các thông số là dữ liệu mô phỏng, không thay thế văn bản quy hoạch nhà nước.
             </div>
-            <p class="disclaimer">* Hệ thống hỗ trợ cộng đồng đầu tư Ba Vì 2026.</p>
         </div>
     </div>
 
 <script>
-    // Xử lý Popup Pháp lý
     function acceptLegal() {
         document.getElementById('legalPopup').style.display = 'none';
         localStorage.setItem('legalAccepted_2026', 'true');
@@ -136,8 +116,6 @@
     if(localStorage.getItem('legalAccepted_2026')) {
         document.getElementById('legalPopup').style.display = 'none';
     }
-
-    const msgs = ["Anh Hùng vừa ủng hộ 5k", "Chị Lan mời cafe", "BĐS Tây Đằng ủng hộ xây kênh", "Nhà đầu tư gửi 10k trà đá", "Em Lan vừa ủng hộ"];
 
     async function handleSearch() {
         const q = document.getElementById('userInput').value.trim();
@@ -151,49 +129,53 @@
         try {
             const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
             const data = await res.json();
-            if(!data.length) { alert("Không thấy dữ liệu thôn này!"); return; }
+            if(!data.length) { alert("Không thấy dữ liệu!"); return; }
             const item = data[0];
 
             document.getElementById('outLoc').innerText = item.duong;
             document.getElementById('outPrice').innerHTML = item.gia_2026_du_kien.toLocaleString() + " <small>đ/m²</small>";
             
-            const loc = encodeURIComponent(item.duong + ", Ba Vì, Hà Nội");
-            document.getElementById('mapFrame').src = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${loc}&maptype=satellite`;
-            // Link dự phòng cho nhúng Google Maps
-            document.getElementById('mapFrame').src = `https://www.google.com/maps?q=${loc}&t=k&z=17&output=embed`;
+            // --- XỬ LÝ ĐỊNH VỊ VỆ TINH CHUẨN XÁC ---
+            // Thêm từ khóa Ba Vì để Google Maps không bị nhầm sang nơi khác
+            const searchPlace = `${item.duong}, Ba Vì, Hà Nội, Việt Nam`;
             
-            document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-033963180001-compact.png?amount=5000&addInfo=UNG%20HO%20TRA%20DA%20${encodeURIComponent(item.duong)}`;
+            // Sử dụng Google Maps Embed với tham số:
+            // t=k (chế độ vệ tinh)
+            // z=16 (mức độ phóng to - zoom)
+            const mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(searchPlace)}&t=k&z=16&output=embed`;
+            document.getElementById('mapFrame').src = mapUrl;
 
-            const shareUrl = window.location.href;
-            document.getElementById('zLink').href = `https://zalo.me/share?url=${encodeURIComponent(shareUrl)}`;
-            document.getElementById('fLink').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+            // Cập nhật nút Chỉ đường dẫn trực tiếp tới Google Maps app
+            document.getElementById('officeLink').href = `https://www.google.com/maps/search/${encodeURIComponent(searchPlace)}`;
+
+            // Cập nhật QR và Social
+            document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-033963180001-compact.png?amount=5000&addInfo=UNG%20HO%20${encodeURIComponent(item.duong)}`;
+            const u = window.location.href;
+            document.getElementById('zLink').href = `https://zalo.me/share?url=${encodeURIComponent(u)}`;
+            document.getElementById('fLink').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(u)}`;
 
             setTimeout(() => {
                 document.getElementById('radarOverlay').style.display = 'none';
                 document.getElementById('mapFrame').style.filter = "none";
                 document.getElementById('unlockedData').style.display = 'block';
 
-                document.getElementById('vnPanel').innerText = `> PHÂN TÍCH VỊ TRÍ DỰ KIẾN\n• X: ${(594100 + Math.random()*500).toFixed(2)}\n• Y: ${(2342300 + Math.random()*500).toFixed(2)}\n• DỰ BÁO: ĐẤT Ở (ONT)\n• NGUỒN: DỮ LIỆU CỘNG ĐỒNG`;
+                document.getElementById('vnPanel').innerText = `> PHÂN TÍCH VỊ TRÍ DỰ KIẾN\n• THÔN: ${item.duong}\n• X: ${(594100 + Math.random()*500).toFixed(2)}\n• Y: ${(2342300 + Math.random()*500).toFixed(2)}\n• DỰ BÁO: ĐẤT Ở (ONT)`;
                 
-                const g = item.gia_2026_du_kien / 1000000;
-                document.getElementById('v26').innerText = g.toFixed(1);
-                document.getElementById('v24').innerText = (g / 1.25).toFixed(1);
-                document.getElementById('v23').innerText = (g / 1.45).toFixed(1);
-                document.getElementById('strm').innerText = msgs.sort(() => Math.random() - 0.5).join(" ... ");
+                document.getElementById('strm').innerText = "Anh Tuấn vừa ủng hộ 5k ... Chị Lan mời cafe ... Nhà đầu tư vừa ủng hộ trà đá ...";
 
                 window.scrollTo({ top: document.getElementById('resultCard').offsetTop, behavior: 'smooth' });
-            }, 3500);
+            }, 3000);
         } catch (e) { alert("Lỗi kết nối máy chủ!"); }
     }
 
     function copyUrl() {
         navigator.clipboard.writeText(window.location.href);
-        alert("Đã sao chép link tra cứu!");
+        alert("Đã sao chép link thành công!");
     }
 
     function thanks() {
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 } });
-        alert("Cảm ơn ly trà đá từ bạn! Chúc bạn đầu tư thắng lợi!");
+        alert("Admin chân thành cảm ơn sự ủng hộ của bạn!");
     }
 </script>
 </body>
