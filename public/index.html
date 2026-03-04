@@ -104,14 +104,23 @@
                 <button onclick="copyUrl()" class="btn-s" style="background:#6c757d;">SAO CHÉP</button>
             </div>
 
-            <div id="donationBox">
-                <div style="background: #fff3cd; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px dashed #856404;">
-                    <b style="color:#856404; font-size:13px;">☕ DUY TRÌ HỆ THỐNG</b>
-                    <span style="font-size:10px; color:#666; display:block; margin-top:5px; text-align: justify;">
-                        Để Trạm Check luôn miễn phí và cập nhật giá mới mỗi ngày, Admin rất mong nhận được sự tiếp sức từ bạn. 
-                        <b>Mời Admin ly trà đá (5k)</b> để ủng hộ chi phí duy trì máy chủ bạn nhé! Trân trọng. 🙏
-                    </span>
-                </div>
+           <div id="donationBox">
+    <div style="background: #fff3cd; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px dashed #856404;">
+        <b style="color:#856404; font-size:13px;">☕ DUY TRÌ HỆ THỐNG</b>
+        <span style="font-size:10px; color:#666; display:block; margin-top:5px; text-align: justify;">
+            Mời Admin ly trà đá (5k) để duy trì máy chủ cập nhật giá đất 24/7 bạn nhé! 🙏
+        </span>
+    </div>
+    
+    <div class="qr-wrap"><img id="qrImg" style="width:100%"></div>
+
+    <div style="height: 30px; overflow: hidden; background: #000; border-radius: 5px; margin-top: 10px; position: relative; border: 1px solid var(--gold);">
+        <div id="fakeStream" style="position: absolute; white-space: nowrap; font-size: 11px; color: var(--neon); line-height: 30px; font-family: monospace; left: 0;">
+            </div>
+    </div>
+
+    <button class="btn-main btn-gold" style="background:var(--success); color:#fff; margin-top:10px;" onclick="thanks()">TÔI ĐÃ GỬI ỦNG HỘ 👍</button>
+</div>
                 <div class="qr-wrap"><img id="qrImg" style="width:100%"></div>
                 <button class="btn-main btn-gold" style="background:var(--success); color:#fff; margin-top:10px;" onclick="thanks()">TÔI ĐÃ GỬI ỦNG HỘ 👍</button>
             </div>
@@ -169,7 +178,7 @@
                 document.getElementById('radarOverlay').style.display = 'none';
                 document.getElementById('mapFrame').style.filter = "none";
                 document.getElementById('unlockedData').style.display = 'block';
-
+startFakeStream();
                 document.getElementById('vnPanel').innerText = `> THÔNG SỐ VỊ TRÍ (MÔ PHỎNG)\n• X: ${(594100 + Math.random()*500).toFixed(2)}\n• Y: ${(2342300 + Math.random()*500).toFixed(2)}\n• TRẠNG THÁI: ĐẤT Ở (ONT)`;
                 
                 const g26 = item.gia_2026_du_kien / 1000000;
@@ -195,6 +204,34 @@
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 } });
         alert("Admin chân thành cảm ơn ly trà đá từ bạn! Chúc bạn đại thắng tại Ba Vì!");
     }
+    // --- LOGIC HỆ THỐNG TIỀN ẢO ---
+const fakeNames = ["Anh Tuấn", "Chị Thảo", "Môi giới 88", "Nhà đầu tư HN", "Anh Hùng Ba Vì", "Chị Lan Tây Đằng", "BĐS Miền Bắc", "Khách ẩn danh", "Lê Minh", "Hoàng Yến"];
+const fakeActions = ["vừa mời trà đá 5k", "vừa ủng hộ cafe 20k", "vừa gửi 10k xây kênh", "vừa ủng hộ duy trì trạm", "vừa mời Admin ly trà đá"];
+
+function startFakeStream() {
+    const streamDiv = document.getElementById('fakeStream');
+    let content = "";
+    // Tạo 1 chuỗi dài gồm 10 thông báo ngẫu nhiên
+    for(let i=0; i<10; i++) {
+        const name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+        const action = fakeActions[Math.floor(Math.random() * fakeActions.length)];
+        content += ` • ${name} ${action} ... `;
+    }
+    streamDiv.innerText = content + content; // Nhân đôi để chạy không bị ngắt quãng
+
+    let pos = 0;
+    // Xóa interval cũ nếu có để tránh chạy chồng chéo
+    if(window.streamInterval) clearInterval(window.streamInterval);
+    
+    window.streamInterval = setInterval(() => {
+        pos--;
+        // Nếu chạy hết một nửa chuỗi thì quay lại từ đầu để tạo vòng lặp vô tận
+        if (Math.abs(pos) >= streamDiv.scrollWidth / 2) {
+            pos = 0;
+        }
+        streamDiv.style.transform = `translateX(${pos}px)`;
+    }, 30); // Tốc độ chạy chữ (30 là vừa đẹp)
+}
 </script>
 </body>
 </html>
