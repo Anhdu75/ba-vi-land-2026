@@ -86,12 +86,23 @@
         <div class="price-tag" id="outPrice">--</div>
 
         <div class="map-box">
-            <iframe id="mapFrame"></iframe>
-            <div id="radarOverlay" class="radar-layer">
-                <div class="radar-circle"></div>
-                <div id="radarStatus">ĐANG KHỚP NỐI VỆ TINH...</div>
-            </div>
-        </div>
+    <iframe 
+        id="mapFrame" 
+        width="100%" 
+        height="100%" 
+        frameborder="0" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+    
+    <div id="radarOverlay" class="radar-layer">
+        <div class="radar-circle"></div>
+        <div id="radarStatus" style="font-weight:bold; letter-spacing:1px;">ĐANG QUÉT TỌA ĐỘ VỆ TINH...</div>
+        <div style="font-size:8px; margin-top:5px; opacity:0.7;">BA VI SATELLITE SYSTEM 2026</div>
+    </div>
+</div>
 
         <div id="unlockedData" style="display:none;">
             <div class="quote-box">
@@ -174,17 +185,25 @@
             if(!data.length) { alert("Không tìm thấy dữ liệu!"); return; }
             const item = data[0];
 
-            document.getElementById('outLoc').innerText = item.duong;
-            document.getElementById('outPrice').innerHTML = item.gia_2026_du_kien.toLocaleString() + " <small>đ/m²</small>";
-            
-            const addr = `${item.duong}, Ba Vì, Hà Nội`;
-            document.getElementById('mapFrame').src = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodeURIComponent(addr)}&maptype=satellite`;
-            // Chế độ dự phòng link map chuẩn
-            document.getElementById('officeLink').href = `https://www.google.com/maps/search/${encodeURIComponent(addr)}`;
-            
-            document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-033963180001-compact.png?amount=5000&addInfo=TRA%20DA%20${encodeURIComponent(item.duong)}`;
-            document.getElementById('quoteText').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+            // 1. Cập nhật thông tin text
+document.getElementById('outLoc').innerText = item.duong;
+document.getElementById('outPrice').innerHTML = item.gia_2026_du_kien.toLocaleString() + " <small>đ/m²</small>";
 
+// 2. XỬ LÝ BẢN ĐỒ KHÔNG LỖI API (Tính năng then chốt)
+// Chúng ta dùng Embed URL mã hóa địa chỉ cụ thể tại Ba Vì
+const diaChiGoc = `${item.duong}, Ba Vì, Hà Nội, Việt Nam`;
+const diaChiMaHoa = encodeURIComponent(diaChiGoc);
+
+// Link này tự động lấy chế độ vệ tinh (t=k) và không đòi API Key
+const linkNhungVinhVien = `https://maps.google.com/maps?q=${diaChiMaHoa}&t=k&z=16&ie=UTF8&iwloc=&output=embed`;
+
+document.getElementById('mapFrame').src = linkNhungVinhVien;
+
+// 3. Link cho nút bấm "Mở bản đồ chỉ đường"
+document.getElementById('officeLink').href = `https://www.google.com/maps/dir/?api=1&destination=${diaChiMaHoa}`;
+
+// 4. Cập nhật QR Ủng hộ (Giữ nguyên)
+document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-033963180001-compact.png?amount=5000&addInfo=XAY%20KENH%20${encodeURIComponent(item.duong)}`;
             setTimeout(() => {
                 document.getElementById('radarOverlay').style.display = 'none';
                 document.getElementById('mapFrame').style.filter = "none";
