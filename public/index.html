@@ -8,7 +8,8 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Trạm Check Giá Đất Ba Vì 2026">
     <meta property="og:description" content="Hệ thống tra cứu quy hoạch và dự báo biến động giá đất 3 năm tại Ba Vì.">
-    <meta property="og:image" content="https://yourdomain.com/logo.jpg"> <meta property="og:image:width" content="1200">
+    <meta property="og:image" content="https://yourdomain.com/logo.jpg"> 
+    <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
@@ -18,39 +19,32 @@
         :root { --gold: #d4af37; --navy: #001a33; --neon: #00ff41; --danger: #ff4d4d; --success: #2ecc71; --zalo: #0068ff; }
         body { font-family: 'Montserrat', sans-serif; background: var(--navy); color: #fff; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
 
-        /* 1. POPUP PHÁP LÝ */
         #legalPopup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
         .popup-content { background: #fff; color: #333; padding: 30px; border-radius: 20px; max-width: 400px; text-align: center; border: 3px solid var(--gold); }
         
-        /* 2. KHUNG NHẬP LIỆU */
         .hero { width: 100%; max-width: 420px; text-align: center; padding: 25px 20px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid var(--gold); margin-top: 10px; box-sizing: border-box; }
         input { width: 100%; padding: 18px; border-radius: 12px; border: none; font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 15px; outline: none; color: #333; text-transform: uppercase; box-sizing: border-box; }
         .btn-main { width: 100%; padding: 18px; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 13px; margin-bottom: 10px; display: block; text-decoration: none; text-align: center; transition: 0.3s; }
         .btn-gold { background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; }
 
-        /* 3. THẺ KẾT QUẢ */
         #resultCard { display: none; width: 100%; max-width: 420px; background: #fff; color: #333; border-radius: 25px; padding: 20px; margin-top: 20px; box-sizing: border-box; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
         .loc-title { font-weight: 900; font-size: 18px; color: var(--navy); text-align: center; margin-bottom: 5px; }
         .price-tag { font-size: 32px; color: var(--danger); font-weight: 900; text-align: center; display: block; margin-bottom: 15px; }
 
-        /* 4. BẢN ĐỒ VỆ TINH & RADAR */
         .map-box { width: 100%; height: 260px; background: #eee; border-radius: 15px; position: relative; overflow: hidden; margin-bottom: 15px; border: 1px solid #ddd; }
         #mapFrame { width: 100%; height: 100%; border: none; }
         .radar-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--neon); font-family: monospace; font-size: 11px; z-index: 10; text-align: center; }
         .radar-circle { width: 70px; height: 70px; border: 3px solid var(--neon); border-top-color: transparent; border-radius: 50%; animation: spin 1s infinite linear; margin-bottom: 15px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* 5. QUÀ TẶNG CHÂM NGÔN */
         .quote-box { background: #f0f7ff; border-left: 5px solid var(--zalo); padding: 15px; border-radius: 10px; margin: 15px 0; text-align: left; }
         .quote-title { color: var(--zalo); font-weight: 900; font-size: 13px; display: block; margin-bottom: 5px; }
         .quote-text { font-style: italic; font-size: 12px; color: #444; line-height: 1.5; }
 
-        /* 6. BẢNG GIÁ & DỮ LIỆU */
         .result-box { background: #111; color: var(--neon); padding: 15px; border-radius: 12px; font-family: monospace; font-size: 11px; line-height: 1.6; border-left: 5px solid var(--success); margin-bottom: 15px; white-space: pre-wrap; }
         .history-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px; border: 1px solid #eee; }
         .history-table td { padding: 10px; border: 1px solid #eee; text-align: center; font-weight: 700; }
 
-        /* 7. SHARE & ỦNG HỘ XÂY KÊNH */
         .share-row { display: flex; gap: 8px; margin: 15px 0; }
         .btn-s { flex: 1; padding: 12px; border-radius: 8px; border: none; font-size: 11px; font-weight: 800; color: #fff; text-align: center; text-decoration: none; cursor: pointer; }
 
@@ -86,23 +80,13 @@
         <div class="price-tag" id="outPrice">--</div>
 
         <div class="map-box">
-    <iframe 
-        id="mapFrame" 
-        width="100%" 
-        height="100%" 
-        frameborder="0" 
-        style="border:0;" 
-        allowfullscreen="" 
-        loading="lazy" 
-        referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-    
-    <div id="radarOverlay" class="radar-layer">
-        <div class="radar-circle"></div>
-        <div id="radarStatus" style="font-weight:bold; letter-spacing:1px;">ĐANG QUÉT TỌA ĐỘ VỆ TINH...</div>
-        <div style="font-size:8px; margin-top:5px; opacity:0.7;">BA VI SATELLITE SYSTEM 2026</div>
-    </div>
-</div>
+            <iframe id="mapFrame" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div id="radarOverlay" class="radar-layer">
+                <div class="radar-circle"></div>
+                <div id="radarStatus" style="font-weight:bold; letter-spacing:1px;">ĐANG QUÉT TỌA ĐỘ VỆ TINH...</div>
+                <div style="font-size:8px; margin-top:5px; opacity:0.7;">BA VI SATELLITE SYSTEM 2026</div>
+            </div>
+        </div>
 
         <div id="unlockedData" style="display:none;">
             <div class="quote-box">
@@ -132,23 +116,15 @@
                         Mời Admin ly trà đá (5k) để duy trì hệ thống cập nhật giá đất 24/7. Mỗi đóng góp nhỏ của bạn là động lực lớn để chúng tôi hoàn thiện "Trạm Check" mỗi ngày! 🙏
                     </p>
                 </div>
-                
                 <div class="qr-wrap">
                     <img id="qrImg" src="" alt="QR" onload="this.style.display='block'">
                     <span id="qrLoading" style="font-size: 10px; color: #999;">Đang tạo mã định danh...</span>
                 </div>
-
-                <div class="stream-container">
-                    <div id="fakeStream"></div>
-                </div>
-
+                <div class="stream-container"><div id="fakeStream"></div></div>
                 <button class="btn-main btn-gold" style="background:var(--success); color:#fff;" onclick="thanks()">TÔI ĐÃ GỬI ỦNG HỘ 👍</button>
             </div>
 
-            <div class="legal-notice">
-                <b>⚠️ LƯU Ý:</b> Dữ liệu mang tính chất mô phỏng thị trường. Vui lòng kiểm tra kỹ pháp lý tại cơ quan chức năng địa phương trước khi giao dịch.
-            </div>
-            
+            <div class="legal-notice"><b>⚠️ LƯU Ý:</b> Dữ liệu mang tính chất mô phỏng thị trường. Vui lòng kiểm tra kỹ pháp lý tại cơ quan chức năng địa phương trước khi giao dịch.</div>
             <a href="https://zalo.me/0368869160" target="_blank" class="btn-main" style="background:var(--zalo); color:#fff; margin-top:15px;">💬 TƯ VẤN TRỰC TIẾP (ZALO)</a>
         </div>
     </div>
@@ -158,7 +134,8 @@
         "Đừng chờ đợi để mua đất, hãy mua đất và chờ đợi. - Will Rogers",
         "Bất động sản là món đầu tư an toàn nhất thế giới. - Roosevelt",
         "Ba Vì là mảnh đất của tương lai, ai giữ được đất người đó giữ được thịnh vượng.",
-        "Đầu tư tốt nhất trên trái đất chính là Đất. - Louis Glickman"
+        "Đầu tư tốt nhất trên trái đất chính là Đất. - Louis Glickman",
+        "Mọi thứ đều thay đổi, chỉ có mặt đất là không sinh thêm. Hãy sở hữu nó!"
     ];
 
     const fNames = ["Anh Tuấn", "Chị Thảo", "Nhà đầu tư HN", "Môi giới 88", "Anh Hùng Ba Vì", "Khách ẩn danh"];
@@ -184,54 +161,31 @@
             const data = await res.json();
             if(!data.length) { alert("Không tìm thấy dữ liệu!"); return; }
             const item = data[0];
-// --- ĐOẠN THAY THẾ CHO QUÀ TẶNG ---
-const item = data[0];
 
-// 1. Nạp nội dung quà tặng ngay lập tức (Không chờ đợi)
-const danhSachChamNgon = [
-    "Đừng chờ đợi để mua bất động sản. Hãy mua bất động sản và chờ đợi. - Will Rogers",
-    "Bất động sản là món đầu tư an toàn nhất thế giới. - Franklin D. Roosevelt",
-    "Ba Vì là mảnh đất của tương lai, ai giữ được đất người đó giữ được thịnh vượng.",
-    "Đầu tư tốt nhất trên trái đất chính là Đất. - Louis Glickman",
-    "Mọi thứ đều thay đổi, chỉ có mặt đất là không sinh thêm. Hãy sở hữu nó!"
-];
-const cauNguNhien = danhSachChamNgon[Math.floor(Math.random() * danhSachChamNgon.length)];
-document.getElementById('quoteText').innerText = cauNguNhien;
+            // 1. NẠP QUÀ TẶNG NGAY LẬP TỨC
+            document.getElementById('quoteText').innerText = quotes[Math.floor(Math.random() * quotes.length)];
 
-// 2. Cập nhật các thông tin khác
-document.getElementById('outLoc').innerText = item.duong;
-document.getElementById('outPrice').innerHTML = item.gia_2026_du_kien.toLocaleString() + " <small>đ/m²</small>";
+            // 2. CẬP NHẬT THÔNG TIN CHUNG
+            document.getElementById('outLoc').innerText = item.duong;
+            document.getElementById('outPrice').innerHTML = item.gia_2026_du_kien.toLocaleString() + " <small>đ/m²</small>";
 
-// 3. Hiển thị khối dữ liệu (Mở khóa quà tặng ngay)
-document.getElementById('unlockedData').style.display = 'block'; 
-// Lưu ý: Nếu bạn muốn quà tặng hiện ra ngay cùng Radar, hãy để dòng này ở đây.
-// Nếu muốn hiện sau 3 giây thì để trong hàm setTimeout như cũ.
-            // 1. Cập nhật thông tin text
-document.getElementById('outLoc').innerText = item.duong;
-document.getElementById('outPrice').innerHTML = item.gia_2026_du_kien.toLocaleString() + " <small>đ/m²</small>";
+            // 3. XỬ LÝ BẢN ĐỒ VỆ TINH (FIX LỖI API)
+            const diaChi = encodeURIComponent(`${item.duong}, Ba Vì, Hà Nội, Việt Nam`);
+            document.getElementById('mapFrame').src = `https://www.google.com/maps/embed/v1/place?key=REPLACE_WITH_YOUR_KEY&q=${diaChi}&maptype=satellite`.replace("REPLACE_WITH_YOUR_KEY", ""); 
+            // Dùng link dự phòng không key nếu cần:
+            document.getElementById('mapFrame').src = `https://maps.google.com/maps?q=${diaChi}&t=k&z=16&ie=UTF8&iwloc=&output=embed`;
 
-// 2. XỬ LÝ BẢN ĐỒ KHÔNG LỖI API (Tính năng then chốt)
-// Chúng ta dùng Embed URL mã hóa địa chỉ cụ thể tại Ba Vì
-const diaChiGoc = `${item.duong}, Ba Vì, Hà Nội, Việt Nam`;
-const diaChiMaHoa = encodeURIComponent(diaChiGoc);
+            document.getElementById('officeLink').href = `https://www.google.com/maps/search/${diaChi}`;
+            document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-033963180001-compact.png?amount=5000&addInfo=XAY%20KENH%20${encodeURIComponent(item.duong)}`;
 
-// Link này tự động lấy chế độ vệ tinh (t=k) và không đòi API Key
-const linkNhungVinhVien = `https://maps.google.com/maps?q=${diaChiMaHoa}&t=k&z=16&ie=UTF8&iwloc=&output=embed`;
-
-document.getElementById('mapFrame').src = linkNhungVinhVien;
-
-// 3. Link cho nút bấm "Mở bản đồ chỉ đường"
-document.getElementById('officeLink').href = `https://www.google.com/maps/dir/?api=1&destination=${diaChiMaHoa}`;
-
-// 4. Cập nhật QR Ủng hộ (Giữ nguyên)
-document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-033963180001-compact.png?amount=5000&addInfo=XAY%20KENH%20${encodeURIComponent(item.duong)}`;
+            // 4. HIỆU ỨNG CHỜ RADAR QUÉT
             setTimeout(() => {
                 document.getElementById('radarOverlay').style.display = 'none';
                 document.getElementById('mapFrame').style.filter = "none";
                 document.getElementById('unlockedData').style.display = 'block';
                 startStream();
                 
-                document.getElementById('vnPanel').innerText = `> TRẠNG THÁI: KHỚP NỐI THÀNH CÔNG\n• LAT: 21.2${Math.floor(Math.random()*9)}... | LNG: 105.3${Math.floor(Math.random()*9)}...\n• QUY HOẠCH: ĐẤT Ở (ONT)\n• TIỀM NĂNG: LOẠI A (RẤT CAO)`;
+                document.getElementById('vnPanel').innerText = `> TRẠNG THÁI: KHỚP NỐI THÀNH CÔNG\n• TỌA ĐỘ: 21.2${Math.floor(Math.random()*9)}... | 105.3${Math.floor(Math.random()*9)}...\n• QUY HOẠCH: ĐẤT Ở (ONT)\n• TIỀM NĂNG: LOẠI A (RẤT CAO)`;
                 
                 const g26 = item.gia_2026_du_kien / 1000000;
                 document.getElementById('v26').innerText = g26.toFixed(1) + " Tr";
@@ -267,12 +221,7 @@ document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-03396
     }
 
     function thanks() {
-        confetti({ 
-            particleCount: 200, 
-            spread: 80, 
-            origin: { y: 0.8 },
-            colors: ['#d4af37', '#ffffff', '#00ff41']
-        });
+        confetti({ particleCount: 200, spread: 80, origin: { y: 0.8 }, colors: ['#d4af37', '#ffffff', '#00ff41'] });
         alert("Admin Trạm Check xin chân thành cảm ơn! 🙏\nChúc bạn gặt hái nhiều thành công rực rỡ tại Ba Vì!");
     }
 </script>
