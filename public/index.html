@@ -1,215 +1,208 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PQHFMSQBZ0"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-PQHFMSQBZ0');
-    </script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hệ Thống Trích Lục Tọa Độ Ba Vì 2026</title>
+    <title>Trạm Check Giá Đất Ba Vì 2026</title>
+    
+    <meta property="og:title" content="Trạm Check Giá Đất Ba Vì 2026">
+    <meta property="og:description" content="Hệ thống tra cứu biến động giá đất và vệ tinh quy hoạch Ba Vì.">
+    <meta property="og:image" content="LINK_ANH_LOGO_CUA_BAN">
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
-        :root { --gold: #d4af37; --navy: #001a33; --neon: #00ff41; --danger: #ff4d4d; --success: #2ecc71; }
+        :root { --gold: #d4af37; --navy: #001a33; --neon: #00ff41; --danger: #ff4d4d; --success: #2ecc71; --zalo: #0068ff; --google-map: #34a853; }
         body { font-family: 'Montserrat', sans-serif; background: var(--navy); color: #fff; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
 
-        /* KHÓA CỨNG: Ngăn chặn rò rỉ khi chưa thanh toán */
-        #resultCard, #payArea, #unlockedData, #btnConfirmFinal { display: none; }
+        /* 1. POPUP PHÁP LÝ (BẮT BUỘC) */
+        #legalPopup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        .popup-content { background: #fff; color: #333; padding: 25px; border-radius: 20px; max-width: 400px; text-align: center; border: 2px solid var(--gold); }
+        
+        /* 2. KHUNG NHẬP LIỆU */
+        .hero { width: 100%; max-width: 420px; text-align: center; padding: 25px 20px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid var(--gold); margin-top: 10px; box-sizing: border-box; }
+        input { width: 100%; padding: 18px; border-radius: 12px; border: none; font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 15px; outline: none; color: #333; text-transform: uppercase; box-sizing: border-box; }
+        .btn-main { width: 100%; padding: 18px; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 13px; margin-bottom: 10px; display: block; text-decoration: none; text-align: center; transition: 0.3s; }
+        .btn-gold { background: linear-gradient(135deg, #d4af37, #b8860b); color: #000; }
 
-        .hero { width: 100%; max-width: 420px; text-align: center; padding: 25px 20px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid var(--gold); margin-top: 10px; }
-        input { width: 100%; padding: 18px; border-radius: 12px; border: none; font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 15px; outline: none; color: #333; text-transform: uppercase; }
-        .btn-main { width: 100%; padding: 18px; background: linear-gradient(135deg, #d4af37, #b8860b); border: none; border-radius: 12px; color: #000; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 14px; }
-
-        /* CARD KẾT QUẢ */
-        #resultCard { width: 100%; max-width: 420px; background: #fff; color: #333; border-radius: 25px; padding: 20px; margin-top: 20px; box-sizing: border-box; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        /* 3. THÈ KẾT QUẢ */
+        #resultCard { display: none; width: 100%; max-width: 420px; background: #fff; color: #333; border-radius: 25px; padding: 20px; margin-top: 20px; box-sizing: border-box; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
         .loc-title { font-weight: 900; font-size: 18px; color: var(--navy); text-align: center; margin-bottom: 5px; }
-        .price-tag { font-size: 30px; color: var(--danger); font-weight: 900; text-align: center; display: block; margin-bottom: 15px; }
+        .price-tag { font-size: 32px; color: var(--danger); font-weight: 900; text-align: center; display: block; margin-bottom: 15px; }
 
-        /* MAP VỆ TINH MỜ */
-        .map-box { width: 100%; height: 240px; background: #eee; border-radius: 15px; position: relative; overflow: hidden; margin-bottom: 15px; }
-        #mapFrame { width: 100%; height: 100%; border: none; filter: blur(20px) grayscale(1); transition: 2s ease; pointer-events: none; }
-        .radar-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--neon); font-family: monospace; font-size: 10px; z-index: 10; text-align: center; }
-        .radar-circle { width: 50px; height: 50px; border: 2px solid var(--neon); border-top-color: transparent; border-radius: 50%; animation: spin 1s infinite linear; margin-bottom: 10px; }
+        /* 4. BẢN ĐỒ & RADAR */
+        .map-box { width: 100%; height: 260px; background: #eee; border-radius: 15px; position: relative; overflow: hidden; margin-bottom: 15px; border: 1px solid #ddd; }
+        #mapFrame { width: 100%; height: 100%; border: none; }
+        .radar-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--neon); font-family: monospace; font-size: 10px; z-index: 10; text-align: center; }
+        .radar-circle { width: 60px; height: 60px; border: 2px solid var(--neon); border-top-color: transparent; border-radius: 50%; animation: spin 1s infinite linear; margin-bottom: 10px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* THANH TOÁN */
-        #payArea { background: #fffdf2; border: 2px dashed var(--gold); border-radius: 15px; padding: 20px; text-align: center; }
-        .qr-wrap { width: 180px; height: 180px; margin: 10px auto; background: #fff; padding: 5px; border-radius: 10px; border: 1px solid #ddd; }
-        .wait-msg { font-size: 11px; color: #b8860b; font-weight: bold; margin-top: 10px; }
+        /* 5. DỮ LIỆU & QUÀ TẶNG */
+        .quote-box { background: #f0f7ff; border-left: 5px solid var(--zalo); padding: 15px; border-radius: 10px; margin: 15px 0; font-style: italic; font-size: 12px; color: #444; }
+        .result-box { background: #111; color: var(--neon); padding: 15px; border-radius: 12px; font-family: monospace; font-size: 11px; margin-bottom: 15px; white-space: pre-wrap; border-left: 5px solid var(--success); }
+        .history-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px; }
+        .history-table td { padding: 10px; border: 1px solid #eee; text-align: center; font-weight: 700; }
 
-        /* KẾT QUẢ CUỐI */
-        .result-box { background: #111; color: var(--neon); padding: 15px; border-radius: 12px; font-family: monospace; font-size: 11px; line-height: 1.6; border-left: 5px solid var(--success); }
-        .proverb-box { background: #e8f5e9; color: #2e7d32; padding: 15px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-bottom: 15px; border: 1px solid #a5d6a7; text-align: center; }
-        .disclaimer { font-size: 9px; color: #999; margin-top: 15px; text-align: center; font-style: italic; }
-
-        /* Toasts */
-        #toast-wrap { position: fixed; top: 15px; left: 15px; z-index: 9999; }
-        .toast { background: white; color: #333; padding: 10px 15px; border-radius: 30px; font-size: 10px; margin-bottom: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 4px solid var(--success); font-weight: 700; }
+        /* 6. CHIA SẺ & DONATION */
+        .share-row { display: flex; gap: 8px; margin: 10px 0; }
+        .btn-s { flex: 1; padding: 12px; border-radius: 8px; border: none; font-size: 11px; font-weight: 800; color: #fff; text-align: center; text-decoration: none; cursor: pointer; }
+        #donationBox { background: #fffdf2; border: 2px solid var(--gold); border-radius: 15px; padding: 15px; text-align: center; }
+        .qr-wrap { width: 150px; height: 150px; margin: 10px auto; background: #fff; display: flex; align-items: center; justify-content: center; border: 1px solid #eee; border-radius: 10px; overflow: hidden; }
+        #qrImg { width: 100%; display: none; }
+        
+        .stream-container { height: 30px; overflow: hidden; background: #000; border-radius: 5px; margin: 10px 0; position: relative; border: 1px solid var(--gold); }
+        #fakeStream { position: absolute; white-space: nowrap; font-size: 10px; color: var(--neon); line-height: 30px; font-family: monospace; }
+        
+        .legal-notice { background: #fff1f0; border: 1px solid #ffa39e; padding: 12px; border-radius: 10px; margin-top: 15px; font-size: 10px; color: #555; text-align: justify; }
     </style>
 </head>
 <body>
 
-    <div id="toast-wrap"></div>
+    <div id="legalPopup">
+        <div class="popup-content">
+            <h3 style="color:var(--danger); margin-top:0;">⚠️ MIỄN TRỪ TRÁCH NHIỆM</h3>
+            <p style="font-size:12px; line-height:1.6; color:#555;">Hệ thống cung cấp dữ liệu phân tích thị trường 2026 mang tính chất THAM KHẢO. Kết quả không thay thế trích lục quy hoạch chính thức.</p>
+            <button onclick="acceptLegal()" style="width:100%; padding:15px; background:var(--navy); color:#fff; border:none; border-radius:10px; font-weight:900; cursor:pointer;">TÔI ĐỒNG Ý</button>
+        </div>
+    </div>
 
     <div class="hero">
-        <div style="color:var(--gold); font-weight:900; margin-bottom:15px; font-size: 14px;">🍵 TRẠM CHECK GIÁ ĐẤT BA VÌ</div>
+        <div style="color:var(--gold); font-weight:900; margin-bottom:12px; font-size: 13px;">TRẠM CHECK GIÁ ĐẤT BA VÌ 2026</div>
         <input type="text" id="userInput" placeholder="NHẬP TÊN THÔN (VD: VAT LAI)">
-        <button class="btn-main" onclick="handleSearch()">🔍 BẮT ĐẦU PHÂN TÍCH</button>
+        <button class="btn-main btn-gold" onclick="handleSearch()">🔍 TRA CỨU THÔNG TIN</button>
     </div>
 
     <div id="resultCard">
-        <div class="loc-title" id="outLoc"></div>
-        <div class="price-tag" id="outPrice"></div>
+        <div class="loc-title" id="outLoc">--</div>
+        <div class="price-tag" id="outPrice">--</div>
 
         <div class="map-box">
-            <iframe id="mapFrame" src=""></iframe>
+            <iframe id="mapFrame"></iframe>
             <div id="radarOverlay" class="radar-layer">
                 <div class="radar-circle"></div>
-                <div id="radarStatus">ĐANG TRUY VẤN VỆ TINH...</div>
+                <div id="radarStatus">ĐANG KHỚP NỐI VỆ TINH...</div>
             </div>
         </div>
 
-        <div id="payArea">
-            <p style="font-size: 12px; font-weight: bold; color: #856404; margin: 0;">Mời Admin ly trà đá (5k) để mở khóa bản đồ</p>
-            <div class="qr-wrap">
-                <img id="qrImg" style="width:100%; height:100%; object-fit:contain;">
-            </div>
-            
-            <div id="waitMsg" class="wait-msg">Đang khởi tạo mã giao dịch... (5s)</div>
-            
-            <button id="btnConfirmFinal" class="btn-main" style="background: var(--success); color: #fff; margin-top: 10px;" onclick="handleUnlock()">TÔI ĐÃ GỬI TRÀ ĐÁ</button>
-        </div>
-
-        <div id="unlockedData" style="display: none;">
-            <div class="proverb-box">
-                🙏 CẢM ƠN BẠN!<br>
-                <span id="randomQuote" style="font-weight: 400; font-style: italic;"></span>
-            </div>
+        <div id="unlockedData" style="display:none;">
+            <div class="quote-box" id="quoteText">--</div>
             <div class="result-box" id="vnPanel"></div>
-            <a href="https://zalo.me/0368869160" target="_blank" class="btn-main" style="display:block; text-decoration:none; text-align:center; background:#0068ff; color:#fff; margin-top:15px; font-size: 12px;">💬 NHẬN TRÍCH LỤC FULL (ZALO)</a>
-            <p class="disclaimer">* Dữ liệu dự báo 2026 mang tính chất tham khảo đầu tư.</p>
+            
+            <table class="history-table">
+                <tr style="background:#f8f9fa; font-size: 10px;"><td>2023</td><td>2024</td><td style="color:red">DỰ BÁO 2026</td></tr>
+                <tr><td id="v23">--</td><td id="v24">--</td><td id="v26">--</td></tr>
+            </table>
+
+            <a href="#" id="officeLink" target="_blank" class="btn-main" style="background:var(--google-map); color:#fff;">📍 CHỈ ĐƯỜNG GOOGLE MAPS</a>
+
+            <div class="share-row">
+                <a href="#" id="zLink" target="_blank" class="btn-s" style="background:var(--zalo);">ZALO</a>
+                <a href="#" id="fLink" target="_blank" class="btn-s" style="background:#1877f2;">FB</a>
+                <button onclick="copyUrl()" class="btn-s" style="background:#000;">TIKTOK</button>
+            </div>
+
+            <div id="donationBox">
+                <b style="color:#856404; font-size:12px;">☕ MỜI ADMIN LY TRÀ ĐÁ</b>
+                <div class="qr-wrap">
+                    <img id="qrImg" src="" alt="QR" onload="this.style.display='block'">
+                    <span id="qrLoading">Đang tạo mã...</span>
+                </div>
+                <div class="stream-container"><div id="fakeStream"></div></div>
+                <button class="btn-main btn-gold" style="background:var(--success); color:#fff;" onclick="thanks()">TÔI ĐÃ GỬI ỦNG HỘ 👍</button>
+            </div>
+
+            <div class="legal-notice">
+                <b>⚠️ MIỄN TRỪ PHÁP LÝ LỚP 2:</b> Dữ liệu mô phỏng từ AI và thị trường tự do. Vui lòng kiểm tra tại cơ quan chức năng địa phương trước khi giao dịch.
+            </div>
+            
+            <a href="https://zalo.me/0368869160" target="_blank" class="btn-main" style="background:var(--zalo); color:#fff; margin-top:15px;">💬 TƯ VẤN TRỰC TIẾP</a>
         </div>
     </div>
 
 <script>
-    // 1. Danh sách châm ngôn tăng uy tín
-    const quotes = [
-        "\"Mua vàng thì lỗ, mua thổ thì lời. Chúc bạn đại thắng tại Ba Vì!\"",
-        "\"Đất lành chim đậu. Chúc bạn tìm được mảnh đất vượng khí, sinh tài lộc!\"",
-        "\"Người đẻ chứ đất không đẻ. Chúc mừng bạn đã nắm bắt đúng thời cơ vàng!\"",
-        "\"Đầu tư hôm nay, thảnh thơi mai sau. Ba Vì 2026 - Tầm nhìn chiến lược.\""
-    ];
+    const quotes = ["Đừng chờ để mua đất, hãy mua đất và chờ đợi.", "Ba Vì - Vùng đất tiềm năng phía Tây Thủ đô.", "Đầu tư bất động sản là đầu tư cho tương lai."];
+    const names = ["Anh Tuấn", "Chị Thảo", "Nhà đầu tư HN", "Môi giới 88", "Khách ẩn danh"];
+    const actions = ["vừa mời trà đá 5k", "vừa ủng hộ cafe 20k", "vừa gửi 10k ủng hộ"];
+
+    function acceptLegal() {
+        document.getElementById('legalPopup').style.display = 'none';
+        localStorage.setItem('bavi_legal_2026', 'true');
+    }
+    if(localStorage.getItem('bavi_legal_2026')) document.getElementById('legalPopup').style.display = 'none';
 
     async function handleSearch() {
-        const query = document.getElementById('userInput').value.trim();
-        if(!query) return;
-        document.getElementById('userInput').blur();
+        const q = document.getElementById('userInput').value.trim();
+        if(!q) return;
+
+        document.getElementById('resultCard').style.display = 'block';
+        document.getElementById('unlockedData').style.display = 'none';
+        document.getElementById('radarOverlay').style.display = 'flex';
+        document.getElementById('mapFrame').style.filter = "blur(10px)";
 
         try {
-            // Gọi API lấy dữ liệu
-            const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+            const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
             const data = await res.json();
-            if(data.length === 0) return alert("Vùng này đang cập nhật dữ liệu. Vui lòng thử thôn khác!");
-
+            if(!data || data.length === 0) { alert("Không có dữ liệu thôn này!"); return; }
             const item = data[0];
 
-            // BƯỚC 1: KHÓA CHẶT TRẠNG THÁI (Tránh hiện nút xác nhận sớm)
-            document.getElementById('resultCard').style.display = 'block';
-            document.getElementById('payArea').style.display = 'none'; // Ẩn vùng thanh toán lúc đầu
-            document.getElementById('unlockedData').style.display = 'none'; // Khóa kết quả
-            document.getElementById('btnConfirmFinal').style.display = 'none'; // Khóa nút xác nhận
-            document.getElementById('radarOverlay').style.display = 'flex';
-            document.getElementById('mapFrame').style.filter = "blur(20px) grayscale(1)";
-            document.getElementById('radarStatus').innerText = "ĐANG TRUY VẤN VỆ TINH ĐỊA CHÍNH...";
-
-            // BƯỚC 2: NẠP DỮ LIỆU MAPPING
             document.getElementById('outLoc').innerText = item.duong;
-            document.getElementById('outPrice').innerHTML = item.gia_2026_du_kien.toLocaleString() + " <small style='font-size:14px'>đ/m²</small>";
+            document.getElementById('outPrice').innerHTML = item.gia_2026_du_kien.toLocaleString() + " <small>đ/m²</small>";
             
-            // Cập nhật bản đồ đúng vị trí thôn + Chế độ vệ tinh (t=k)
-            const mapSearchUrl = `https://www.google.com/maps?q=${encodeURIComponent(item.duong + " Ba Vì Hà Nội")}&output=embed&t=k`;
-            document.getElementById('mapFrame').src = mapSearchUrl;
+            // FIX LINK MAP CHUẨN (KHÔNG LỖI)
+            const mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(item.duong + ', Ba Vì, Hà Nội')}&output=embed&t=k`;
+            document.getElementById('mapFrame').src = mapUrl;
+            document.getElementById('officeLink').href = `https://www.google.com/maps/search/${encodeURIComponent(item.duong + ', Ba Vì, Hà Nội')}`;
+            
+            // QR & SOCIAL PROOF
+            document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-033963180001-compact.png?amount=5000&addInfo=TRA%20DA%20${encodeURIComponent(item.duong)}`;
+            document.getElementById('quoteText').innerText = "🎁 Quà tặng: " + quotes[Math.floor(Math.random() * quotes.length)];
 
-            // BƯỚC 3: HIỆU ỨNG QUÉT TÂM LÝ (3 giây)
             setTimeout(() => {
-                document.getElementById('radarStatus').innerText = "ĐÃ XÁC ĐỊNH VỊ TRÍ. ĐANG KHỞI TẠO MÃ GIAO DỊCH...";
-                document.getElementById('payArea').style.display = 'block';
-                document.getElementById('qrImg').src = `https://img.vietqr.io/image/LPBANK-033963180001-compact.png?amount=5000&addInfo=Check%20${encodeURIComponent(item.duong)}`;
+                document.getElementById('radarOverlay').style.display = 'none';
+                document.getElementById('mapFrame').style.filter = "none";
+                document.getElementById('unlockedData').style.display = 'block';
+                startStream();
                 
-                // BƯỚC 4: TRÌ HOÃN HIỆN NÚT XÁC NHẬN (Thêm 5 giây nữa)
-                // Ép khách hàng phải nhìn mã QR ít nhất 5 giây mới cho bấm xác nhận
-                setTimeout(() => {
-                    document.getElementById('waitMsg').style.display = 'none';
-                    document.getElementById('btnConfirmFinal').style.display = 'block';
-                    document.getElementById('radarStatus').innerText = "VỊ TRÍ ĐÃ KHOANH VÙNG - CHỜ MỞ KHÓA...";
-                }, 5000);
+                document.getElementById('vnPanel').innerText = `> TRẠNG THÁI: ĐÃ KHỚP NỐI VỆ TINH\n• LOẠI ĐẤT: ONT (ĐẤT Ở)\n• BIẾN ĐỘNG: +${(Math.random()*15 + 20).toFixed(1)}% / NĂM`;
+                
+                const g26 = item.gia_2026_du_kien / 1000000;
+                document.getElementById('v26').innerText = g26.toFixed(1) + " Tr";
+                document.getElementById('v24').innerText = (g26 / 1.28).toFixed(1) + " Tr";
+                document.getElementById('v23').innerText = (g26 / 1.55).toFixed(1) + " Tr";
 
+                const u = window.location.href;
+                document.getElementById('zLink').href = `https://zalo.me/share?url=${encodeURIComponent(u)}`;
+                document.getElementById('fLink').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(u)}`;
+                
+                window.scrollTo({ top: document.getElementById('resultCard').offsetTop - 20, behavior: 'smooth' });
             }, 3000);
-
-            // Cuộn mượt xuống phần kết quả
-            window.scrollTo({ top: document.getElementById('resultCard').offsetTop - 20, behavior: 'smooth' });
-            
-            // Gửi sự kiện về GA4
-            gtag('event', 'search_land_pro', { 'location': item.duong });
-
-        } catch (e) { 
-            console.error("Lỗi truy vấn:", e);
-            alert("Hệ thống bận, vui lòng thử lại sau giây lát!");
-        }
+        } catch (e) { alert("Lỗi hệ thống!"); }
     }
 
-    function handleUnlock() {
-        // Hiệu ứng pháo hoa khi khách bấm xác nhận
+    function startStream() {
+        const div = document.getElementById('fakeStream');
+        let content = "";
+        for(let i=0; i<8; i++) content += ` • ${names[Math.floor(Math.random()*names.length)]} ${actions[Math.floor(Math.random()*actions.length)]} ... `;
+        div.innerText = content + content;
+        let pos = 0;
+        if(window.si) clearInterval(window.si);
+        window.si = setInterval(() => {
+            pos--;
+            if (Math.abs(pos) >= div.scrollWidth / 2) pos = 0;
+            div.style.transform = `translateX(${pos}px)`;
+        }, 30);
+    }
+
+    function copyUrl() {
+        navigator.clipboard.writeText(window.location.href);
+        alert("Đã sao chép link trang web!");
+    }
+
+    function thanks() {
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 } });
-
-        // MỞ KHÓA TUYỆT ĐỐI
-        document.getElementById('payArea').style.display = 'none'; // Ẩn QR
-        document.getElementById('radarOverlay').style.display = 'none'; // Tắt radar
-        document.getElementById('mapFrame').style.filter = "blur(0) grayscale(0)"; // Làm rõ bản đồ
-        document.getElementById('mapFrame').style.pointerEvents = "auto"; // Cho phép tương tác map
-        document.getElementById('unlockedData').style.display = 'block'; // Hiện kết quả tọa độ
-
-        // Chọn châm ngôn ngẫu nhiên để cảm ơn khách
-        document.getElementById('randomQuote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
-        
-        // Đổ dữ liệu tọa độ giả lập (Dữ liệu này khách rất thích xem)
-        document.getElementById('vnPanel').innerText = 
-            "> ĐANG TRÍCH XUẤT DỮ LIỆU VN-2000...\n" +
-            "------------------------------------\n" +
-            "• TRẠM CHIẾU: BA VÌ - HÀ NỘI\n" +
-            "• TỌA ĐỘ X: " + (594100 + Math.random()*900).toFixed(2) + "\n" +
-            "• TỌA ĐỘ Y: " + (2342300 + Math.random()*900).toFixed(2) + "\n" +
-            "• LOẠI ĐẤT: ĐẤT Ở (NÔNG THÔN/ĐÔ THỊ)\n" +
-            "• QUY HOẠCH: ĐƯỜNG GIAO THÔNG MỞ RỘNG (DỰ KIẾN)\n" +
-            "• TRẠNG THÁI: DỮ LIỆU ĐÃ ĐƯỢC GIẢI MÃ.";
-
-        // GA4 Chuyển đổi thành công
-        gtag('event', 'payment_success_tea', { 'value': 5000, 'currency': 'VND' });
+        alert("Admin cảm ơn ly trà đá từ bạn!");
     }
-
-    // Hiển thị thông báo "ảo" để kích cầu (Social Proof)
-    function showToast(msg) {
-        const wrap = document.getElementById('toast-wrap') || document.getElementById('toast-container');
-        if(!wrap) return;
-        const t = document.createElement('div');
-        t.className = 'toast'; 
-        t.style.cssText = "background:white; color:#333; padding:10px 15px; border-radius:30px; font-size:10px; margin-bottom:5px; box-shadow:0 4px 10px rgba(0,0,0,0.1); border-left:4px solid #2ecc71; font-weight:700;";
-        t.innerHTML = msg;
-        wrap.appendChild(t); 
-        setTimeout(() => t.remove(), 4000);
-    }
-
-    setInterval(() => {
-        const users = ["Anh Tuấn", "Chị Lan", "Chú Hùng", "BĐS Ba Vì", "Môi giới 24h"];
-        const locs = ["Vật Lại", "Tây Đằng", "Yên Bài", "Vạn Thắng"];
-        showToast(`✅ <b>${users[Math.floor(Math.random()*users.length)]}</b> vừa check thành công tại ${locs[Math.floor(Math.random()*locs.length)]}!`);
-    }, 25000);
 </script>
 </body>
 </html>
