@@ -128,8 +128,13 @@
 
             <div class="legal-notice"><b>⚠️ LƯU Ý:</b> Dữ liệu mang tính chất mô phỏng thị trường. Vui lòng kiểm tra kỹ pháp lý tại cơ quan chức năng địa phương trước khi giao dịch.</div>
             <a href="https://zalo.me/0368869160" target="_blank" class="btn-main" style="background:var(--zalo); color:#fff; margin-top:15px;">💬 TƯ VẤN TRỰC TIẾP (ZALO)</a>
+            <button class="btn-main" 
+        onclick="resetSearch()" 
+        style="background: #f8f9fa; color: var(--navy); border: 2px solid var(--navy); margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    🔄 TRA CỨU THÔN KHÁC
+</button>
         </div>
-    </div>
+           </div>
 
 <script>
     const quotes = [
@@ -242,6 +247,19 @@
         confetti({ particleCount: 200, spread: 80, origin: { y: 0.8 }, colors: ['#d4af37', '#ffffff', '#00ff41'] });
         alert("Admin Trạm Check xin chân thành cảm ơn! 🙏\nChúc bạn gặt hái nhiều thành công rực rỡ tại Ba Vì!");
     }
+    function resetSearch() {
+    // 1. Cuộn màn hình lên đầu trang mượt mà
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // 2. Xóa nội dung ô nhập cũ và tập trung con trỏ vào đó
+    const input = document.getElementById('userInput');
+    input.value = "";
+    input.focus();
+
+    // 3. (Tùy chọn) Ẩn khung kết quả cũ để tạo cảm giác mới mẻ
+    // Nếu bạn muốn khách vẫn xem được kết quả cũ khi đang nhập thì bỏ dòng dưới đây
+    // document.getElementById('resultCard').style.display = 'none';
+}
 </script>
 </body>
 </html>
