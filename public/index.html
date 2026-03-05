@@ -104,10 +104,12 @@
             <a href="#" id="officeLink" target="_blank" class="btn-main" style="background:#34a853; color:#fff;">📍 CHỈ ĐƯỜNG GOOGLE MAPS</a>
 
             <div class="share-row">
-                <a href="#" id="zLink" target="_blank" class="btn-s" style="background:var(--zalo);">ZALO</a>
-                <a href="#" id="fLink" target="_blank" class="btn-s" style="background:#1877f2;">FB</a>
-                <button onclick="copyUrl()" class="btn-s" style="background:#000;">TIKTOK</button>
-            </div>
+    <a href="#" id="zLink" target="_blank" class="btn-s" style="background:var(--zalo);">ZALO</a>
+    <a href="#" id="fLink" target="_blank" class="btn-s" style="background:#1877f2;">FACEBOOK</a>
+    <button onclick="shareSystem()" class="btn-s" style="background:#000; display: flex; align-items: center; justify-content: center; gap: 5px;">
+        <span style="font-size: 14px;">🔗</span> CHIA SẺ
+    </button>
+</div>
 
             <div id="donationBox">
                 <div style="background: #fff3cd; padding: 12px; border-radius: 10px; border: 1px dashed #856404; margin-bottom: 10px;">
@@ -215,10 +217,26 @@
         }, 30);
     }
 
-    function copyUrl() {
-        navigator.clipboard.writeText(window.location.href);
-        alert("Đã sao chép link trang web!");
+    async function shareSystem() {
+    const shareData = {
+        title: 'Trạm Check Giá Đất Ba Vì 2026',
+        text: `Tôi vừa kiểm tra giá đất tại ${document.getElementById('outLoc').innerText}. Dự báo 2026 cực kỳ tiềm năng! Check ngay tại:`,
+        url: window.location.href
+    };
+
+    try {
+        // Kiểm tra xem trình duyệt có hỗ trợ tính năng chia sẻ hệ thống không
+        if (navigator.share) {
+            await navigator.share(shareData);
+        } else {
+            // Nếu không hỗ trợ (như trên máy tính cũ), tự động chuyển sang Copy Link
+            await navigator.clipboard.writeText(window.location.href);
+            alert("Trình duyệt không hỗ trợ chia sẻ nhanh. Đã copy link vào bộ nhớ tạm!");
+        }
+    } catch (err) {
+        console.log("Người dùng đã hủy chia sẻ hoặc có lỗi xảy ra");
     }
+}
 
     function thanks() {
         confetti({ particleCount: 200, spread: 80, origin: { y: 0.8 }, colors: ['#d4af37', '#ffffff', '#00ff41'] });
